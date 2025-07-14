@@ -1,0 +1,6 @@
+node_modules/
+.idea/
+.vscode/
+.env
+public
+met-weather-application-firebase-adminsdk-fbsvc-b3508cb2b0.json

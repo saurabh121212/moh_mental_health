@@ -1,0 +1,75 @@
+const express = require('express');
+const router = express.Router();
+const {body} = require('express-validator');
+const HospitalController = require('../controllers/hospitalController');
+const authMiddleware = require('../middleware/auth.middleware');
+
+// This is user to add Hospital to the database
+// It validates the input data and then calls the controller to add the data
+router.post('/add',[
+    body('name')
+    .isLength({ min: 3, max: 100 })
+    .withMessage('Name must be between 3 and 100 characters long'),
+
+   body('services')
+    .isLength({ min: 0, max: 100 })
+    .withMessage('services max 100 characters long'),
+
+   body('address')
+    .isLength({ min: 0, max: 50 })
+    .withMessage('services max 50 characters long'),
+    
+
+    body('phone_number')
+    .isLength({ min: 0, max: 8 })
+    .withMessage('Phone number max 8 characters long'),
+
+    body('operating_days')
+    .isLength({ min: 0, max: 150 })
+    .withMessage('Operating days max 150 characters long'),
+
+    body('operating_hours')
+    .isLength({ min: 0, max: 150 })
+    .withMessage('Operating hours max 150 characters long'),
+
+], authMiddleware.authAdmin, HospitalController.add);
+
+// This is used to update Hospital in the database
+router.put('/update/:id',[
+     body('name')
+    .isLength({ min: 3, max: 100 })
+    .withMessage('Name must be between 3 and 100 characters long'),
+
+   body('services')
+    .isLength({ min: 0, max: 100 })
+    .withMessage('services max 100 characters long'),
+
+   body('address')
+    .isLength({ min: 0, max: 50 })
+    .withMessage('services max 50 characters long'),
+    
+
+    body('phone_number')
+    .isLength({ min: 0, max: 8 })
+    .withMessage('Phone number max 8 characters long'),
+
+    body('operating_days')
+    .isLength({ min: 0, max: 150 })
+    .withMessage('Operating days max 150 characters long'),
+
+    body('operating_hours')
+    .isLength({ min: 0, max: 150 })
+    .withMessage('Operating hours max 150 characters long'),
+] , authMiddleware.authAdmin, HospitalController.update);
+
+// This is used in Mobile app to get the list of Hospital
+router.get('/list-mobile', authMiddleware.authUser, HospitalController.getMobile);
+
+// This is used in Admin panel to get the list of Hospital
+router.get('/list', authMiddleware.authAdmin, HospitalController.get);
+
+// This is used to delete Hospital from the database
+router.put('/delete/:id', authMiddleware.authAdmin, HospitalController.delete);
+
+
+module.exports = router;
