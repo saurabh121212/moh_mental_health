@@ -19,10 +19,13 @@ router.post('/add',[
     .isLength({ min: 0, max: 50 })
     .withMessage('services max 50 characters long'),
     
-
     body('phone_number')
     .isLength({ min: 0, max: 8 })
     .withMessage('Phone number max 8 characters long'),
+
+    body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email'),
 
     body('operating_days')
     .isLength({ min: 0, max: 150 })
@@ -32,11 +35,15 @@ router.post('/add',[
     .isLength({ min: 0, max: 150 })
     .withMessage('Operating hours max 150 characters long'),
 
+    body('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long'),
+
 ], authMiddleware.authAdmin, HospitalController.add);
 
 // This is used to update Hospital in the database
 router.put('/update/:id',[
-     body('name')
+    body('name')
     .isLength({ min: 3, max: 100 })
     .withMessage('Name must be between 3 and 100 characters long'),
 
@@ -48,10 +55,12 @@ router.put('/update/:id',[
     .isLength({ min: 0, max: 50 })
     .withMessage('services max 50 characters long'),
     
-
     body('phone_number')
     .isLength({ min: 0, max: 8 })
     .withMessage('Phone number max 8 characters long'),
+    body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email'),
 
     body('operating_days')
     .isLength({ min: 0, max: 150 })
@@ -60,6 +69,10 @@ router.put('/update/:id',[
     body('operating_hours')
     .isLength({ min: 0, max: 150 })
     .withMessage('Operating hours max 150 characters long'),
+
+    body('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long'),
 ] , authMiddleware.authAdmin, HospitalController.update);
 
 // This is used in Mobile app to get the list of Hospital
@@ -71,5 +84,10 @@ router.get('/list', authMiddleware.authAdmin, HospitalController.get);
 // This is used to delete Hospital from the database
 router.put('/delete/:id', authMiddleware.authAdmin, HospitalController.delete);
 
+// This is used for Hospital login
+router.post('/login',[
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('password'),
+], HospitalController.loginHospital);
 
 module.exports = router;

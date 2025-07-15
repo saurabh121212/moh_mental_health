@@ -26,17 +26,11 @@ const mimeTypes = {
 }
 
 const storeDestination = {
-    'businessCategories': "business-categories/",
-    'partnersLogo': "partners-logo/",
-    'teamMemberImage': "team-member/",
-    'homeBannerImage': "home-banner/",
-    'blogImage': "blog-image/",
-    'downloadsFile': "downloads/",
-    'serviceProviderCategoriesImage': "service-provider-categories/",
-    'serviceProvidersImage': "service-providers/",
-    'businessImage': "business/",
-    'businessProfile': "business-profile/",
-    'incorporationProfile': "incorporation-profile/"
+    'problemFocusedImage': "problem-focused-strategies/",
+    'healthyLifestyleImage': "healthy-lifestyle/",
+    'educationResourcesImage': "education-resources/",
+    'categoryImage': "category/",
+    
 }
 
 module.exports =  (fileType, fileSize, filePath) => {

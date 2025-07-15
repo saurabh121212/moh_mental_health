@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { AdminModel, MSMEBusinessModel} = require('../models');
+const { AdminModel, UserModel} = require('../models');
 
 
 
@@ -13,7 +13,7 @@ module.exports.authUser = async (req, res, next) => {
 
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await MSMEBusinessModel.findByPk(decodedToken.id);
+        const user = await UserModel.findByPk(decodedToken.id);
         if(!user){
             return res.status(401).json({error: 'Unauthorized Token '});
         }

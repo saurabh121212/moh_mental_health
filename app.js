@@ -43,6 +43,9 @@ const UserRouter = require('./routers/user.js');
 const AdminRouter = require('./routers/admin.js');
 const MoodRouter = require('./routers/mood.js');
 const HospitalRouter = require('./routers/hospital.js');
+const FeedbackRouter = require('./routers/feedback.js');
+const UploadFilesRouter = require('./routers/upload-files.js');
+const SelfAssessmentTestRouter = require('./routers/selfAssessmentTest.js');
 
 
 app.use('/api/faq', FAQsRouter);
@@ -57,6 +60,9 @@ app.use('/api/user', UserRouter);
 app.use('/api/admin', AdminRouter);
 app.use('/api/mood', MoodRouter);
 app.use('/api/hospital', HospitalRouter);
+app.use('/api/feedback', FeedbackRouter);
+app.use('/api/upload', UploadFilesRouter);
+app.use('/api/self-assessment-test', SelfAssessmentTestRouter);
 
 // Database connection
 const db = require('./db/database.js')(eventEmitter);

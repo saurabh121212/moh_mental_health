@@ -42,6 +42,8 @@ db.SupportResourcesModel.belongsTo(db.CategoryModel, { foreignKey: 'category_id'
 db.UserModel.hasMany(db.MoodModel, { foreignKey: 'user_id' });
 db.MoodModel.belongsTo(db.UserModel, { foreignKey: 'user_id' });
 
+db.UserModel.hasMany(db.SelfAssessmentTestModel, { foreignKey: 'user_id' });
+db.SelfAssessmentTestModel.belongsTo(db.UserModel, { foreignKey: 'user_id' });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
