@@ -22,7 +22,6 @@ router.post('/register',[
     body('device_token').isLength({ min: 3, max: 400 }).withMessage('Device Token must be between 3 and 400 characters long'),
 ], userController.registerUser);
 
-
 // This is used to login a user
 // It will return a JWT token if the user is authenticated successfully
 router.post('/login',[

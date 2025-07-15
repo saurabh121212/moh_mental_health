@@ -86,7 +86,6 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
-
         gender: {
             type: DataTypes.STRING(20),
             allowNull: true, // or false if required
@@ -167,7 +166,6 @@ module.exports = (sequelize, DataTypes) => {
     Model.hashPassword = async function (password) {
         return await bcrypt.hash(password, 10);
     };
-
-
+    
     return Model;
 };

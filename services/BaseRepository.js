@@ -15,6 +15,7 @@ module.exports = {
   baseCount: count,
   baseDashboardCount: dashboardCount,
   baseFindById: findById,
+  baseFindById2Keys: findById2Keys,
   baseFindAllById: findAllById,
   baseGalleryList: GalleryList,
 };
@@ -63,6 +64,18 @@ function findById(modal, params, key) {
     }
   });
 }
+
+
+function findById2Keys(modal, params1, params2, key1, key2) {
+  return modal.findOne({
+    where: {
+      [key1]: params1,
+      [key2]: params2
+    }
+  });
+}
+
+ 
 
 function findAllById(modal, params, key) {
   return modal.findAll({
