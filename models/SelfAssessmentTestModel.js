@@ -364,6 +364,17 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE'
         },
 
+         system_generated_name: {
+            type: DataTypes.STRING(100),
+            allowNull: true, // or false if required
+            validate: {
+                len: {
+                    args: [3, 100],
+                    msg: 'System Generated Name must be between 3 and 100 characters long'
+                }
+            }
+        },
+
     }, {
         paranoid: true,
         timestamps: true,

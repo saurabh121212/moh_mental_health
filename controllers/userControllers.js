@@ -209,25 +209,6 @@ module.exports.forgetPassword = async (req, res, next) => {
 }
 
 
-module.exports.add = async (req, res, next) => {
-
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-        return res.status(400).json({ error: error.array() });
-    }
-    const payload = req.body;
-    try {
-        const data = await BaseRepo.baseCreate(FAQModel, payload);
-        if (!data) {
-            return res.status(400).json({ error: 'Error creating FAQs' });
-        }
-        res.status(201).json(data);
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal server error' });
-    }
-}
 
 
 module.exports.get = async (req, res, next) => {
@@ -242,40 +223,12 @@ module.exports.get = async (req, res, next) => {
         offset: offset,
         page: page,
         order: [["id", "DESC"]],
+        attributes : ['id','alias_name', 'system_generated_name','gender', 'region', 'address', 'clinic', 'cadre']
     }
     try {
-        const data = await BaseRepo.baseList(FAQModel, params);
+        const data = await BaseRepo.baseList(UserModel, params);
         if (!data) {
-            return res.status(400).json({ error: 'Error fetching FAQs' });
-        }
-        res.status(201).json(data);
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
-
-
-module.exports.getMobile = async (req, res, next) => {
-
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
-
-    const params = {
-        searchParams: {},
-        limit: limit,
-        offset: offset,
-        page: page,
-        order: [["id", "DESC"]],
-    }
-
-    try {
-        const data = await BaseRepo.baseList(FAQModel, params);
-        if (!data) {
-            return res.status(400).json({ error: 'Error fetching FAQs' });
+            return res.status(400).json({ error: 'Error fetching Users' });
         }
         res.status(201).json(data);
     }

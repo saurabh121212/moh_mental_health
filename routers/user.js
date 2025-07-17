@@ -42,7 +42,7 @@ router.put('/forget_password/:email',[
 ],userController.forgetPassword);
 
 
-// This is used to update FAQs in the database
+// This is used to update Users in the database
 router.put('/update/:id',[
     body('first_name').isLength({ min: 3, max: 25 }).withMessage('First Name must be between 3 and 25 characters long'),
     body('last_name').isLength({ min: 3, max: 15 }).withMessage('Last Name must be between 3 and 15 characters long'),
@@ -63,13 +63,12 @@ router.put('/update/:id',[
     body('device_token').isLength({ min: 3, max: 400 }).withMessage('Device Token must be between 3 and 400 characters long'),
 ] , userController.update);
 
-// This is used in Mobile app to get the list of FAQs
-router.get('/list-mobile', userController.getMobile);
 
-// This is used in Admin panel to get the list of FAQs
+// This is used in Admin panel to get the list of Users
 router.get('/list', userController.get);
 
-// This is used to delete FAQs from the database
+// This is used to delete Users from the database
 router.put('/delete/:id', userController.delete);
+
 
 module.exports = router;

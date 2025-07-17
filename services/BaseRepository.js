@@ -133,7 +133,6 @@ async function list(modal, params) {
   const query = {
     where: params.searchParams || params.where || {}
   }
-  console.log("WHERE clause 1:", query.where);
 
   if (params.hasOwnProperty('attributes')) {
     query['attributes'] = params.attributes;
@@ -184,6 +183,9 @@ async function list(modal, params) {
     }
   }
 }
+
+
+
 
 
 function update(modal, params, data) {

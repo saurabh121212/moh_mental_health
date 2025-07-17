@@ -42,6 +42,7 @@ router.post('/add',[
     body('test_score'),
     body('test_overall_result'),
     body('user_id').notEmpty().withMessage('User ID is required'),
+    body('system_generated_name').notEmpty().withMessage('System generated name is required'),
 ], authMiddleware.authUser, SelfAssessmentTestController.add);
 
 

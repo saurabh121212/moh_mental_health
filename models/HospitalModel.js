@@ -85,6 +85,14 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
+        lat: {
+            type: DataTypes.FLOAT,
+            allowNull: true, // or false if required
+        },
+        lng: {
+            type: DataTypes.FLOAT,
+            allowNull: true, // or false if required
+        },
         token: {
             type: DataTypes.STRING(100),
             allowNull: true // or false if required
@@ -98,12 +106,11 @@ module.exports = (sequelize, DataTypes) => {
         paranoid: true,
         timestamps: true,
         tableName: 'hospitals', // Optional: useful for clarity and pluralization control
-    });
+        });
 
          Model.prototype.generateAuthToken = function () {
             return jwt.sign({ id: this.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         };
-    
     
         Model.prototype.comparePassword = async function (password) {
             return  bcrypt.compare(password, this.password);
@@ -112,6 +119,6 @@ module.exports = (sequelize, DataTypes) => {
         Model.hashPassword = async function (password) {
             return await bcrypt.hash(password, 10);
         };
-    
+
     return Model;
 };

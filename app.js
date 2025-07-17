@@ -47,6 +47,8 @@ const FeedbackRouter = require('./routers/feedback.js');
 const UploadFilesRouter = require('./routers/upload-files.js');
 const SelfAssessmentTestRouter = require('./routers/selfAssessmentTest.js');
 const UserMOHSystemRouter = require('./routers/userMOHSystem.js');
+const AppointmentRouter = require('./routers/appointment.js');
+const CadresRouter = require('./routers/cadres.js');
 
 
 app.use('/api/faq', FAQsRouter);
@@ -65,6 +67,8 @@ app.use('/api/feedback', FeedbackRouter);
 app.use('/api/upload', UploadFilesRouter);
 app.use('/api/self-assessment-test', SelfAssessmentTestRouter);
 app.use('/api/user-moh-system', UserMOHSystemRouter);
+app.use('/api/appointment', AppointmentRouter);
+app.use('/api/cadres', CadresRouter);
 
 // Database connection
 const db = require('./db/database.js')(eventEmitter);
