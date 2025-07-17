@@ -64,7 +64,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false, // or false if required
         },
-
+      category_url: {
+            type: DataTypes.STRING(600),
+            allowNull: true,
+        },
     }, {
         paranoid: true,
         timestamps: true,

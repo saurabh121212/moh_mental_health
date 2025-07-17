@@ -27,7 +27,8 @@ router.post('/add',[
     .withMessage('Phone number max 20 characters long'),
 
     body('category_id'),
-    body('category_name')  
+    body('category_name'),  
+    body('category_url')
 ], authMiddleware.authAdmin, EmergencyResourcesController.add);
 
 // This is used to update Emergency Resources in the database
@@ -50,8 +51,9 @@ router.put('/update/:id',[
     .withMessage('Phone number max 20 characters long'),
 
     body('category_id'),
-    body('category_name')  
-   
+    body('category_name'),  
+    body('category_url')
+
 ] ,authMiddleware.authAdmin, EmergencyResourcesController.update);
 
 // This is used in Mobile app to get the list of Emergency Resources

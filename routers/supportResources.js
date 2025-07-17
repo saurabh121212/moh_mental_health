@@ -33,7 +33,9 @@ router.post('/add',[
     .withMessage('Operating hours max 150 characters long'),
 
     body('category_id'),
-    body('category_name')  
+    body('category_name'),
+    body('category_url')
+  
 ], authMiddleware.authAdmin, SupportResourcesController.add);
 
 // This is used to update Emergency Resources in the database
@@ -64,7 +66,8 @@ router.put('/update/:id',[
     .withMessage('Operating hours max 150 characters long'),
 
     body('category_id'),
-    body('category_name')  
+    body('category_name'),
+    body('category_url')
 ] , authMiddleware.authAdmin, SupportResourcesController.update);
 
 // This is used in Mobile app to get the list of Emergency Resources
