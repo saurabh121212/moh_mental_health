@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {body} = require('express-validator');
 const userController = require('../controllers/userControllers');
+const authMiddleware = require('../middleware/auth.middleware');
 
 // This is used to register a new Mobile user
 router.post('/register',[
@@ -41,6 +42,9 @@ router.put('/forget_password/:email',[
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characters long'),
 ],userController.forgetPassword);
 
+
+// This is used to get the details of a specific User
+router.get('/get-user-detail/:id', authMiddleware.authUser, userController.getUserDetails);
 
 // This is used to update Users in the database
 router.put('/update/:id',[

@@ -217,6 +217,48 @@ module.exports.forgetPassword = async (req, res, next) => {
 
 
 
+module.exports.getUserDetails = async (req, res, next) => {
+
+    const userId = req.params.id;
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    try {
+        const user = await BaseRepo.baseFindById(UserModel, userId, "id");
+        if (!user) {
+            return res.status(400).json({ error: 'Error fetching User Details' });
+        }
+
+        const first_name = decrypt(user.dataValues.first_name, user.dataValues.first_name_iv, user.dataValues.first_name_auth_tag);
+        const last_name = decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag);
+        const phone = decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag);
+        const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+        const national_id = decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag);
+        const ENC_number = decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag);
+
+        res.status(200).json({
+            message: 'User Details fetched successfully',
+            data: {
+                first_name, last_name, phone, email: emailId, national_id, ENC_number,
+                alias_name: user.dataValues.alias_name,
+                system_generated_name: user.dataValues.system_generated_name,
+                gender: user.dataValues.gender,
+                region: user.dataValues.region,
+                address: user.dataValues.address,
+                clinic: user.dataValues.clinic,
+                cadre: user.dataValues.cadre,
+            }
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
 
 module.exports.get = async (req, res, next) => {
 
