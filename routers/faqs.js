@@ -8,23 +8,23 @@ const authMiddleware = require('../middleware/auth.middleware');
 // It requires the user to be authenticated as an admin
 router.post('/add',[
     body('question')
-    .isLength({ min: 3, max: 400 })
-    .withMessage('Question must be between 3 and 500 characters long'),
+    .isLength({ min: 3, max: 200 })
+    .withMessage('Question must be between 3 and 200 characters long'),
 
     body('answer')
-    .isLength({ min: 3, max: 1200 })
-    .withMessage('Question must be between 3 and 1200 characters long'),
+    .isLength({ min: 3, max: 600 })
+    .withMessage('Question must be between 3 and 600 characters long'),
 ], authMiddleware.authAdmin, FAQsController.add);
 
 // This is used to update FAQs in the database
 router.put('/update/:id',[
     body('question')
-    .isLength({ min: 3, max: 400 })
-    .withMessage('Question must be between 3 and 500 characters long'),
+    .isLength({ min: 3, max: 200 })
+    .withMessage('Question must be between 3 and 200 characters long'),
 
     body('answer')
-    .isLength({ min: 3, max: 1200 })
-    .withMessage('Question must be between 3 and 1200 characters long'),
+    .isLength({ min: 3, max: 600 })
+    .withMessage('Question must be between 3 and 600 characters long'),
 ] , authMiddleware.authAdmin, FAQsController.update);
 
 // This is used in Mobile app to get the list of FAQs

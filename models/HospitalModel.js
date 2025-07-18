@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         address: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(80),
             allowNull: true, // or false if required
             validate: {
                 len: {
-                    args: [0, 50], // min 3 chars, max 500 (optional)
-                    msg: 'Address must be at most 50 characters long'
+                    args: [0, 80], // min 3 chars, max 500 (optional)
+                    msg: 'Address must be at most 80 characters long'
                 }
             }
         },

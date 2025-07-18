@@ -16,8 +16,8 @@ router.post('/add', [
         .withMessage('services max 100 characters long'),
 
     body('address')
-        .isLength({ min: 0, max: 50 })
-        .withMessage('services max 50 characters long'),
+        .isLength({ min: 0, max: 80 })
+        .withMessage('services max 80 characters long'),
 
     body('phone_number')
         .isLength({ min: 0, max: 8 })
@@ -52,8 +52,8 @@ router.put('/update/:id', [
         .withMessage('services max 100 characters long'),
 
     body('address')
-        .isLength({ min: 0, max: 50 })
-        .withMessage('services max 50 characters long'),
+        .isLength({ min: 0, max: 80 })
+        .withMessage('services max 80 characters long'),
 
     body('phone_number')
         .isLength({ min: 0, max: 8 })
