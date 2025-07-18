@@ -13,11 +13,16 @@ module.exports = {
   baseDelete: deleteEntry,
   baseRestore: baseRestore,
   baseCount: count,
-  baseDashboardCount: dashboardCount,
   baseFindById: findById,
   baseFindById2Keys: findById2Keys,
   baseFindAllById: findAllById,
   baseGalleryList: GalleryList,
+  baseGetDashboardTotalUserRegionWise: getDashboardTotalUserRegionWise,
+  baseGetDashboardMaleFemaleUserRegionWise: getDashboardMaleFemaleUserRegionWise,
+  baseGetDashboardTotalUserSelfAssessmentTestWise: getDashboardTotalUserSelfAssessmentTestWise,
+  baseGetDashboardMaleUserSelfAssessmentTestWise: getDashboardMaleUserSelfAssessmentTestWise,
+  baseGetDashboardFemaleUserSelfAssessmentTestWise: getDashboardFemaleUserSelfAssessmentTestWise,
+  baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise 
 };
 
 function create(modal, data) {
@@ -32,29 +37,13 @@ function count(modal, searchParams) {
   return modal.count({ where: searchParams });
 }
 
-function count(modal, searchParams) {
-  return modal.count({ 
-    where: searchParams 
+// function count(modal, searchParams) {
+//   return modal.count({ 
+//     where: searchParams 
 
-  });
-}
+//   });
+// }
 
-
-function dashboardCount(modal, key, value, year) {
-  const conditions = {
-    [key]: value,
-  };
-
-  if (year && year.toString().toLowerCase() !== 'all') {
-    conditions[Op.and] = [
-      where(fn('YEAR', col('createdAt')), year)
-    ];
-  }
-
-  return modal.count({
-    where: conditions
-  });
-}
 
 
 function findById(modal, params, key) {
@@ -215,3 +204,138 @@ function baseRestore(modal, searchParams) {
   return modal.restore({ where: searchParams });
 }
 
+
+
+async function getDashboardTotalUserRegionWise(modal) {
+  try {
+    const usersByRegion = await modal.findAll({
+      attributes: [
+        'region',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      group: ['region'],
+      order: [[fn('COUNT', col('*')), 'DESC']] // optional: sort by count
+    });
+
+    return usersByRegion
+
+  } catch (error) {
+    console.error('Error fetching Users by Regions data:', error);
+    throw error;
+  }
+}
+
+
+
+async function getDashboardMaleFemaleUserRegionWise(modal) {
+  try {
+    const usersByRegionAndGender = await modal.findAll({
+      attributes: [
+        'region',
+        'gender',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      group: ['region', 'gender'],
+      order: [['region', 'ASC'], ['gender', 'ASC']]
+    });
+
+    return usersByRegionAndGender;
+
+  } catch (error) {
+    console.error('Error fetching Users by Region and Gender:', error);
+    throw error;
+  }
+}
+
+
+async function getDashboardTotalUserSelfAssessmentTestWise(modal) {
+  try {
+    const usersBySelfAssessment = await modal.findAll({
+      attributes: [
+        'test_overall_result',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      group: ['test_overall_result'],
+      order: [[fn('COUNT', col('*')), 'DESC']] // optional: sort by count
+    });
+
+    return usersBySelfAssessment
+
+  } catch (error) {
+    console.error('Error fetching Users by Regions data:', error);
+    throw error;
+  }
+}
+
+
+
+async function getDashboardMaleUserSelfAssessmentTestWise(SelfAssessment, User) {
+  try {
+    const usersBySelfAssessment = await SelfAssessment.findAll({
+      attributes: [
+        'test_overall_result',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      include: [{
+        model: User,
+        attributes: [], // We only need it for filtering
+        where: { gender: 'Male' }
+      }],
+      group: ['test_overall_result'],
+      order: [[fn('COUNT', col('*')), 'DESC']]
+    });
+
+    return usersBySelfAssessment;
+
+  } catch (error) {
+    console.error('Error fetching self-assessment data by gender:', error);
+    throw error;
+  }
+}
+
+
+
+async function getDashboardFemaleUserSelfAssessmentTestWise(SelfAssessment, User) {
+  try {
+    const usersBySelfAssessment = await SelfAssessment.findAll({
+      attributes: [
+        'test_overall_result',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      include: [{
+        model: User,
+        attributes: [], // We only need it for filtering
+        where: { gender: 'Female' }
+      }],
+      group: ['test_overall_result'],
+      order: [[fn('COUNT', col('*')), 'DESC']]
+    });
+
+    return usersBySelfAssessment;
+
+  } catch (error) {
+    console.error('Error fetching self-assessment data by gender:', error);
+    throw error;
+  }
+}
+
+
+
+async function getDashboardTotalUserAppointmentStatusWise(modal) {
+  try {
+    const usersByAppointment = await modal.findAll({
+      attributes: [
+        'appointment_status',
+        [fn('COUNT', col('*')), 'user_count']
+      ],
+      group: ['appointment_status'],
+      order: [[fn('COUNT', col('*')), 'DESC']] // optional: sort by count
+    });
+
+    return usersByAppointment
+
+  } catch (error) {
+    console.error('Error fetching Users by Appointments data:', error);
+    throw error;
+  }
+}

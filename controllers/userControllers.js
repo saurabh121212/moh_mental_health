@@ -17,6 +17,13 @@ module.exports.registerUser = async (req, res, next) => {
     // converting string password to hash password
     const hashedPassword = await UserModel.hashPassword(payload.password.toString());
 
+    // Check if the user already exists
+    const loginKey1 = encryptEmailForLogin(payload.email, process.env.ENCRYPTION_KEY);
+    const existingUser = await UserModel.findOne({ where: { email_login_key: loginKey1 } });
+    if (existingUser) {
+        return res.status(400).json({ error: 'User already exists With this Email ID' });
+    }
+
 
     // Encrypt sensitive data
     const encFirstName = encrypt(payload.first_name);

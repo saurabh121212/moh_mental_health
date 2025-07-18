@@ -349,7 +349,7 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         test_overall_result: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(40),
             allowNull: false, // or false if required      
         },
 

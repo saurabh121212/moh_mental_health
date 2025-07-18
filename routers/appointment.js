@@ -12,7 +12,7 @@ router.post('/add',[
     body('hospital_id').notEmpty().withMessage('Hospital ID is required'),
     body('hospital_name').notEmpty().withMessage('Hospital name is required'),
     body('user_id').notEmpty().withMessage('Nurse is required'),
-    body('appointment_status').notEmpty().withMessage('Appointment status must be one of the following: scheduled, confirmed, completed, cancelled')
+    body('appointment_status').isIn(['scheduled', 'confirmed', 'completed', 'cancelled']).withMessage('Appointment status must be one of the following: scheduled, confirmed, completed, cancelled'),    
 ], authMiddleware.authUser, AppointmentController.add);
 
 // This is used in Mobile app to get the list of Moods 
@@ -20,8 +20,5 @@ router.get('/list-mobile/:id', authMiddleware.authUser, AppointmentController.ge
 
 // This is used in Admin panel to get the list of Moods 
 router.get('/list', authMiddleware.authAdmin, AppointmentController.get);
-
-
-
 
 module.exports = router;

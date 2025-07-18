@@ -40,7 +40,7 @@ router.post('/add',[
     body('unhealthy_eating_habits').notEmpty().withMessage('Unhealthy eating habits must be 1,2,3. 1 is for Always, 2 is for No, 3 is for Sometimes '),
     body('section_3_score'),
     body('test_score'),
-    body('test_overall_result'),
+    body('test_overall_result').isIn(['Mild', 'Moderate', 'Severe', 'Mental Health Emergency']).withMessage('Test overall result must be one of the following: Mild, Moderate, Severe, Mental Health Emergency'),
     body('user_id').notEmpty().withMessage('User ID is required'),
     body('system_generated_name').notEmpty().withMessage('System generated name is required'),
 ], authMiddleware.authUser, SelfAssessmentTestController.add);

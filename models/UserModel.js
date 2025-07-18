@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         last_name_auth_tag: DataTypes.STRING,
 
         phone: {
-            type: DataTypes.STRING(15),
+            type: DataTypes.STRING(30),
             allowNull: true, // or false if required
         },
 
@@ -45,14 +45,14 @@ module.exports = (sequelize, DataTypes) => {
         email_auth_tag: DataTypes.STRING,
 
         national_id: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(30),
             allowNull: true, // or false if required
         },
         national_id_iv: DataTypes.STRING,        
         national_id_auth_tag: DataTypes.STRING,
 
         ENC_number: {
-            type: DataTypes.STRING(10),
+            type: DataTypes.STRING(30),
             allowNull: true, // or false if required
         },
 
@@ -155,7 +155,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
     Model.prototype.generateAuthToken = function () {
-        return jwt.sign({ id: this.id }, process.env.JWT_SECRET, { expiresIn: '300h' });
+        return jwt.sign({ id: this.id }, process.env.JWT_SECRET_USER, { expiresIn: '300h' });
     };
 
 

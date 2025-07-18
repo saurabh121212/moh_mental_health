@@ -4,6 +4,7 @@ const {body} = require('express-validator');
 const CategoryController = require('../controllers/categoryControllers');
 const authMiddleware = require('../middleware/auth.middleware');
 
+
 // This is user to add Category to the database
 // It validates the input data and then calls the controller to add the data
 router.post('/add',[
