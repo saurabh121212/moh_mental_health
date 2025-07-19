@@ -165,7 +165,7 @@ const passwordResetOTPSend = (payload, email) =>
     <b>Dear User,</b> <br>
     <p>We received a request to reset the password for your account.</p> 
     <p>Your One-Time Password (OTP) is:</p>
-    ${payload.otp}
+    ${payload}
     <p>This OTP is valid for 10 minutes. Please do not share this code with anyone.</p>
     <p>If you did not request this, please ignore this email.</p>
 

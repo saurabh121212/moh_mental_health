@@ -81,5 +81,31 @@ module.exports.getMobile = async (req, res, next) => {
 }
 
 
+module.exports.acceptRejectAppointment = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+
+    const payload = req.body;
+    const id = req.params.id;
+
+    try {
+        const data = await BaseRepo.baseUpdate(AppointmentModel, { id }, payload);
+        if (!data) {
+            return res.status(400).json({ error: 'Error updating Appointment' });
+        }
+        res.status(201).json({
+            message: 'Appointment updated successfully',
+            data: data
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 
 

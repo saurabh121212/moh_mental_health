@@ -107,6 +107,7 @@ router.put('/accept-reject-appointment/:id',
         .withMessage('Appointment status must be one of the following: confirmed, cancelled'),
     authMiddleware.authHospital, HospitalController.acceptRejectAppointment);
 
+    
 // This is used when a hospital reject an appointment and add comments
 router.put('/reject-appointment-comments/:id',
     body('hospital_comments').optional().isLength({ max: 300 }).withMessage('Hospital comments must be at most 300 characters long'),
