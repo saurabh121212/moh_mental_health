@@ -114,4 +114,13 @@ router.put('/reject-appointment-comments/:id',
     authMiddleware.authHospital, HospitalController.rejectAppointment);
 
 
+//hospital All Confirmed Appointment routes
+router.get('/hospital-all-confirmed-appointments/:id', authMiddleware.authHospital, HospitalController.hospitalAllConfirmedAppointments);
+
+
+//hospital All Rejected Appointment routes
+router.get('/hospital-all-rejected-appointments/:id', authMiddleware.authHospital, HospitalController.hospitalAllRejectedAppointments);
+
+
+
 module.exports = router;

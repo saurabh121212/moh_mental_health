@@ -30,7 +30,7 @@ router.put('/completed-appointment/:id',
 
 
 // This is used for Finding the Upcoming appointments
-router.get('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
+router.post('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
 
 
 module.exports = router;

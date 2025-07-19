@@ -325,3 +325,66 @@ module.exports.rejectAppointment = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+
+
+module.exports.hospitalAllConfirmedAppointments = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const hospitalId = req.params.id;
+
+    console.log("Hospital ID:", hospitalId);
+
+    const params = {
+        searchParams: { "hospital_id": hospitalId , "appointment_status": "confirmed" },
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
+    }
+    try {
+        const data = await BaseRepo.baseList(AppointmentModel, params);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Appointments' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+module.exports.hospitalAllRejectedAppointments = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const hospitalId = req.params.id;
+
+    console.log("Hospital ID:", hospitalId);
+
+    const params = {
+        searchParams: {"hospital_id": hospitalId , "appointment_status": "cancelled" },
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
+    }
+    try {
+        const data = await BaseRepo.baseList(AppointmentModel, params);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Appointments' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
