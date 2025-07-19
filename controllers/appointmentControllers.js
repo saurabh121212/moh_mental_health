@@ -59,6 +59,11 @@ module.exports.getMobile = async (req, res, next) => {
     const offset = (page - 1) * limit;
     const userId = req.params.id;
 
+    // Validate userId
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
     const params = {
         searchParams: {user_id: userId},
         limit: limit,
@@ -108,4 +113,27 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
 }
 
 
+module.exports.upcomingAppointments = async (req, res, next) => {
 
+    const userId = req.body.id;
+    const date = req.body.date;
+    const time = req.body.time;
+
+    console.log("Upcoming Appointments for User ID:", userId, "Date:", date, "Time:", time);
+    // Validate userId
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    try {
+        const data = await BaseRepo.baseGetUpcomingAppointmentsFromUserDateTime( AppointmentModel, userId, date, time);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Appointment data' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}

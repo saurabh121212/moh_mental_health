@@ -2,6 +2,7 @@ const { Sequelize, QueryTypes } = require('sequelize');
 const Op = Sequelize.Op;
 const { fn, col, literal,where,where: sequelizeWhere } = require('sequelize');
 const db = require('../models/index');
+const moment = require('moment');
 
 
 module.exports = {
@@ -23,7 +24,8 @@ module.exports = {
   baseGetDashboardMaleUserSelfAssessmentTestWise: getDashboardMaleUserSelfAssessmentTestWise,
   baseGetDashboardFemaleUserSelfAssessmentTestWise: getDashboardFemaleUserSelfAssessmentTestWise,
   baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise,
-  baseGetMoodCountsByUser: getMoodCountsByUser 
+  baseGetMoodCountsByUser: getMoodCountsByUser,
+  baseGetUpcomingAppointmentsFromUserDateTime: getUpcomingAppointmentsFromUserDateTime 
 };
 
 function create(modal, data) {
@@ -369,4 +371,40 @@ async function getMoodCountsByUser(Model, userId) {
   });
 
   return result;
+};
+
+
+async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr){
+  // Convert user input to usable formats
+  const userDate = moment(userDateStr, 'DD-MM-YYYY');
+  const userTime = moment(userTimeStr, 'HH:mm'); // 24-hour format like 16:00
+
+  const appointments = await Model.findAll({
+    where: {
+      user_id: userId,
+      appointment_date: {
+        [Op.gte]: userDate.startOf('day').toDate()
+      },
+      appointment_status: {
+        [Op.in]: ['scheduled', 'confirmed']
+      }
+    },
+    order: [['appointment_date', 'ASC'], ['createdAt', 'ASC']]
+  });
+
+  // Filter logic
+  const filteredAppointments = appointments.filter(app => {
+    const appointmentDate = moment(app.appointment_date).startOf('day');
+    const [startTimeStr] = app.appointment_time.split(' to ');
+    const appointmentTime = moment(startTimeStr, 'hh:mm A'); // e.g., "03:00 PM"
+
+    if (appointmentDate.isAfter(userDate)) {
+      return true;
+    } else if (appointmentDate.isSame(userDate, 'day')) {
+      return appointmentTime.isAfter(userTime);
+    }
+    return false;
+  });
+
+  return filteredAppointments;
 };

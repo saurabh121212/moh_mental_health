@@ -21,11 +21,16 @@ router.get('/list-mobile/:id', authMiddleware.authUser, AppointmentController.ge
 // This is used in Admin panel to get the list of Moods 
 router.get('/list', authMiddleware.authAdmin, AppointmentController.get);
 
-// This is used for accepting, rejecting an appointment
+// This is used for Completing an appointment
 router.put('/completed-appointment/:id',
     body('appointment_status')
         .isIn(['completed'])
         .withMessage('Appointment status must be completed only'),
     authMiddleware.authUser, AppointmentController.acceptRejectAppointment);
+
+
+// This is used for Finding the Upcoming appointments
+router.get('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
+
 
 module.exports = router;
