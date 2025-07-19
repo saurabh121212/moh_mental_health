@@ -157,6 +157,7 @@ module.exports.loginUser = async (req, res, next) => {
             address: user.dataValues.address,
             clinic: user.dataValues.clinic,
             cadre: user.dataValues.cadre,
+            id: user.dataValues.id,
         }, token });
 };
 

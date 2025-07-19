@@ -26,7 +26,7 @@ router.put('/update/:id',[
 router.get('/list',authMiddleware.authAdmin, CadresController.get);
 
 // This is used in Mobile app to get the list of Cadres
-router.get('/list-mobile', authMiddleware.authUser, CadresController.getMobile);
+router.get('/list-mobile', CadresController.getMobile);
 
 // This is used to delete Cadres from the database
 router.put('/delete/:id', authMiddleware.authAdmin, CadresController.delete);
