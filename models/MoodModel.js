@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 10], 
-                    msg: 'Answer must be at least 3 characters long and at most 10 characters long'
+                    args: [1, 10], 
+                    msg: 'Mood Code must be at least 1,2,3'
                 }
             }
         },

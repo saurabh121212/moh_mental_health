@@ -22,7 +22,8 @@ module.exports = {
   baseGetDashboardTotalUserSelfAssessmentTestWise: getDashboardTotalUserSelfAssessmentTestWise,
   baseGetDashboardMaleUserSelfAssessmentTestWise: getDashboardMaleUserSelfAssessmentTestWise,
   baseGetDashboardFemaleUserSelfAssessmentTestWise: getDashboardFemaleUserSelfAssessmentTestWise,
-  baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise 
+  baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise,
+  baseGetMoodCountsByUser: getMoodCountsByUser 
 };
 
 function create(modal, data) {
@@ -339,3 +340,33 @@ async function getDashboardTotalUserAppointmentStatusWise(modal) {
     throw error;
   }
 }
+
+
+async function getMoodCountsByUser(Model, userId) {
+  const moodCounts = await Model.findAll({
+    where: { user_id: userId },
+    attributes: [
+      'mood_code',
+      [Sequelize.fn('COUNT', Sequelize.col('mood_code')), 'count']
+    ],
+    group: ['mood_code']
+  });
+
+  // Convert results to a cleaner object
+  const result = {
+    happy: 0,
+    neutral: 0,
+    sad: 0
+  };
+
+  moodCounts.forEach(item => {
+    const code = item.getDataValue('mood_code');
+    const count = parseInt(item.getDataValue('count'));
+
+    if (code === '1') result.happy = count;
+    else if (code === '2') result.neutral = count;
+    else if (code === '3') result.sad = count;
+  });
+
+  return result;
+};

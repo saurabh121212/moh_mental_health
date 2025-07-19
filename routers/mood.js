@@ -11,9 +11,9 @@ router.post('/add',[
     .isLength({ min: 3, max: 400 })
     .withMessage('Mood Name must be between 3 and 500 characters long'),
 
-    body('mood_code').isEmpty().withMessage('Mood Code is required. It must be between 1,2,3'),
+    body('mood_code').notEmpty().withMessage('Mood Code is required. It must be 1,2,3'),
 
-    body('user_id').isEmpty().withMessage('User ID must be a number')
+    body('user_id').notEmpty().withMessage('User ID is required. It must be a valid user ID'),
 ], authMiddleware.authUser, MoodController.add);
 
 
@@ -23,6 +23,8 @@ router.get('/list-mobile', authMiddleware.authUser, MoodController.getMobile);
 // This is used in Admin panel to get the list of Moods 
 router.get('/list', authMiddleware.authAdmin, MoodController.get);
 
+
+router.get('/mood-statistics/:id', authMiddleware.authUser, MoodController.getMoodStatistics);
 
 
 
