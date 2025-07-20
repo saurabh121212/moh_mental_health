@@ -179,7 +179,7 @@ module.exports.sendOTPForgetPassword = async (req, res, next) => {
      res.status(201).json({message: 'OTP sent successfully to your email'});
     }
     // write send otp code here on email Id
-    res.status(201).json({message: 'Invalid Email ID'});
+    res.status(201).json({message: 'This email is not registered with us'});
 }
     catch(err){
         console.log(err);

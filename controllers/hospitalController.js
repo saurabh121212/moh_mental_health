@@ -358,8 +358,6 @@ module.exports.hospitalAllConfirmedAppointments = async (req, res, next) => {
     }
 }
 
-
-
 module.exports.hospitalAllRejectedAppointments = async (req, res, next) => {
 
     const page = parseInt(req.query.page) || 1;
