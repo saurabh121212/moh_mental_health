@@ -2,6 +2,8 @@ const BaseRepo = require('../services/BaseRepository');
 const { HospitalModel, AppointmentModel, UserModel,SelfAssessmentTestModel } = require('../models');
 const { validationResult } = require('express-validator');
 const { decrypt } = require('../utils/crypto');
+const crypto = require('crypto');
+const sendEmail = require('../mailer/mailerFile');
 
 
 module.exports.add = async (req, res, next) => {
@@ -18,7 +20,9 @@ module.exports.add = async (req, res, next) => {
     }
 
     // Create hash password
-    req.body.password = await HospitalModel.hashPassword(req.body.password);
+    const password = generatePassword(12);
+    console.log("Generated Password:", password);
+    req.body.password = await HospitalModel.hashPassword(password);
 
     const payload = req.body;
     try {
@@ -26,6 +30,12 @@ module.exports.add = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error creating Hospital' });
         }
+
+        console.log("data", payload.data);
+
+        // Send email with password
+       // sendEmail(payload.data, 4, email);
+
         res.status(201).json(data);
     }
     catch (error) {
@@ -385,4 +395,13 @@ module.exports.hospitalAllRejectedAppointments = async (req, res, next) => {
         console.error(error);
         return res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+
+function generatePassword(length = 12) {
+    return crypto
+        .randomBytes(length)
+        .toString('base64')
+        .slice(0, length)
+        .replace(/[+/]/g, 'A'); // replace special chars if needed
 }

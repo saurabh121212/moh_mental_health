@@ -34,6 +34,13 @@ async function sendEmail(payload,status,email) {
          output = emailTemplate.passwordResetOTPSend(payload);
     }
    
+
+    if(status==5)
+    {
+         subject = `Hospital Registration by MOH Administrator check your details`
+         output = emailTemplate.userApprovedEmailTemplate(payload);
+    }
+
     let transporter = nodemailer.createTransport(CONFIG.mail)
    
     message = {
