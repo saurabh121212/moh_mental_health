@@ -138,7 +138,7 @@ module.exports.loginUser = async (req, res, next) => {
     const token = await user.generateAuthToken(); // ✅ instance method
 
     // Update device information
-    await BaseRepo.baseUpdate(UserModel, {id}, {device_id,device_type,device_token});
+    await BaseRepo.baseUpdate(UserModel, { id }, { device_id, device_type, device_token });
 
     const first_name = decrypt(user.dataValues.first_name, user.dataValues.first_name_iv, user.dataValues.first_name_auth_tag);
     const last_name = decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag);
@@ -146,10 +146,12 @@ module.exports.loginUser = async (req, res, next) => {
     const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
     const national_id = decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag);
     const ENC_number = decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag);
-   
-    
-    res.status(200).json({ message: 'User logged in successfully', 
-        data: { first_name, last_name, phone, email:emailId, national_id, ENC_number,
+
+
+    res.status(200).json({
+        message: 'User logged in successfully',
+        data: {
+            first_name, last_name, phone, email: emailId, national_id, ENC_number,
             alias_name: user.dataValues.alias_name,
             system_generated_name: user.dataValues.system_generated_name,
             gender: user.dataValues.gender,
@@ -158,7 +160,8 @@ module.exports.loginUser = async (req, res, next) => {
             clinic: user.dataValues.clinic,
             cadre: user.dataValues.cadre,
             id: user.dataValues.id,
-        }, token });
+        }, token
+    });
 };
 
 
@@ -167,44 +170,44 @@ module.exports.loginUser = async (req, res, next) => {
 module.exports.sendOTPForgetPassword = async (req, res, next) => {
 
     const error = validationResult(req);
-    if(!error.isEmpty()){
-        return res.status(400).json({error: error.array()});
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
     }
-    const {email, otp} = req.body;
-    try{
-    const loginKey = encryptEmailForLogin(email, process.env.ENCRYPTION_KEY);
-    const isEmailExist = await UserModel.findOne({ where: { email_login_key: loginKey } });
-    if(isEmailExist){
-    sendEmail(otp,4,email);
-     res.status(201).json({message: 'OTP sent successfully to your email'});
+    const { email, otp } = req.body;
+    try {
+        const loginKey = encryptEmailForLogin(email, process.env.ENCRYPTION_KEY);
+        const isEmailExist = await UserModel.findOne({ where: { email_login_key: loginKey } });
+        if (isEmailExist) {
+            sendEmail(otp, 4, email);
+            res.status(201).json({ message: 'OTP sent successfully to your email' });
+        }
+        // write send otp code here on email Id
+        res.status(201).json({ message: 'This email is not registered with us' });
     }
-    // write send otp code here on email Id
-    res.status(201).json({message: 'This email is not registered with us'});
-}
-    catch(err){
+    catch (err) {
         console.log(err);
-        return res.status(500).json({error: 'Internal server error'});
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
 
 module.exports.forgetPassword = async (req, res, next) => {
     const error = validationResult(req);
-    if(!error.isEmpty()){
-        return res.status(400).json({error: error.array()});
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
     }
 
     const password = req.body.password;
     const email = req.params.email;
 
-    console.log("password",password.toString());
+    console.log("password", password.toString());
     const hashedPassword = await UserModel.hashPassword(password.toString());
 
-    console.log("hashedPassword",hashedPassword);
+    console.log("hashedPassword", hashedPassword);
     const loginKey = encryptEmailForLogin(email, process.env.ENCRYPTION_KEY);
-    const user = await BaseRepo.baseUpdate(UserModel, { email_login_key: loginKey }, { password:hashedPassword });
-    if(!user){
-        return res.status(400).json({error: 'Error Updating User Password'});
+    const user = await BaseRepo.baseUpdate(UserModel, { email_login_key: loginKey }, { password: hashedPassword });
+    if (!user) {
+        return res.status(400).json({ error: 'Error Updating User Password' });
     }
     res.status(201).json({
         message: 'updated user Password successfully',
@@ -269,14 +272,44 @@ module.exports.get = async (req, res, next) => {
         offset: offset,
         page: page,
         order: [["id", "DESC"]],
-        attributes : ['id','alias_name', 'system_generated_name','gender', 'region', 'address', 'clinic', 'cadre']
+        // attributes : ['id','alias_name', 'system_generated_name','gender', 'region', 'address', 'clinic', 'cadre']
     }
     try {
-        const data = await BaseRepo.baseList(UserModel, params);
-        if (!data) {
-            return res.status(400).json({ error: 'Error fetching Users' });
+        const result = await BaseRepo.baseList(UserModel, params);
+
+        if (!result?.values?.rows || result.values.rows.length === 0) {
+            return res.status(400).json({ error: 'No users found' });
         }
-        res.status(201).json(data);
+
+        const users = result.values.rows;
+
+        const decryptedUsers = users.map(user => {
+            return {
+                first_name: decrypt(user.dataValues.first_name, user.dataValues.first_name_iv, user.dataValues.first_name_auth_tag),
+                last_name: decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag),
+                phone: decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag),
+                email: decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag),
+                national_id: decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag),
+                ENC_number: decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag),
+                alias_name: user.dataValues.alias_name,
+                gender: user.dataValues.gender,
+                region: user.dataValues.region,
+                address: user.dataValues.address,
+                clinic: user.dataValues.clinic,
+                cadre: user.dataValues.cadre,
+            };
+        });
+
+        res.status(200).json({
+            message: 'Users fetched successfully',
+            data: decryptedUsers,
+                page: result.page,
+                limit: result.limit,
+                total_pages: result.total_pages,
+                total: result.total
+            
+        });
+
     }
     catch (error) {
         console.error(error);

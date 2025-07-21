@@ -18,6 +18,12 @@ router.post('/add', [
     body('address')
         .isLength({ min: 0, max: 80 })
         .withMessage('services max 80 characters long'),
+    body('city').optional()
+        .isLength({ min: 0, max: 80 })
+        .withMessage('City max 80 characters long'),
+    body('region').optional()
+        .isLength({ min: 0, max: 80 })
+        .withMessage('Region max 80 characters long'),
 
     body('phone_number')
         .isLength({ min: 0, max: 8 })
@@ -35,9 +41,6 @@ router.post('/add', [
         .isLength({ min: 0, max: 150 })
         .withMessage('Operating hours max 150 characters long'),
 
-    body('password')
-        .isLength({ min: 6 })
-        .withMessage('Password must be at least 6 characters long'),
 
 ], authMiddleware.authAdmin, HospitalController.add);
 
@@ -54,10 +57,18 @@ router.put('/update/:id', [
     body('address')
         .isLength({ min: 0, max: 80 })
         .withMessage('services max 80 characters long'),
+    body('city').optional()
+        .isLength({ min: 0, max: 80 })
+        .withMessage('City max 80 characters long'),
+        
+    body('region').optional()
+        .isLength({ min: 0, max: 80 })
+        .withMessage('Region max 80 characters long'),
 
     body('phone_number')
         .isLength({ min: 0, max: 8 })
         .withMessage('Phone number max 8 characters long'),
+
     body('email')
         .isEmail()
         .withMessage('Please enter a valid email'),
@@ -70,9 +81,6 @@ router.put('/update/:id', [
         .isLength({ min: 0, max: 150 })
         .withMessage('Operating hours max 150 characters long'),
 
-    body('password')
-        .isLength({ min: 6 })
-        .withMessage('Password must be at least 6 characters long'),
 ], authMiddleware.authAdmin, HospitalController.update);
 
 // This is used in Mobile app to get the list of Hospital
@@ -107,7 +115,7 @@ router.put('/accept-reject-appointment/:id',
         .withMessage('Appointment status must be one of the following: confirmed, cancelled'),
     authMiddleware.authHospital, HospitalController.acceptRejectAppointment);
 
-    
+
 // This is used when a hospital reject an appointment and add comments
 router.put('/reject-appointment-comments/:id',
     body('hospital_comments').optional().isLength({ max: 300 }).withMessage('Hospital comments must be at most 300 characters long'),

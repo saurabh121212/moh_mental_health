@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         
-       nurse_system_generated_name: {
-            type: DataTypes.STRING(100),
+       nurse_name: {
+            type: DataTypes.STRING(50),
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 100],
-                    msg: 'Nurse System Generated Name must be between 3 and 100 characters long'
+                    args: [3, 50],
+                    msg: 'Nurse Name must be between 3 and 50 characters long'
                 }
             }
         },

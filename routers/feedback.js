@@ -6,9 +6,9 @@ const authMiddleware = require('../middleware/auth.middleware');
 
 // This is used to add a new feedback
 router.post('/add',[
-    body('nurse_system_generated_name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Question must be between 3 and 100 characters long'),
+    body('nurse_name')
+    .isLength({ min: 3, max: 50 })
+    .withMessage('Nurse Name must be between 3 and 100 characters long'),
 
     body('usability_stars')
     .isLength({ min: 1, max: 5 })

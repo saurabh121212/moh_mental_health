@@ -41,6 +41,28 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        city: {
+            type: DataTypes.STRING(80),
+            allowNull: true, // or false if required
+            validate: {
+                len: {
+                    args: [0, 80], // min 3 chars, max 500 (optional)
+                    msg: 'City must be at most 80 characters long'
+                }       
+            }
+        },
+
+        region: {
+            type: DataTypes.STRING(80),
+            allowNull: true, // or false if required
+            validate: {
+                len: {
+                    args: [0, 80], // min 3 chars, max 500 (optional)
+                    msg: 'Region must be at most 80 characters long'
+                }
+            }
+        },
+
         phone_number: {
             type: DataTypes.STRING(20),
             allowNull: true, // or false if required
@@ -98,7 +120,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true // or false if required
         },
         password: {
-            type: DataTypes.STRING(200),
+            type: DataTypes.STRING(300),
             allowNull: false, // or false if required
         },
         

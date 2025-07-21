@@ -386,7 +386,7 @@ async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateSt
         [Op.gte]: userDate.startOf('day').toDate()
       },
       appointment_status: {
-        [Op.in]: ['scheduled', 'confirmed']
+        [Op.in]: ['scheduled', 'confirmed', 'cancelled'] // Include all relevant statuses
       }
     },
     order: [['appointment_date', 'ASC'], ['createdAt', 'ASC']]

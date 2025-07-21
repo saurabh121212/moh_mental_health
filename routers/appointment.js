@@ -29,7 +29,7 @@ router.put('/completed-appointment/:id',
     authMiddleware.authUser, AppointmentController.acceptRejectAppointment);
 
 
-// This is used for Finding the Upcoming appointments
+// This is used for Finding the Upcoming appointments for Mobile users
 router.post('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
 
 
