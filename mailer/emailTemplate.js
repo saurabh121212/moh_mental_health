@@ -393,8 +393,46 @@ const managerEmailTemplate = (payload) =>
    `
 
 
+   const hospitalRegisteredTemplate = (payload,password) =>
+   `<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <b>Dear ${payload.name || 'User'},</b> <br>
+        <p>We are pleased to inform you that the system administrator has registered your hospital on the MOH Platform.</p> 
+        <p>Please use the following credentials to log in and verify your hospital details:</p>
+        <ul>
+            <li><b>Username:</b> ${payload.email}</li>
+            <li><b>Password:</b> ${password}</li>
+        </ul>
+        
+        <p>If you have any questions or require further assistance, please feel free to reach out.</p>
+        <p>Welcome aboard!</p>
+        
+        <br>
+        <b>Regards,</b><br>
+        Eswatini MSME Platform Admin
+        <br><br>
+        <b>Eswatini MSME Platform Admin</b><br>
+        Email: To be added later<br>
+        Tel: +268 2403 201/6<br>
+        Fax: +268 2404 4711 / +268 2404 2959<br>
+        Cell: To be added later<br>
+        
+        <br><br><br>
+        <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
+    </body>
+    </html>
+    `
+
+
+
 
 module.exports = {
+
+    hospitalRegisteredTemplate,
+
     ragistrationEmail,
     ragistrationEmailNurse,
     resetPasswordRequest,

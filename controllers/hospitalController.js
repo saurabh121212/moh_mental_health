@@ -21,7 +21,6 @@ module.exports.add = async (req, res, next) => {
 
     // Create hash password
     const password = generatePassword(12);
-    console.log("Generated Password:", password);
     req.body.password = await HospitalModel.hashPassword(password);
 
     const payload = req.body;
@@ -31,10 +30,8 @@ module.exports.add = async (req, res, next) => {
             return res.status(400).json({ error: 'Error creating Hospital' });
         }
 
-        console.log("data", payload.data);
-
         // Send email with password
-       // sendEmail(payload.data, 4, email);
+        sendEmail(payload, 5, payload.email, password);
 
         res.status(201).json(data);
     }

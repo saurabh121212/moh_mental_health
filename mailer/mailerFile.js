@@ -8,7 +8,7 @@ const CONFIG     = require("../config/config");
     let subject;
     let output;
 
-async function sendEmail(payload,status,email) {
+async function sendEmail(payload,status,email,password) {
 
     console.log("payload",payload);
 
@@ -38,7 +38,7 @@ async function sendEmail(payload,status,email) {
     if(status==5)
     {
          subject = `Hospital Registration by MOH Administrator check your details`
-         output = emailTemplate.userApprovedEmailTemplate(payload);
+         output = emailTemplate.hospitalRegisteredTemplate(payload,password);
     }
 
     let transporter = nodemailer.createTransport(CONFIG.mail)
