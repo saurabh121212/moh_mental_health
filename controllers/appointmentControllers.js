@@ -1,6 +1,7 @@
 const BaseRepo = require('../services/BaseRepository');
 const { AppointmentModel,HospitalModel } = require('../models');
 const { validationResult } = require('express-validator');
+const sendEmail = require('../mailer/mailerFile');
 
 
 module.exports.add = async (req, res, next) => {
@@ -11,18 +12,14 @@ module.exports.add = async (req, res, next) => {
     }
     const payload = req.body;
 
-    console.log("check is_with_test value:", req.body.is_with_test);
-    // console is_with_test type
-    console.log("is_with_test type:", typeof req.body.is_with_test);
+    // console.log("check is_with_test value:", req.body.is_with_test);
+    // // console is_with_test type
+    // console.log("is_with_test type:", typeof req.body.is_with_test);
 
-    console.log("check self_assessment_test_id value:", req.body.self_assessment_test_id);
+    // console.log("check self_assessment_test_id value:", req.body.self_assessment_test_id);
 
-    if(req.body.is_with_test===false) 
-    {
-        req.body.is_with_test = true
-    }
-    else if(req.body.is_with_test===true)
-    {
+    if(req.body.is_with_test===false) req.body.is_with_test = true
+    else if(req.body.is_with_test===true){
         req.body.is_with_test = false    
         req.body.self_assessment_test_id = null
     }
@@ -32,6 +29,16 @@ module.exports.add = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error creating Appointment data' });
         }
+
+        const user = await BaseRepo.baseFindById(UserModel, req.body.user_id, "id");
+        if (!user) {
+            return res.status(400).json({ error: 'Error fetching User Details' });
+        }
+
+        const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+
+        // Send a Email to the user
+        sendEmail(payload, 3, emailId);
         res.status(201).json(data);
     }
     catch (error) {

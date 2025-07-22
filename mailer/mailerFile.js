@@ -14,35 +14,23 @@ async function sendEmail(payload,status,email,password) {
 
     if(status==1)
     {
-         subject = `Registration Request Received by Eswatini MSME Platform`
-         output = emailTemplate.ragistrationEmail(payload);
-    }
-    if(status==2)
-    {
-         subject = `Registration Request Approved by Eswatini MSME Administrator`
-         output = emailTemplate.userApprovedEmailTemplate(payload);
-    }
-    if(status==3)
-    {
-         subject = `Registration Request Update`
-         output = emailTemplate.userRejectedEmailTemplate(payload);
-    }
-
-    if(status==4)
-    {
          subject = `OTP for Password Reset`
          output = emailTemplate.passwordResetOTPSend(payload);
     }
    
-
-    if(status==5)
+    if(status==2)
     {
          subject = `Hospital Registration by MOH Administrator check your details`
          output = emailTemplate.hospitalRegisteredTemplate(payload,password);
     }
 
-    let transporter = nodemailer.createTransport(CONFIG.mail)
-   
+    if(status==3)
+    {
+         subject = `Appointment Booking Acknowledgement`
+         output = emailTemplate.appointmentBookingTemplate(payload);
+    }
+    
+    let transporter = nodemailer.createTransport(CONFIG.mail)   
     message = {
         from: CONFIG.mail_from,
         to: email,

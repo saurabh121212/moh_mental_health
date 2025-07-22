@@ -32,7 +32,7 @@ module.exports.add = async (req, res, next) => {
         }
 
         // Send email with password
-        sendEmail(payload, 5, payload.email, password);
+        sendEmail(payload, 2, payload.email, password);
 
         res.status(201).json(data);
     }
@@ -305,8 +305,6 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
-
-
 
 
 module.exports.rejectAppointment = async (req, res, next) => {

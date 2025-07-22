@@ -165,8 +165,6 @@ module.exports.loginUser = async (req, res, next) => {
 };
 
 
-
-
 module.exports.sendOTPForgetPassword = async (req, res, next) => {
 
     const error = validationResult(req);
@@ -178,7 +176,7 @@ module.exports.sendOTPForgetPassword = async (req, res, next) => {
         const loginKey = encryptEmailForLogin(email, process.env.ENCRYPTION_KEY);
         const isEmailExist = await UserModel.findOne({ where: { email_login_key: loginKey } });
         if (isEmailExist) {
-            sendEmail(otp, 4, email);
+            sendEmail(otp, 1, email);
             res.status(201).json({ message: 'OTP sent successfully to your email' });
         }
         // write send otp code here on email Id
