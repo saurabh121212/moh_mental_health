@@ -10,6 +10,9 @@ module.exports.add = async (req, res, next) => {
         return res.status(400).json({ error: error.array() });
     }
     const payload = req.body;
+
+    if(req.body.is_with_test===false) req.body.self_assessment_test_id = null
+    
     try {
         const data = await BaseRepo.baseCreate(AppointmentModel, payload);
         if (!data) {

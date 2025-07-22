@@ -19,6 +19,7 @@ module.exports.add = async (req, res, next) => {
         return res.status(400).json({ error: 'Email already exists' });
     }
 
+    
     // Create hash password
     const password = generatePassword(12);
     req.body.password = await HospitalModel.hashPassword(password);
@@ -157,12 +158,12 @@ module.exports.loginHospital = async (req, res, next) => {
 
     const hospital = await HospitalModel.findOne({ where: { email } });
     if (!hospital) {
-        return res.status(400).json({ error: 'Invalid email or password 1' });
+        return res.status(400).json({ error: 'Invalid email ID' });
     }
 
     const isMatch = await hospital.comparePassword(password);
     if (!isMatch) {
-        return res.status(400).json({ error: 'Invalid email or password 2' });
+        return res.status(400).json({ error: 'Invalid email ID or password' });
     }
 
     const token = await hospital.generateAuthToken(); // ✅ instance method
@@ -192,6 +193,7 @@ module.exports.hospitalAllAppointments = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Appointments' });
         }
+        
         res.status(201).json(data);
     }
     catch (error) {

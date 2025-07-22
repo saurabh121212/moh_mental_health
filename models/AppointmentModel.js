@@ -82,6 +82,16 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        self_assessment_test_id: {
+            type: DataTypes.BIGINT,
+            allowNull: true, // or false if required
+        },
+
+        is_with_test: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false, // or false if required
+        },
+
     }, {
         paranoid: true,
         timestamps: true,
