@@ -30,6 +30,8 @@ module.exports.add = async (req, res, next) => {
             return res.status(400).json({ error: 'Error creating Appointment data' });
         }
 
+        console.log("User Id Data :", req.body.user_id);
+
         const user = await BaseRepo.baseFindById(UserModel, req.body.user_id, "id");
         if (!user) {
             return res.status(400).json({ error: 'Error fetching User Details' });
