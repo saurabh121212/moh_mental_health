@@ -15,6 +15,8 @@ module.exports.add = async (req, res, next) => {
     // console is_with_test type
     console.log("is_with_test type:", typeof req.body.is_with_test);
 
+    console.log("check self_assessment_test_id value:", req.body.self_assessment_test_id);
+
     if(req.body.is_with_test===false) 
     {
         req.body.is_with_test = true
@@ -24,7 +26,7 @@ module.exports.add = async (req, res, next) => {
         req.body.is_with_test = false    
         req.body.self_assessment_test_id = null
     }
-    
+
     try {
         const data = await BaseRepo.baseCreate(AppointmentModel, payload);
         if (!data) {
