@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        
         hospital_id: {
             type: DataTypes.BIGINT,
             allowNull: false, // or false if required

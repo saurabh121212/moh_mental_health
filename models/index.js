@@ -45,6 +45,9 @@ db.MoodModel.belongsTo(db.UserModel, { foreignKey: 'user_id' });
 db.UserModel.hasMany(db.SelfAssessmentTestModel, { foreignKey: 'user_id' });
 db.SelfAssessmentTestModel.belongsTo(db.UserModel, { foreignKey: 'user_id' });
 
+db.HospitalModel.hasMany(db.AppointmentModel, { foreignKey: 'hospital_id' });
+db.AppointmentModel.belongsTo(db.HospitalModel, { foreignKey: 'hospital_id' });
+
 
 
 db.sequelize = sequelize;
