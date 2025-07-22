@@ -1,5 +1,5 @@
 const BaseRepo = require('../services/BaseRepository');
-const { AppointmentModel } = require('../models');
+const { AppointmentModel,HospitalModel } = require('../models');
 const { validationResult } = require('express-validator');
 
 
@@ -146,6 +146,23 @@ module.exports.upcomingAppointments = async (req, res, next) => {
         const data = await BaseRepo.baseGetUpcomingAppointmentsFromUserDateTime( AppointmentModel, userId, date, time);
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Appointment data' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+module.exports.hospitalAllAppointments = async (req, res, next) => {
+
+    try {
+        const data = await BaseRepo.baseGetHospitalAppointmentsFullDetails(HospitalModel,AppointmentModel);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Hospital Appointments Details' });
         }
         res.status(201).json(data);
     }

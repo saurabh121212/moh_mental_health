@@ -25,7 +25,8 @@ module.exports = {
   baseGetDashboardFemaleUserSelfAssessmentTestWise: getDashboardFemaleUserSelfAssessmentTestWise,
   baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise,
   baseGetMoodCountsByUser: getMoodCountsByUser,
-  baseGetUpcomingAppointmentsFromUserDateTime: getUpcomingAppointmentsFromUserDateTime 
+  baseGetUpcomingAppointmentsFromUserDateTime: getUpcomingAppointmentsFromUserDateTime,
+  baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails 
 };
 
 function create(modal, data) {
@@ -408,3 +409,41 @@ async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateSt
 
   return filteredAppointments;
 };
+
+
+async function getHospitalAppointmentsFullDetails(HospitalModel, AppointmentModel) {
+const results = await HospitalModel.findAll({
+  attributes: [
+    'id',
+    'name',
+    [fn('COUNT', col('Appointments.id')), 'totalAppointments'],
+    [
+      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'scheduled' THEN 1 ELSE 0 END`)),
+      'scheduledCount'
+    ],
+    [
+      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'confirmed' THEN 1 ELSE 0 END`)),
+      'confirmedCount'
+    ],
+    [
+      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'completed' THEN 1 ELSE 0 END`)),
+      'completedCount'
+    ],
+    [
+      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'cancelled' THEN 1 ELSE 0 END`)),
+      'cancelledCount'
+    ]
+  ],
+  include: [
+    {
+      model: AppointmentModel,
+      attributes: [],
+      required: false // include hospitals even if they have no appointments
+    }
+  ],
+  group: ['HospitalModel.id'],
+  raw: true
+});
+
+return results;
+}

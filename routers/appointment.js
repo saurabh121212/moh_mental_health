@@ -32,5 +32,7 @@ router.put('/completed-appointment/:id',
 // This is used for Finding the Upcoming appointments for Mobile users
 router.post('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
 
+// This is used to get the details hospital appointments with all the status codes 
+router.get('/hospital-all-appointments-details/', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointments);
 
 module.exports = router;

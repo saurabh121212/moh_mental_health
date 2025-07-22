@@ -131,4 +131,5 @@ router.get('/hospital-all-rejected-appointments/:id', authMiddleware.authHospita
 
 
 
+
 module.exports = router;
