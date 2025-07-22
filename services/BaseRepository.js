@@ -416,28 +416,30 @@ async function getHospitalAppointmentsFullDetails(HospitalModel, AppointmentMode
     attributes: [
       'id',
       'name',
-      [fn('COUNT', col('appointments.id')), 'totalAppointments'],
+      [fn('COUNT', col('AppointmentModels.id')), 'totalAppointments'],
       [
-        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'scheduled' THEN 1 ELSE 0 END`)),
+        fn('SUM', literal(`CASE WHEN AppointmentModels.appointment_status = 'scheduled' THEN 1 ELSE 0 END`)),
         'scheduledCount'
       ],
       [
-        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'confirmed' THEN 1 ELSE 0 END`)),
+        fn('SUM', literal(`CASE WHEN AppointmentModels.appointment_status = 'confirmed' THEN 1 ELSE 0 END`)),
         'confirmedCount'
       ],
       [
-        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'completed' THEN 1 ELSE 0 END`)),
+        fn('SUM', literal(`CASE WHEN AppointmentModels.appointment_status = 'completed' THEN 1 ELSE 0 END`)),
         'completedCount'
       ],
       [
-        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'cancelled' THEN 1 ELSE 0 END`)),
+        fn('SUM', literal(`CASE WHEN AppointmentModels.appointment_status = 'cancelled' THEN 1 ELSE 0 END`)),
         'cancelledCount'
       ]
     ],
     include: [
       {
         model: AppointmentModel,
-        as: 'appointments', // use same alias as defined in association
+        // alias used by Sequelize by default
+        // you can inspect this by checking your association definitions
+        as: 'AppointmentModels',
         attributes: [],
         required: false
       }
@@ -445,6 +447,5 @@ async function getHospitalAppointmentsFullDetails(HospitalModel, AppointmentMode
     group: ['HospitalModel.id'],
     raw: true
   });
-
-  return results;
+  return hospitals;
 }
