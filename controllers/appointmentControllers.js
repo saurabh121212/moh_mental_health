@@ -11,6 +11,10 @@ module.exports.add = async (req, res, next) => {
     }
     const payload = req.body;
 
+    console.log("check is_with_test value:", req.body.is_with_test);
+    // console is_with_test type
+    console.log("is_with_test type:", typeof req.body.is_with_test);
+
     if(req.body.is_with_test===false) req.body.self_assessment_test_id = null
     
     try {
