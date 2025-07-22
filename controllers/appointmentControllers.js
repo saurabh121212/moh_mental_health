@@ -1,6 +1,6 @@
 const BaseRepo = require('../services/BaseRepository');
-const { AppointmentModel,HospitalModel } = require('../models');
-const { validationResult,UserModel } = require('express-validator');
+const { AppointmentModel,HospitalModel,UserModel } = require('../models');
+const { validationResult } = require('express-validator');
 const sendEmail = require('../mailer/mailerFile');
 
 
