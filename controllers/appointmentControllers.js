@@ -157,13 +157,46 @@ module.exports.upcomingAppointments = async (req, res, next) => {
 
 
 
-module.exports.hospitalAllAppointments = async (req, res, next) => {
+module.exports.hospitalAllAppointmentsDetails = async (req, res, next) => {
 
     try {
         const data = await BaseRepo.baseGetHospitalAppointmentsFullDetails(HospitalModel,AppointmentModel);
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Hospital Appointments Details' });
         }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+module.exports.hospitalAllAppointmentsList = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    const hospitalId = req.params.id;
+    const appointment_status = req.body.appointment_status;
+
+    console.log("Hospital ID:", hospitalId);
+    console.log("Appointment Status:", appointment_status);
+
+    const params = {
+        searchParams: { "hospital_id": hospitalId , "appointment_status": appointment_status },
+        limit: limit,
+        offset: offset,
+        page: page,
+        order: [["id", "DESC"]],
+    }
+    try {
+        const data = await BaseRepo.baseList(AppointmentModel, params);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Appointments' });
+        }
+        
         res.status(201).json(data);
     }
     catch (error) {

@@ -99,6 +99,7 @@ router.post('/login', [
 ], HospitalController.loginHospital);
 
 
+
 //hospital Appointment routes
 router.get('/hospital-all-appointments/:id', authMiddleware.authHospital, HospitalController.hospitalAllAppointments);
 

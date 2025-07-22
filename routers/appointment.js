@@ -33,6 +33,10 @@ router.put('/completed-appointment/:id',
 router.post('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
 
 // This is used to get the details hospital appointments with all the status codes 
-router.get('/hospital-all-appointments-details/', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointments);
+router.get('/hospital-all-appointments-details/', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointmentsDetails);
+
+
+//hospital Appointment routes
+router.get('/hospital-all-appointments/:id', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointmentsList);
 
 module.exports = router;
