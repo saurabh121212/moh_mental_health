@@ -1,6 +1,6 @@
 const { Sequelize, QueryTypes } = require('sequelize');
 const Op = Sequelize.Op;
-const { fn, col, literal,where,where: sequelizeWhere } = require('sequelize');
+const { fn, col, literal, where, where: sequelizeWhere } = require('sequelize');
 const db = require('../models/index');
 const moment = require('moment');
 
@@ -26,7 +26,7 @@ module.exports = {
   baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise,
   baseGetMoodCountsByUser: getMoodCountsByUser,
   baseGetUpcomingAppointmentsFromUserDateTime: getUpcomingAppointmentsFromUserDateTime,
-  baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails 
+  baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails
 };
 
 function create(modal, data) {
@@ -68,7 +68,7 @@ function findById2Keys(modal, params1, params2, key1, key2) {
   });
 }
 
- 
+
 
 function findAllById(modal, params, key) {
   return modal.findAll({
@@ -375,7 +375,7 @@ async function getMoodCountsByUser(Model, userId) {
 };
 
 
-async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr){
+async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr) {
   // Convert user input to usable formats
   const userDate = moment(userDateStr, 'DD-MM-YYYY');
   const userTime = moment(userTimeStr, 'HH:mm'); // 24-hour format like 16:00
@@ -412,38 +412,39 @@ async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateSt
 
 
 async function getHospitalAppointmentsFullDetails(HospitalModel, AppointmentModel) {
-const results = await HospitalModel.findAll({
-  attributes: [
-    'id',
-    'name',
-    [fn('COUNT', col('Appointments.id')), 'totalAppointments'],
-    [
-      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'scheduled' THEN 1 ELSE 0 END`)),
-      'scheduledCount'
+  const hospitals = await HospitalModel.findAll({
+    attributes: [
+      'id',
+      'name',
+      [fn('COUNT', col('appointments.id')), 'totalAppointments'],
+      [
+        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'scheduled' THEN 1 ELSE 0 END`)),
+        'scheduledCount'
+      ],
+      [
+        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'confirmed' THEN 1 ELSE 0 END`)),
+        'confirmedCount'
+      ],
+      [
+        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'completed' THEN 1 ELSE 0 END`)),
+        'completedCount'
+      ],
+      [
+        fn('SUM', literal(`CASE WHEN appointments.appointment_status = 'cancelled' THEN 1 ELSE 0 END`)),
+        'cancelledCount'
+      ]
     ],
-    [
-      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'confirmed' THEN 1 ELSE 0 END`)),
-      'confirmedCount'
+    include: [
+      {
+        model: AppointmentModel,
+        as: 'appointments', // use same alias as defined in association
+        attributes: [],
+        required: false
+      }
     ],
-    [
-      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'completed' THEN 1 ELSE 0 END`)),
-      'completedCount'
-    ],
-    [
-      fn('SUM', literal(`CASE WHEN Appointments.appointment_status = 'cancelled' THEN 1 ELSE 0 END`)),
-      'cancelledCount'
-    ]
-  ],
-  include: [
-    {
-      model: AppointmentModel,
-      attributes: [],
-      required: false // include hospitals even if they have no appointments
-    }
-  ],
-  group: ['HospitalModel.id'],
-  raw: true
-});
+    group: ['HospitalModel.id'],
+    raw: true
+  });
 
-return results;
+  return results;
 }
