@@ -2,6 +2,7 @@ const BaseRepo = require('../services/BaseRepository');
 const { AppointmentModel,HospitalModel,UserModel } = require('../models');
 const { validationResult } = require('express-validator');
 const sendEmail = require('../mailer/mailerFile');
+const { decrypt} = require('../utils/crypto');
 
 
 module.exports.add = async (req, res, next) => {
@@ -29,8 +30,6 @@ module.exports.add = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error creating Appointment data' });
         }
-
-        console.log("User Id Data :", req.body.user_id);
 
         const user = await BaseRepo.baseFindById(UserModel, req.body.user_id, "id");
         if (!user) {
