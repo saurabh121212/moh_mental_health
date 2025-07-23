@@ -126,6 +126,20 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error updating Appointment' });
         }
+
+        // console.log("Appointment updated successfully:", data);
+
+        // send email notification if appointment is completed
+        // if (payload.appointment_status === 'completed') {
+        //     const user = await BaseRepo.baseFindById(UserModel, payload.user_id, "id");
+        //     if (!user) {
+        //         return res.status(400).json({ error: 'Error fetching User Details'});
+        //     }
+        //     const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+        //     // Send a Email to the user
+        //     sendEmail(payload, 4, emailId);
+        // }
+
         res.status(201).json({
             message: 'Appointment updated successfully',
             data: data
@@ -136,7 +150,6 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
-
 
 module.exports.upcomingAppointments = async (req, res, next) => {
 

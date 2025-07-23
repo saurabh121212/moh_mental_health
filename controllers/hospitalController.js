@@ -402,3 +402,31 @@ function generatePassword(length = 12) {
         .slice(0, length)
         .replace(/[+/]/g, 'A'); // replace special chars if needed
 }
+
+
+module.exports.getAssessmentTestDetailsSingle = async (req, res, next) => {
+
+
+    const id = req.params.id;
+    if (!id) {
+        return res.status(400).json({ error: 'Assessment Test ID is required' });
+    }
+
+    console.log("Self Assessment Test ID:", id);
+    try {
+        const assessmentTest = await BaseRepo.baseFindById(SelfAssessmentTestModel, id, "id");
+        if (!assessmentTest) {
+            return res.status(400).json({ error: 'Error fetching Assessment Test Details' });
+        }
+
+        res.status(200).json(
+            {
+                message: 'Single Assessment Test Details fetched successfully',
+                data: assessmentTest
+            });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}

@@ -132,5 +132,10 @@ router.get('/hospital-all-rejected-appointments/:id', authMiddleware.authHospita
 
 
 
+// This is used to get the details of a Assessment Test
+router.get('/get-assessment-test-single-detail/:id', authMiddleware.authHospital, HospitalController.getAssessmentTestDetailsSingle);
+
+
+
 
 module.exports = router;
