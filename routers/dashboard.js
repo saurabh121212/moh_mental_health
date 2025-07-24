@@ -22,13 +22,13 @@ router.get('/total-users-self-assessment-test-wise/',authMiddleware.authAdmin,Da
 // Route to get Male Users Self Assessment Test wise
 router.get('/male-users-self-assessment-test-wise/',authMiddleware.authAdmin,DashboardController.getMaleUsersSelfAssessmentTestWise);
 
-console.log('Handler:', typeof DashboardController.getMaleUsersSelfAssessmentTestWise); // should log 'function'
-
-
 // Route to get Female Users Self Assessment Test wise
 router.get('/female-users-self-assessment-test-wise/',authMiddleware.authAdmin,DashboardController.getFemaleUsersSelfAssessmentTestWise);
 
 // Route to get total Users Appointment Status wise
 router.get('/total-users-appointment-status-wise/',authMiddleware.authAdmin,DashboardController.getTotalUsersAppointmentStatusWise);
+
+// Route to get Feedback graph data for the dashboard
+router.get('/feedback-graph-data/',authMiddleware.authAdmin,DashboardController.getFeedbackGraphData);
 
 module.exports = router;

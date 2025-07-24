@@ -26,7 +26,8 @@ module.exports = {
   baseGetDashboardTotalUserAppointmentStatusWise: getDashboardTotalUserAppointmentStatusWise,
   baseGetMoodCountsByUser: getMoodCountsByUser,
   baseGetUpcomingAppointmentsFromUserDateTime: getUpcomingAppointmentsFromUserDateTime,
-  baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails
+  baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails,
+  baseGetDashboardAverageFeedbackRatings: getDashboardAverageFeedbackRatings
 };
 
 function create(modal, data) {
@@ -337,6 +338,28 @@ async function getDashboardTotalUserAppointmentStatusWise(modal) {
     });
 
     return usersByAppointment
+
+  } catch (error) {
+    console.error('Error fetching Users by Appointments data:', error);
+    throw error;
+  }
+}
+
+
+async function getDashboardAverageFeedbackRatings(modal) {
+  try {
+    const averageRatings = await modal.findAll({
+      attributes: [
+        [fn('AVG', col('usability_stars')), 'avg_usability'],
+        [fn('AVG', col('performance_stars')), 'avg_performance'],
+        [fn('AVG', col('personalization_stars')), 'avg_personalization'],
+        [fn('AVG', col('security_stars')), 'avg_security'],
+        [fn('AVG', col('overall_satisfaction_stars')), 'avg_overall_satisfaction'],
+      ],
+      raw: true
+    });
+
+    return averageRatings;
 
   } catch (error) {
     console.error('Error fetching Users by Appointments data:', error);

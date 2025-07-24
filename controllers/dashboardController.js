@@ -1,5 +1,5 @@
 const BaseRepo = require('../services/BaseRepository');
-const { UserModel, SelfAssessmentTestModel,AppointmentModel } = require('../models');
+const { UserModel, SelfAssessmentTestModel,AppointmentModel,FeedbackModel } = require('../models');
 const { validationResult } = require('express-validator');
 
 
@@ -171,6 +171,27 @@ module.exports.getTotalUsersAppointmentStatusWise = async (req, res, next) => {
     res.status(201).json({
       message: 'Dashboard Total Users Appointment Status Wise data fetched successfully',
       data: TotalUserAppointmentStatusWise
+    });
+
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+
+module.exports.getFeedbackGraphData = async (req, res, next) => {
+
+  const year = req.params.year;
+
+  try {
+    const FeedbackGraphData = await BaseRepo.baseGetDashboardAverageFeedbackRatings(FeedbackModel);
+
+    res.status(201).json({
+      message: 'Dashboard Feedback Graph data fetched successfully',
+      data: FeedbackGraphData
     });
 
   }
