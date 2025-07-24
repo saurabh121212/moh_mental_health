@@ -136,6 +136,6 @@ router.get('/hospital-all-upcoming-appointments/:id', authMiddleware.authHospita
 router.get('/hospital-all-past-appointments/:id', authMiddleware.authHospital, HospitalController.hospitalAllPastAppointments);
 
 // This is used to get the details of a Assessment Test
-router.get('/get-assessment-test-single-detail/:id', authMiddleware.authHospital, HospitalController.getAssessmentTestDetailsSingle);
+router.get('/get-assessment-test-single-detail/:id', authMiddleware.authAdmin, HospitalController.getAssessmentTestDetailsSingle);
 
 module.exports = router;
