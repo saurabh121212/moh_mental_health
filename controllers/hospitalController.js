@@ -432,6 +432,39 @@ module.exports.hospitalAllUpcomingAppointments = async (req, res, next) => {
 }
 
 
+module.exports.hospitalAllPastAppointments = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    
+    const hospitalId = req.params.id;
+    const date = req.query.date
+    const [day, month, year] = date.split('-');
+    const today = new Date(`${year}-${month}-${day}`); // to YYYY-MM-DD;
+
+    const params = {
+        searchParams: {
+            hospital_id: hospitalId,
+            appointment_date: { [Op.lte]: today }
+        },
+        order: [['appointment_date', 'ASC']],
+        limit: limit,
+        offset: offset,
+        page: page,
+    };
+    try {
+        const data = await BaseRepo.baseList(AppointmentModel, params);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Appointments' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
 
 
 function generatePassword(length = 12) {

@@ -133,6 +133,9 @@ router.get('/hospital-all-rejected-appointments/:id', authMiddleware.authHospita
 // This is used to get the hospital all upcoming appointments
 router.get('/hospital-all-upcoming-appointments/:id', authMiddleware.authHospital, HospitalController.hospitalAllUpcomingAppointments);
 
+// This is used to get the hospital all past appointments
+router.get('/hospital-all-past-appointments/:id', authMiddleware.authHospital, HospitalController.hospitalAllPastAppointments);
+
 
 // This is used to get the details of a Assessment Test
 router.get('/get-assessment-test-single-detail/:id', authMiddleware.authHospital, HospitalController.getAssessmentTestDetailsSingle);
