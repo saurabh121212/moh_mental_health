@@ -1,9 +1,10 @@
 const BaseRepo = require('../services/BaseRepository');
-const { HospitalModel, AppointmentModel, UserModel,SelfAssessmentTestModel } = require('../models');
+const { HospitalModel, AppointmentModel, UserModel, SelfAssessmentTestModel } = require('../models');
 const { validationResult } = require('express-validator');
 const { decrypt } = require('../utils/crypto');
 const crypto = require('crypto');
 const sendEmail = require('../mailer/mailerFile');
+const { Op } = require('sequelize');
 
 
 module.exports.add = async (req, res, next) => {
@@ -19,7 +20,7 @@ module.exports.add = async (req, res, next) => {
         return res.status(400).json({ error: 'Email already exists' });
     }
 
-    
+
     // Create hash password
     const password = generatePassword(12);
     req.body.password = await HospitalModel.hashPassword(password);
@@ -193,7 +194,7 @@ module.exports.hospitalAllAppointments = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Appointments' });
         }
-        
+
         res.status(201).json(data);
     }
     catch (error) {
@@ -247,7 +248,7 @@ module.exports.getUserDetails = async (req, res, next) => {
 
 module.exports.getAssessmentTestDetails = async (req, res, next) => {
 
-   const page = parseInt(req.query.page) || 1;
+    const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
     const userId = req.params.id;
@@ -346,7 +347,7 @@ module.exports.hospitalAllConfirmedAppointments = async (req, res, next) => {
     console.log("Hospital ID:", hospitalId);
 
     const params = {
-        searchParams: { "hospital_id": hospitalId , "appointment_status": "confirmed" },
+        searchParams: { "hospital_id": hospitalId, "appointment_status": "confirmed" },
         limit: limit,
         offset: offset,
         page: page,
@@ -375,7 +376,7 @@ module.exports.hospitalAllRejectedAppointments = async (req, res, next) => {
     console.log("Hospital ID:", hospitalId);
 
     const params = {
-        searchParams: {"hospital_id": hospitalId , "appointment_status": "cancelled" },
+        searchParams: { "hospital_id": hospitalId, "appointment_status": "cancelled" },
         limit: limit,
         offset: offset,
         page: page,
@@ -393,6 +394,44 @@ module.exports.hospitalAllRejectedAppointments = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+module.exports.hospitalAllUpcomingAppointments = async (req, res, next) => {
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+    
+    const hospitalId = req.params.id;
+    const date = req.query.date
+    const [day, month, year] = date.split('-');
+    const today = new Date(`${year}-${month}-${day}`); // to YYYY-MM-DD;
+
+    const params = {
+        searchParams: {
+            hospital_id: hospitalId,
+            appointment_status: { [Op.in]: ['scheduled', 'confirmed'] },
+            appointment_date: { [Op.gte]: today }
+        },
+        order: [['appointment_date', 'ASC']],
+        limit: limit,
+        offset: offset,
+        page: page,
+    };
+    try {
+        const data = await BaseRepo.baseList(AppointmentModel, params);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Appointments' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
 
 
 function generatePassword(length = 12) {
