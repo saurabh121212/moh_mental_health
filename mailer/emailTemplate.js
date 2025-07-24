@@ -106,8 +106,89 @@ const appointmentBookingTemplate = (payload) =>
   </html>`;
 
 
+  const appointmentConfirmationTemplate = (payload) => 
+  `<html>
+    <head>
+        <title>Appointment Confirmation</title>
+    </head>
+    <body>
+        <b>Dear ${payload.name || 'User'},</b><br>
+        
+        <p>Your appointment has been <b>confirmed</b> by the hospital.</p>
+        
+        <p><b>Appointment Details:</b></p>
+        <ul>
+            <li><b>Date:</b> ${payload.appointment_date}</li>
+            <li><b>Time:</b> ${payload.appointment_time}</li>
+            <li><b>Hospital:</b> ${payload.hospital_name}</li>
+        </ul>
+
+        <p>Please make sure to arrive at the hospital on time and bring any necessary documents, if required.</p>
+        
+        <p>If you have any questions or need to reschedule, please contact the hospital directly.</p>
+        
+        <p>Thank you for using the MOH Platform.</p>
+        
+        <br>
+        <b>Regards,</b><br>
+        Eswatini MSME Platform Admin
+        <br><br>
+        <b>Eswatini MSME Platform Admin</b><br>
+        Email: To be added later<br>
+        Tel: +268 2403 201/6<br>
+        Fax: +268 2404 4711 / +268 2404 2959<br>
+        Cell: To be added later<br>
+        
+        <br><br><br>
+        <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
+    </body>
+  </html>`;
+
+
+  const appointmentCancellationTemplate = (payload) => 
+  `<html>
+    <head>
+        <title>Appointment Cancellation Notice</title>
+    </head>
+    <body>
+        <b>Dear ${payload.name || 'User'},</b><br>
+        
+        <p>We regret to inform you that your appointment has been <b>cancelled</b>.</p>
+        
+        <p><b>Appointment Details:</b></p>
+        <ul>
+            <li><b>Date:</b> ${payload.appointment_date}</li>
+            <li><b>Time:</b> ${payload.appointment_time}</li>
+            <li><b>Hospital:</b> ${payload.hospital_name}</li>
+        </ul>
+
+        <p>If this cancellation was unexpected or you wish to reschedule, please contact the hospital or submit a new appointment request through the MOH Platform.</p>
+        
+        <p>We apologize for any inconvenience caused.</p>
+        
+        <p>Thank you for using the MOH Platform.</p>
+        
+        <br>
+        <b>Regards,</b><br>
+        Eswatini MSME Platform Admin
+        <br><br>
+        <b>Eswatini MSME Platform Admin</b><br>
+        Email: To be added later<br>
+        Tel: +268 2403 201/6<br>
+        Fax: +268 2404 4711 / +268 2404 2959<br>
+        Cell: To be added later<br>
+        
+        <br><br><br>
+        <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
+    </body>
+  </html>`;
+
+
+
 module.exports = {
     hospitalRegisteredTemplate,
     passwordResetOTPSend,
-    appointmentBookingTemplate
+    appointmentBookingTemplate,
+    appointmentConfirmationTemplate,
+    appointmentCancellationTemplate
 }

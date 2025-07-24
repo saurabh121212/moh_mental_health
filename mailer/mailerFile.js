@@ -29,6 +29,16 @@ async function sendEmail(payload,status,email,password) {
          subject = `Appointment Booking Acknowledgement`
          output = emailTemplate.appointmentBookingTemplate(payload);
     }
+    if(status==4)
+    {
+         subject = `Appointment Booking Confirmation`
+         output = emailTemplate.appointmentConfirmationTemplate(payload);
+    }
+    if(status==5)
+    {
+         subject = `Appointment Booking Acknowledgement`
+         output = emailTemplate.appointmentCancellationTemplate(payload);
+    }
     
     let transporter = nodemailer.createTransport(CONFIG.mail)   
     message = {

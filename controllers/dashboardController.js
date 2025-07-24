@@ -188,10 +188,12 @@ module.exports.getFeedbackGraphData = async (req, res, next) => {
 
   try {
     const FeedbackGraphData = await BaseRepo.baseGetDashboardAverageFeedbackRatings(FeedbackModel);
+    const totalFeedbacks = await BaseRepo.baseCount(FeedbackModel, {});
 
     res.status(201).json({
       message: 'Dashboard Feedback Graph data fetched successfully',
-      data: FeedbackGraphData
+      data: FeedbackGraphData,
+      totalFeedbacks: totalFeedbacks
     });
 
   }

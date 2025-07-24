@@ -5,6 +5,7 @@ const { decrypt } = require('../utils/crypto');
 const crypto = require('crypto');
 const sendEmail = require('../mailer/mailerFile');
 const { Op } = require('sequelize');
+const e = require('express');
 
 
 module.exports.add = async (req, res, next) => {
@@ -296,6 +297,34 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error updating Appointment' });
         }
+
+        console.log("data value ", data.dataValues.user_id);
+
+        // find the user email according to user_id
+        const user = await BaseRepo.baseFindById(UserModel, data.dataValues.user_id, "id");
+        if (!user) {
+            return res.status(400).json({ error: 'Error fetching User Details' });
+        }
+        const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+
+        // Collect appointment details in a variable.
+        const appointmentDetails = {
+            appointment_date: data.dataValues.appointment_date,
+            appointment_time: data.dataValues.appointment_time,
+            hospital_name: data.dataValues.hospital_name,
+        };
+
+
+        // check if appointment_status is confirmed or cancelled and then apply the condition
+        if (payload.appointment_status === 'confirmed') {
+            // Send a appointment confirmation Email to the user
+            sendEmail(appointmentDetails, 4, emailId);
+        }
+        else if (payload.appointment_status === 'cancelled') {
+            // Send a appointment cancellation Email to the user
+            sendEmail(appointmentDetails, 5, emailId);
+        }
+
         res.status(201).json({
             message: 'Appointment updated successfully',
             data: data
@@ -401,7 +430,7 @@ module.exports.hospitalAllUpcomingAppointments = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
-    
+
     const hospitalId = req.params.id;
     const date = req.query.date
     const [day, month, year] = date.split('-');
@@ -437,7 +466,7 @@ module.exports.hospitalAllPastAppointments = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
-    
+
     const hospitalId = req.params.id;
     const date = req.query.date
     const [day, month, year] = date.split('-');
