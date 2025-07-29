@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(15),
             allowNull: true, // or false if required
         },
-        
-        last_name_iv: DataTypes.STRING,        
+
+        last_name_iv: DataTypes.STRING,
         last_name_auth_tag: DataTypes.STRING,
 
         phone: {
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, // or false if required
         },
 
-        phone_iv: DataTypes.STRING,        
+        phone_iv: DataTypes.STRING,
         phone_auth_tag: DataTypes.STRING,
 
         email: {
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
 
-        email_iv: DataTypes.STRING,        
+        email_iv: DataTypes.STRING,
         email_auth_tag: DataTypes.STRING,
 
         email_login_key: {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
             unique: true
         },
 
-    national_id: {
+        national_id: {
             type: DataTypes.STRING(30),
             allowNull: true, // or false if required
         },
@@ -161,6 +161,6 @@ module.exports = (sequelize, DataTypes) => {
     Model.hashPassword = async function (password) {
         return await bcrypt.hash(password, 10);
     };
-    
+
     return Model;
 };

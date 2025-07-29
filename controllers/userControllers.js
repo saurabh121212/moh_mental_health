@@ -3,6 +3,8 @@ const { UserModel } = require('../models');
 const { validationResult } = require('express-validator');
 const { encrypt, decrypt, encryptEmailForLogin } = require('../utils/crypto');
 const sendEmail = require('../mailer/mailerFile');
+const sendNotification = require('../firebase/sendNotification');
+const admin = require('firebase-admin');
 
 
 module.exports.registerUser = async (req, res, next) => {
@@ -315,6 +317,9 @@ module.exports.get = async (req, res, next) => {
             };
         });
 
+          // Send notification to all users
+        sendNotificationToAllUsers("Emoji Testing", "This is emoji testing notification image is coming soon");
+
         res.status(200).json({
             message: 'Users fetched successfully',
             data: decryptedUsers,
@@ -388,4 +393,39 @@ function generateRandomUsername(name) {
     const prefix = name.slice(0, 2).toLowerCase(); // Take first 2 letters
     const randomDigits = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit number
     return `${prefix}${randomDigits}`;
+}
+
+
+async function sendNotificationToAllUsers(name, description) {
+  try {
+    const users = await BaseRepo.baseList(UserModel,{});
+    const allTokens = users.map(user => user.device_token).filter(Boolean);
+
+    console.info(`📦 Found ${allTokens.length} valid FCM tokens`);
+
+    const tokenChunks = chunkArray(allTokens, 500); // Firebase limit
+
+    for (let i = 0; i < tokenChunks.length; i++) {
+      const tokens = tokenChunks[i];
+      const message = {
+        notification: {
+          title: name,
+          body: description,
+          type: "emoji",
+        },
+        tokens,
+      };
+
+      try {
+        console.info(`🚀 Sending batch ${i + 1}/${tokenChunks.length}`);
+        await sendNotification(message);
+      } catch (batchError) {
+        console.error(`❌ Error in batch ${i + 1}:`, batchError.message);
+      }
+    }
+
+    console.info('✅ All notifications sent');
+  } catch (err) {
+    console.error('❌ Failed to send notifications:', err.message);
+  }
 }

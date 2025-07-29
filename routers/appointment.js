@@ -28,6 +28,16 @@ router.put('/completed-appointment/:id',
         .withMessage('Appointment status must be completed only'),
     authMiddleware.authUser, AppointmentController.acceptRejectAppointment);
 
+   
+  
+// This is used for Canceling an appointment by the user
+router.put('/cancel-appointment/:id',
+    body('appointment_status')
+        .isIn(['cancelled'])
+        .withMessage('Appointment status must be completed only'),
+    body('cancel_reason').optional().isLength({ max: 300 }).withMessage('Cancel reason must be at most 300 characters long'),
+authMiddleware.authUser, AppointmentController.cancelAppointment);
+
 
 // This is used for Finding the Upcoming appointments for Mobile users
 router.post('/upcoming-appointments', authMiddleware.authUser, AppointmentController.upcomingAppointments);
