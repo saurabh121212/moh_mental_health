@@ -26,6 +26,7 @@ module.exports.verifyUser = async (req, res, next) => {
 
         // call nursing council API to verify user.
         const nursingCouncilResponse = await validateRegistration(payload.ENC_number);
+        console.log('Nursing Council Response:', nursingCouncilResponse);
         if (!nursingCouncilResponse || nursingCouncilResponse.error) {
             return res.status(400).json({ error: 'Invalid ENC Number or user not found in Nursing Council records' });
         }
