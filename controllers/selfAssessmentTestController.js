@@ -136,7 +136,7 @@ module.exports.getUserLastSelfAssessmentTest = async (req, res, next) => {
                 });
             } else {
               return res.status(201).json({
-                    message: 'Last self-assessment test is not older than 14 days.',
+                    message: `Your have taken the Last self-assessment test on ${lastAppointment.toISOString().split('T')[0]} and you can take another test after ${nextAppointmentDate.toISOString().split('T')[0]}.`,
                     lastAppointment: lastAppointment,
                     diffInDays: diffInDaysRounded,
                     nextAppointmentDate: nextAppointmentDate.toISOString().split('T')[0],

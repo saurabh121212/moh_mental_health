@@ -23,14 +23,14 @@ module.exports.add = async (req, res, next) => {
     let minDate = new Date(payload.appointment_date);
     minDate.setDate(minDate.getDate() - 5);
     const convertedMinDate = minDate.toISOString().split('T')[0];
-    
+
     let maxDate = new Date(payload.appointment_date);
     maxDate.setDate(maxDate.getDate() + 9);
     const convertedMaxDate = maxDate.toISOString().split('T')[0];
 
-     //console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
+    //console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
 
-    const conflictCount = await BaseRepo.baseGetConflictingAppointments(AppointmentModel, convertedMinDate,convertedMaxDate, payload.user_id);
+    const conflictCount = await BaseRepo.baseGetConflictingAppointments(AppointmentModel, convertedMinDate, convertedMaxDate, payload.user_id);
     if (conflictCount > 0) {
         //console.log('Booking not allowed: already a confirmed appointment within ±7 days.');
         return res.status(400).json(
@@ -178,7 +178,7 @@ module.exports.cancelAppointment = async (req, res, next) => {
     if (!error.isEmpty()) {
         return res.status(400).json({ error: error.array() });
     }
-    
+
     const payload = req.body;
     const id = req.params.id;
 
