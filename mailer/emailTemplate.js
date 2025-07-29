@@ -16,15 +16,15 @@ const passwordResetOTPSend = (payload, email) =>
     <p>This OTP is valid for 10 minutes. Please do not share this code with anyone.</p>
     <p>If you did not request this, please ignore this email.</p>
 
-    <br> <br>
-    <b> Regards, </b> <br>
-    Eswatini MSME Platform Admin
     <br><br>
-    <b> Eswatini MSME Platform Admin </b><br>
-    Email: To be added later <br>
-    Tell: +268 2403 201/6<br>
-    Fax: +268 2404 4711/+268 2404 2959<br>
-    Cell: To be added later <br>
+    <b>Regards,</b><br>
+    Eswatini Nursing Mental Health Admin
+    <br><br>
+    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
+    Email: To be added later<br>
+    Tel: To be added later<br>
+    Fax: To be added later<br>
+    Cell: To be added later
     <br><br><br>
     <p style="color:red;"> *This is a system generated message, please do not reply to this email.</p>
     </body>
@@ -50,17 +50,16 @@ const passwordResetOTPSend = (payload, email) =>
         <p>If you have any questions or require further assistance, please feel free to reach out.</p>
         <p>Welcome aboard!</p>
         
-        <br>
-        <b>Regards,</b><br>
-        Eswatini MSME Platform Admin
-        <br><br>
-        <b>Eswatini MSME Platform Admin</b><br>
-        Email: To be added later<br>
-        Tel: +268 2403 201/6<br>
-        Fax: +268 2404 4711 / +268 2404 2959<br>
-        Cell: To be added later<br>
-        
-        <br><br><br>
+         <br><br>
+    <b>Regards,</b><br>
+    Eswatini Nursing Mental Health Admin
+    <br><br>
+    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
+    Email: To be added later<br>
+    Tel: To be added later<br>
+    Fax: To be added later<br>
+    Cell: To be added later
+    <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
     </html>
@@ -90,17 +89,16 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>Thank you for using the MOH Platform.</p>
         
-        <br>
-        <b>Regards,</b><br>
-        Eswatini MSME Platform Admin
         <br><br>
-        <b>Eswatini MSME Platform Admin</b><br>
-        Email: To be added later<br>
-        Tel: +268 2403 201/6<br>
-        Fax: +268 2404 4711 / +268 2404 2959<br>
-        Cell: To be added later<br>
-        
-        <br><br><br>
+    <b>Regards,</b><br>
+    Eswatini Nursing Mental Health Admin
+    <br><br>
+    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
+    Email: To be added later<br>
+    Tel: To be added later<br>
+    Fax: To be added later<br>
+    Cell: To be added later
+    <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
   </html>`;
@@ -129,17 +127,16 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>Thank you for using the MOH Platform.</p>
         
-        <br>
-        <b>Regards,</b><br>
-        Eswatini MSME Platform Admin
-        <br><br>
-        <b>Eswatini MSME Platform Admin</b><br>
-        Email: To be added later<br>
-        Tel: +268 2403 201/6<br>
-        Fax: +268 2404 4711 / +268 2404 2959<br>
-        Cell: To be added later<br>
-        
-        <br><br><br>
+         <br><br>
+    <b>Regards,</b><br>
+    Eswatini Nursing Mental Health Admin
+    <br><br>
+    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
+    Email: To be added later<br>
+    Tel: To be added later<br>
+    Fax: To be added later<br>
+    Cell: To be added later
+    <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
   </html>`;
@@ -168,21 +165,46 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>Thank you for using the MOH Platform.</p>
         
-        <br>
-        <b>Regards,</b><br>
-        Eswatini MSME Platform Admin
-        <br><br>
-        <b>Eswatini MSME Platform Admin</b><br>
-        Email: To be added later<br>
-        Tel: +268 2403 201/6<br>
-        Fax: +268 2404 4711 / +268 2404 2959<br>
-        Cell: To be added later<br>
-        
-        <br><br><br>
+    <br><br>
+    <b>Regards,</b><br>
+    Eswatini Nursing Mental Health Admin
+    <br><br>
+    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
+    Email: To be added later<br>
+    Tel: To be added later<br>
+    Fax: To be added later<br>
+    Cell: To be added later
+    <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
   </html>`;
 
+
+const registrationOTPSend = (otp, email) =>
+  `<html>
+
+    <b>Dear User,</b><br>
+    <p>Thank you for registering on the <b>Eswatini Nursing Mental Health Platform</b>.</p>
+    <p>To complete your registration, please verify your email address using the One-Time Password (OTP) below:</p>
+    
+    <h2>${otp}</h2>
+
+    <p>Please do not share this code with anyone.</p>
+    <p>If you did not initiate this registration, please ignore this email.</p>
+
+    <br><br>
+    <b>Regards,</b><br>
+    Eswatini Nursing Mental Health Admin
+    <br><br>
+    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
+    Email: To be added later<br>
+    Tel: To be added later<br>
+    Fax: To be added later<br>
+    Cell: To be added later
+    <br><br><br>
+    <p style="color:red;">*This is a system-generated message, please do not reply to this email.</p>
+</body>
+</html>`;
 
 
 module.exports = {
@@ -190,5 +212,6 @@ module.exports = {
     passwordResetOTPSend,
     appointmentBookingTemplate,
     appointmentConfirmationTemplate,
-    appointmentCancellationTemplate
+    appointmentCancellationTemplate,
+    registrationOTPSend
 }

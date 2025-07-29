@@ -35,8 +35,10 @@ router.post('/upcoming-appointments', authMiddleware.authUser, AppointmentContro
 // This is used to get the details hospital appointments with all the status codes 
 router.get('/hospital-all-appointments-details/', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointmentsDetails);
 
-
 //hospital Appointment routes
 router.get('/hospital-all-appointments/:id', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointmentsList);
+
+// This is used to check the last appointment of a user if he has more then 2 appointments or not
+router.get('/last-appointment-count/:id', authMiddleware.authUser, AppointmentController.lastAppointmentCount);
 
 module.exports = router;

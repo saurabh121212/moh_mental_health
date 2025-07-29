@@ -39,6 +39,11 @@ async function sendEmail(payload,status,email,password) {
          subject = `Appointment Booking Acknowledgement`
          output = emailTemplate.appointmentCancellationTemplate(payload);
     }
+    if(status==6)
+    {
+         subject = `OTP for Email Verification`
+         output = emailTemplate.registrationOTPSend(payload);
+    }
     
     let transporter = nodemailer.createTransport(CONFIG.mail)   
     message = {

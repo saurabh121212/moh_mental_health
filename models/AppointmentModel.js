@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, // or false if required
             validate: {
                 len: {
-                    args: [0, 300], 
+                    args: [0, 300],
                     msg: 'Nurse comments must be at most 300 characters long'
-                }   
+                }
             }
         },
-        
+
         hospital_id: {
             type: DataTypes.BIGINT,
             allowNull: false, // or false if required
@@ -54,9 +54,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, // or false if required
             validate: {
                 len: {
-                    args: [0, 300], 
+                    args: [0, 300],
                     msg: 'Hospital comments must be at most 300 characters long'
-                }   
+                }
             }
         },
 
@@ -97,6 +97,5 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: true,
         tableName: 'appointments', // Optional: useful for clarity and pluralization control
     });
-
     return Model;
 };

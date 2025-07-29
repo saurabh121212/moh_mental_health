@@ -52,5 +52,8 @@ router.get('/list-mobile', authMiddleware.authUser, SelfAssessmentTestController
 // This is used in Admin panel to get the list of Moods 
 router.get('/list', authMiddleware.authAdmin, SelfAssessmentTestController.get);
 
+// This is used to check the last self-assessment test of the user
+router.get('/last-self-assessment-test/:id', authMiddleware.authUser, SelfAssessmentTestController.getUserLastSelfAssessmentTest);
+
 
 module.exports = router;

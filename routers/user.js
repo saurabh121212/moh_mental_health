@@ -34,6 +34,10 @@ router.post('/login',[
 ], userController.loginUser);
 
 
+// Send OTP for registration to verify the user email
+router.post('/send_otp_email_verification', userController.sendOTPEmailVerification);
+
+
 // This is used to send OTP for forget password
 router.post('/send_otp_forget_password', userController.sendOTPForgetPassword);
 

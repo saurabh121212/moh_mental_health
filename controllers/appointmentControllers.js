@@ -1,8 +1,8 @@
 const BaseRepo = require('../services/BaseRepository');
-const { AppointmentModel,HospitalModel,UserModel } = require('../models');
+const { AppointmentModel, HospitalModel, UserModel } = require('../models');
 const { validationResult } = require('express-validator');
 const sendEmail = require('../mailer/mailerFile');
-const { decrypt} = require('../utils/crypto');
+const { decrypt } = require('../utils/crypto');
 
 
 module.exports.add = async (req, res, next) => {
@@ -19,9 +19,28 @@ module.exports.add = async (req, res, next) => {
 
     // console.log("check self_assessment_test_id value:", req.body.self_assessment_test_id);
 
-    if(req.body.is_with_test===false) req.body.is_with_test = true
-    else if(req.body.is_with_test===true){
-        req.body.is_with_test = false    
+    // Check if User has any conflicting appointments. any confirmed appointments which is 7days from requested booking date
+    let minDate = new Date(payload.appointment_date);
+    minDate.setDate(minDate.getDate() - 5);
+    const convertedMinDate = minDate.toISOString().split('T')[0];
+    
+    let maxDate = new Date(payload.appointment_date);
+    maxDate.setDate(maxDate.getDate() + 9);
+    const convertedMaxDate = maxDate.toISOString().split('T')[0];
+
+     //console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
+
+    const conflictCount = await BaseRepo.baseGetConflictingAppointments(AppointmentModel, convertedMinDate,convertedMaxDate, payload.user_id);
+    if (conflictCount > 0) {
+        //console.log('Booking not allowed: already a confirmed appointment within ±7 days.');
+        return res.status(400).json(
+            { error: 'Booking not allowed: already a confirmed appointment within ±7 days.' }
+        );
+    }
+
+    if (req.body.is_with_test === false) req.body.is_with_test = true
+    else if (req.body.is_with_test === true) {
+        req.body.is_with_test = false
         req.body.self_assessment_test_id = null
     }
 
@@ -90,7 +109,7 @@ module.exports.getMobile = async (req, res, next) => {
     }
 
     const params = {
-        searchParams: {user_id: userId},
+        searchParams: { user_id: userId },
         limit: limit,
         offset: offset,
         page: page,
@@ -164,7 +183,7 @@ module.exports.upcomingAppointments = async (req, res, next) => {
     }
 
     try {
-        const data = await BaseRepo.baseGetUpcomingAppointmentsFromUserDateTime( AppointmentModel, userId, date, time);
+        const data = await BaseRepo.baseGetUpcomingAppointmentsFromUserDateTime(AppointmentModel, userId, date, time);
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Appointment data' });
         }
@@ -181,7 +200,7 @@ module.exports.upcomingAppointments = async (req, res, next) => {
 module.exports.hospitalAllAppointmentsDetails = async (req, res, next) => {
 
     try {
-        const data = await BaseRepo.baseGetHospitalAppointmentsFullDetails(HospitalModel,AppointmentModel);
+        const data = await BaseRepo.baseGetHospitalAppointmentsFullDetails(HospitalModel, AppointmentModel);
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Hospital Appointments Details' });
         }
@@ -206,7 +225,7 @@ module.exports.hospitalAllAppointmentsList = async (req, res, next) => {
     console.log("Appointment Status:", appointment_status);
 
     const params = {
-        searchParams: { "hospital_id": hospitalId , "appointment_status": appointment_status },
+        searchParams: { "hospital_id": hospitalId, "appointment_status": appointment_status },
         limit: limit,
         offset: offset,
         page: page,
@@ -217,8 +236,47 @@ module.exports.hospitalAllAppointmentsList = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Appointments' });
         }
-        
+
         res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+module.exports.lastAppointmentCount = async (req, res, next) => {
+
+    const user_id = req.params.id;
+    try {
+        const data = await BaseRepo.baseGetAppointmentsCountByUserId(AppointmentModel, user_id);
+        console.log("Last Appointment Count Data:", data);
+        if (!data || data == 0) {
+            return res.status(201).json(
+                {
+                    message: 'No appointments found for this user',
+                    count: 0,
+                    bookAppointment: true
+                });
+        }
+        else if (data >= 2) {
+            return res.status(201).json(
+                {
+                    message: 'User has already booked 2 appointments. Cannot book more appointments.',
+                    count: data,
+                    bookAppointment: false
+                });
+        }
+        else if (data < 2) {
+            return res.status(201).json(
+                {
+                    message: 'User has less than or equal to 2 appointments',
+                    count: data,
+                    bookAppointment: true
+                });
+        }
     }
     catch (error) {
         console.error(error);

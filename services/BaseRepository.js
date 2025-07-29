@@ -27,7 +27,9 @@ module.exports = {
   baseGetMoodCountsByUser: getMoodCountsByUser,
   baseGetUpcomingAppointmentsFromUserDateTime: getUpcomingAppointmentsFromUserDateTime,
   baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails,
-  baseGetDashboardAverageFeedbackRatings: getDashboardAverageFeedbackRatings
+  baseGetDashboardAverageFeedbackRatings: getDashboardAverageFeedbackRatings,
+  baseGetAppointmentsCountByUserId: getAppointmentsCountByUserId,
+  baseGetConflictingAppointments: getConflictingAppointments
 };
 
 function create(modal, data) {
@@ -471,4 +473,31 @@ async function getHospitalAppointmentsFullDetails(HospitalModel, AppointmentMode
     raw: true
   });
   return hospitals;
+}
+
+
+async function getAppointmentsCountByUserId(AppointmentModel, userId) {
+  const totalAppointments = await AppointmentModel.count({
+    where: {
+      user_id: userId,
+      appointment_status: {
+        [Op.in]: ['scheduled', 'confirmed'],
+      },
+    },
+  });
+  return totalAppointments;
+}
+
+
+async function getConflictingAppointments(AppointmentModel,minDate, maxDate, userId) {
+  const conflictCount = await AppointmentModel.count({
+    where: {
+      user_id: userId,
+      appointment_status: 'confirmed',
+      appointment_date: {
+        [Op.between]: [minDate, maxDate],
+      },
+    },
+  });
+  return conflictCount;
 }

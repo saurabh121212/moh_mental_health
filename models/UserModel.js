@@ -44,26 +44,21 @@ module.exports = (sequelize, DataTypes) => {
         email_iv: DataTypes.STRING,        
         email_auth_tag: DataTypes.STRING,
 
-        national_id: {
+        email_login_key: {
+            type: DataTypes.STRING,
+            unique: true
+        },
+
+    national_id: {
             type: DataTypes.STRING(30),
             allowNull: true, // or false if required
         },
-        national_id_iv: DataTypes.STRING,        
-        national_id_auth_tag: DataTypes.STRING,
 
         ENC_number: {
             type: DataTypes.STRING(30),
             allowNull: true, // or false if required
         },
 
-        ENC_number_iv: DataTypes.STRING,        
-        ENC_number_auth_tag: DataTypes.STRING,
-
-
-        email_login_key: {
-            type: DataTypes.STRING,
-            unique: true
-        },
 
         alias_name: {
             type: DataTypes.STRING(20),

@@ -42,14 +42,7 @@ module.exports.registerUser = async (req, res, next) => {
     const encEmailiv = encEmail.iv;
     const encEmailauthTag = encEmail.authTag;
 
-    const encNationalId = encrypt(payload.national_id);
-    const encNationalIdiv = encNationalId.iv;
-    const encNationalIdauthTag = encNationalId.authTag;
-
-    const encEncNumber = encrypt(payload.ENC_number);
-    const encEncNumberiv = encEncNumber.iv;
-    const encEncNumberauthTag = encEncNumber.authTag;
-
+    
 
     // Store the login key in the database
     const loginKey = encryptEmailForLogin(payload.email, process.env.ENCRYPTION_KEY);
@@ -71,12 +64,8 @@ module.exports.registerUser = async (req, res, next) => {
             email: encEmail.encryptedData,
             email_iv: encEmailiv,
             email_auth_tag: encEmailauthTag,
-            national_id: encNationalId.encryptedData,
-            national_id_iv: encNationalIdiv,
-            national_id_auth_tag: encNationalIdauthTag,
-            ENC_number: encEncNumber.encryptedData,
-            ENC_number_iv: encEncNumberiv,
-            ENC_number_auth_tag: encEncNumberauthTag,
+            national_id: payload.national_id,
+            ENC_number: payload.ENC_number,
             password: hashedPassword,
             email_login_key: loginKey,
             alias_name: payload.alias_name,
@@ -133,9 +122,9 @@ module.exports.loginUser = async (req, res, next) => {
         return res.status(400).json({ error: 'Invalid email or password 2' });
     }
 
-    console.log("user id ", user.dataValues.id);
+   // console.log("user id ", user.dataValues.id);
     const id = user.dataValues.id;
-    const token = await user.generateAuthToken(); // ✅ instance method
+    const token = await user.generateAuthToken(); //  instance method
 
     // Update device information
     await BaseRepo.baseUpdate(UserModel, { id }, { device_id, device_type, device_token });
@@ -144,14 +133,16 @@ module.exports.loginUser = async (req, res, next) => {
     const last_name = decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag);
     const phone = decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag);
     const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
-    const national_id = decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag);
-    const ENC_number = decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag);
+    const national_id = user.dataValues.national_id;
+    const ENC_number = user.dataValues.ENC_number;
 
 
     res.status(200).json({
         message: 'User logged in successfully',
         data: {
-            first_name, last_name, phone, email: emailId, national_id, ENC_number,
+            first_name, last_name, phone, email: emailId, 
+            national_id, 
+            ENC_number,
             alias_name: user.dataValues.alias_name,
             system_generated_name: user.dataValues.system_generated_name,
             gender: user.dataValues.gender,
@@ -163,6 +154,32 @@ module.exports.loginUser = async (req, res, next) => {
         }, token
     });
 };
+
+
+module.exports.sendOTPEmailVerification = async (req, res, next) => {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+    const { email, otp } = req.body;
+    try {
+        const loginKey = encryptEmailForLogin(email, process.env.ENCRYPTION_KEY);
+        const isEmailExist = await UserModel.findOne({ where: { email_login_key: loginKey } });
+        if (isEmailExist) {
+            res.status(201).json({ message: 'User with this email is already registered please use a different email' });
+        }
+        // write send otp code here on email Id
+        sendEmail(otp, 6, email);
+        res.status(201).json({ message: 'OTP sent successfully to your email' });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
 
 
 module.exports.sendOTPForgetPassword = async (req, res, next) => {
@@ -232,8 +249,8 @@ module.exports.getUserDetails = async (req, res, next) => {
         const last_name = decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag);
         const phone = decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag);
         const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
-        const national_id = decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag);
-        const ENC_number = decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag);
+        const national_id = user.dataValues.national_id;
+        const ENC_number = user.dataValues.ENC_number;
 
         res.status(200).json({
             message: 'User Details fetched successfully',
@@ -287,8 +304,8 @@ module.exports.get = async (req, res, next) => {
                 last_name: decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag),
                 phone: decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag),
                 email: decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag),
-                national_id: decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag),
-                ENC_number: decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag),
+                national_id: user.dataValues.national_id,
+                ENC_number: user.dataValues.ENC_number,
                 alias_name: user.dataValues.alias_name,
                 gender: user.dataValues.gender,
                 region: user.dataValues.region,

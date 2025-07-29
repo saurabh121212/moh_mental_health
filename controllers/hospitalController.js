@@ -222,8 +222,8 @@ module.exports.getUserDetails = async (req, res, next) => {
         const last_name = decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag);
         const phone = decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag);
         const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
-        const national_id = decrypt(user.dataValues.national_id, user.dataValues.national_id_iv, user.dataValues.national_id_auth_tag);
-        const ENC_number = decrypt(user.dataValues.ENC_number, user.dataValues.ENC_number_iv, user.dataValues.ENC_number_auth_tag);
+        const national_id = user.dataValues.national_id;
+        const ENC_number = user.dataValues.ENC_number;
 
         res.status(200).json({
             message: 'User Details fetched successfully',
