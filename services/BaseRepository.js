@@ -29,7 +29,8 @@ module.exports = {
   baseGetHospitalAppointmentsFullDetails: getHospitalAppointmentsFullDetails,
   baseGetDashboardAverageFeedbackRatings: getDashboardAverageFeedbackRatings,
   baseGetAppointmentsCountByUserId: getAppointmentsCountByUserId,
-  baseGetConflictingAppointments: getConflictingAppointments
+  baseGetConflictingAppointments: getConflictingAppointments,
+  baseFindAllToken_User: findAllToken_User,
 };
 
 function create(modal, data) {
@@ -500,4 +501,17 @@ async function getConflictingAppointments(AppointmentModel,minDate, maxDate, use
     },
   });
   return conflictCount;
+}
+
+
+
+function findAllToken_User(modal) {
+  return modal.findAll({
+    attributes: ['device_token'],
+    where: {
+      device_token: {
+        [Sequelize.Op.ne]: null,
+      },
+    },
+  });
 }
