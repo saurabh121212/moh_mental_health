@@ -20,12 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT('long'),
             allowNull: true, // or false if required
-            validate: {
-                len: {
-                    args: [0, 1000], // min 3 chars, max 500 (optional)
-                    msg: 'Description must be at least 3 characters long and at most 1000 characters long'
-                }
-            }
         },
         isOnlyImage: {
             type: DataTypes.BOOLEAN,

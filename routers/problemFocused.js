@@ -11,10 +11,8 @@ router.post('/add',[
     .isLength({ min: 3, max: 100 })
     .withMessage('Name must be between 3 and 100 characters long'),
 
-    body('description')
-    .isLength({ min: 0, max: 1000 })
-    .withMessage('description max 1000 characters long'),
-
+    body('description'),
+   
     body('isOnlyImage')
     .isBoolean('isOnlyImage must be a boolean value'),
 
@@ -27,9 +25,7 @@ router.put('/update/:id',[
     .isLength({ min: 3, max: 100 })
     .withMessage('Name must be between 3 and 100 characters long'),
 
-    body('description')
-    .isLength({ min: 0, max: 1000 })
-    .withMessage('description max 1000 characters long'),
+    body('description'),
 
     body('isOnlyImage')
     .isBoolean('isOnlyImage must be a boolean value'),
