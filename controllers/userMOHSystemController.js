@@ -92,5 +92,7 @@ function cleanNurseData(data) {
         NurseName: data.NurseName.trim(),
         NurseSurname: data.NurseSurname.trim(),
         CadreTitle: data.CadreTitle.trim(),
+        phone: data.ContactNum.trim(),
+        email: data.Email.trim(),
     };
 }
