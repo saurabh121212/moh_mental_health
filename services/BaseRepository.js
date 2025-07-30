@@ -30,6 +30,7 @@ module.exports = {
   baseGetDashboardAverageFeedbackRatings: getDashboardAverageFeedbackRatings,
   baseGetAppointmentsCountByUserId: getAppointmentsCountByUserId,
   baseGetConflictingAppointments: getConflictingAppointments,
+  baseGetConflictingAppointmentsScheduled: getConflictingAppointmentsScheduled,
   baseFindAllToken_User: findAllToken_User,
 };
 
@@ -495,6 +496,21 @@ async function getConflictingAppointments(AppointmentModel,minDate, maxDate, use
     where: {
       user_id: userId,
       appointment_status: 'confirmed',
+      appointment_date: {
+        [Op.between]: [minDate, maxDate],
+      },
+    },
+  });
+  return conflictCount;
+}
+
+
+
+async function getConflictingAppointmentsScheduled(AppointmentModel,minDate, maxDate, userId) {
+  const conflictCount = await AppointmentModel.findOne({
+    where: {
+      user_id: userId,
+      appointment_status: 'scheduled',
       appointment_date: {
         [Op.between]: [minDate, maxDate],
       },

@@ -319,6 +319,24 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         if (payload.appointment_status === 'confirmed') {
             // Send a appointment confirmation Email to the user
             sendEmail(appointmentDetails, 4, emailId);
+
+
+             // Check if User has any conflicting appointments. any Scheduled or confirmed appointments within ± 7 days from confirmed booking date
+                let minDate = new Date(data.dataValues.appointment_date);
+                minDate.setDate(minDate.getDate() - 5);
+                const convertedMinDate = minDate.toISOString().split('T')[0];
+            
+                let maxDate = new Date(data.dataValues.appointment_date);
+                maxDate.setDate(maxDate.getDate() + 9);
+                const convertedMaxDate = maxDate.toISOString().split('T')[0];
+            
+                //console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
+            
+                const conflictAppointment = await BaseRepo.baseGetConflictingAppointmentsScheduled(AppointmentModel, convertedMinDate, convertedMaxDate, data.dataValues.user_id);
+                if (!conflictAppointment) {
+                    //console.log('Booking not allowed: already a confirmed appointment within ±7 days.');
+                    console.log("conflictAppointment details:", conflictAppointment);
+                }
         }
         else if (payload.appointment_status === 'cancelled') {
             // Send a appointment cancellation Email to the user
