@@ -293,12 +293,14 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
     const id = req.params.id;
 
     try {
-        const data = await BaseRepo.baseUpdate(AppointmentModel, { id }, payload);
-        if (!data) {
+        const data2 = await BaseRepo.baseUpdate(AppointmentModel, { id }, payload);
+        if (!data2) {
             return res.status(400).json({ error: 'Error updating Appointment' });
         }
 
-        console.log("data value ", data.dataValues.user_id);
+        // Get Appointment details
+        const data = await BaseRepo.baseFindById(AppointmentModel, id, "id");
+
 
         // find the user email according to user_id
         const user = await BaseRepo.baseFindById(UserModel, data.dataValues.user_id, "id");
@@ -320,23 +322,43 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             // Send a appointment confirmation Email to the user
             sendEmail(appointmentDetails, 4, emailId);
 
+            console.log("Inside confirmed appointment status");
 
-             // Check if User has any conflicting appointments. any Scheduled or confirmed appointments within ± 7 days from confirmed booking date
-                let minDate = new Date(data.dataValues.appointment_date);
-                minDate.setDate(minDate.getDate() - 5);
-                const convertedMinDate = minDate.toISOString().split('T')[0];
-            
-                let maxDate = new Date(data.dataValues.appointment_date);
-                maxDate.setDate(maxDate.getDate() + 9);
-                const convertedMaxDate = maxDate.toISOString().split('T')[0];
-            
-                //console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
-            
-                const conflictAppointment = await BaseRepo.baseGetConflictingAppointmentsScheduled(AppointmentModel, convertedMinDate, convertedMaxDate, data.dataValues.user_id);
-                if (!conflictAppointment) {
-                    //console.log('Booking not allowed: already a confirmed appointment within ±7 days.');
-                    console.log("conflictAppointment details:", conflictAppointment);
+            // Check if User has any conflicting appointments. any Scheduled or confirmed appointments within ± 7 days from confirmed booking date
+            let minDate = new Date(data.dataValues.appointment_date);
+            minDate.setDate(minDate.getDate() - 5);
+            const convertedMinDate = minDate.toISOString().split('T')[0];
+
+            let maxDate = new Date(data.dataValues.appointment_date);
+            maxDate.setDate(maxDate.getDate() + 9);
+            const convertedMaxDate = maxDate.toISOString().split('T')[0];
+
+            console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
+
+            let conflictAppointment = await BaseRepo.baseGetConflictingAppointmentsScheduled(AppointmentModel, convertedMinDate, convertedMaxDate, data.dataValues.user_id);
+            if (conflictAppointment) {
+                //console.log('Booking not allowed: already a confirmed appointment within ±7 days.');
+                // console.log("conflictAppointment details:", conflictAppointment);
+                conflictAppointment = conflictAppointment.dataValues;
+                const appointmentId = conflictAppointment.id;
+
+                payload.appointment_status = 'cancelled';
+                payload.hospital_comments = `Appointment cancelled due to conflicting appointment. one of your appointment is already confirmed. `;
+
+                const appointmentData = await BaseRepo.baseUpdate(AppointmentModel, { id: appointmentId }, payload);
+                if (!appointmentData) {
+                    console.error('Error updating Appointment with conflict ');
                 }
+                console.log("One of your appointment is already confirmed. Appointment cancelled due to conflicting appointment. Email sent to the user.");
+
+                const appointmentDetails2 = {
+                    appointment_date: conflictAppointment.appointment_date,
+                    appointment_time: conflictAppointment.appointment_time,
+                    hospital_name: conflictAppointment.hospital_name,
+                };
+
+                sendEmail(appointmentDetails2, 5, emailId);
+            }
         }
         else if (payload.appointment_status === 'cancelled') {
             // Send a appointment cancellation Email to the user

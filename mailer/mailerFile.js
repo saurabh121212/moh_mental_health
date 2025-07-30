@@ -36,7 +36,7 @@ async function sendEmail(payload,status,email,password) {
     }
     if(status==5)
     {
-         subject = `Appointment Booking Acknowledgement`
+         subject = `Appointment Booking Cancellation`
          output = emailTemplate.appointmentCancellationTemplate(payload);
     }
     if(status==6)
