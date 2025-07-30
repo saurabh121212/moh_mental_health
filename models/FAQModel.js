@@ -18,14 +18,8 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         answer: {
-            type: DataTypes.STRING('600'),
-            allowNull: false, // or false if required
-            validate: {
-                len: {
-                    args: [3, 600], // min 3 chars, max 500 (optional)
-                    msg: 'Answer must be at least 3 characters long and at most 1200 characters long'
-                }
-            }
+            type: DataTypes.TEXT('long'),
+            allowNull: false, // or false if required 
         },
 
     }, {
