@@ -38,11 +38,11 @@ module.exports.add = async (req, res, next) => {
         );
     }
 
-    if (req.body.is_with_test === false) req.body.is_with_test = true
-    else if (req.body.is_with_test === true) {
-        req.body.is_with_test = false
-        req.body.self_assessment_test_id = null
-    }
+    // if (req.body.is_with_test === false) req.body.is_with_test = true
+    // else if (req.body.is_with_test === true) {
+    //     req.body.is_with_test = false
+    //     req.body.self_assessment_test_id = null
+    // }
 
     try {
         const data = await BaseRepo.baseCreate(AppointmentModel, payload);
