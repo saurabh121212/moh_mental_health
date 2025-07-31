@@ -310,6 +310,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             return res.status(400).json({ error: 'Error fetching User Details' });
         }
         const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+        const tokens = user.dataValues.device_token;
 
         // Collect appointment details in a variable.
         const appointmentDetails = {
@@ -317,6 +318,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             appointment_time: data.dataValues.appointment_time,
             hospital_name: data.dataValues.hospital_name,
         };
+
 
 
         // check if appointment_status is confirmed or cancelled and then apply the condition
