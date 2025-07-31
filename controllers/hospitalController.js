@@ -310,8 +310,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             return res.status(400).json({ error: 'Error fetching User Details' });
         }
         const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
-        const tokens = user.dataValues.device_token;
-        console.log("tokens 1", tokens);
+        const token = user.dataValues.device_token;
 
         // Collect appointment details in a variable.
         const appointmentDetails = {
@@ -327,7 +326,6 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             // Send a appointment confirmation Email to the user
             sendEmail(appointmentDetails, 4, emailId);
             // Send a appointment confirmation Notification to the user
-            console.log("tokens 2", tokens);
             const message = {
                 notification: {
                     title: "Appointment Confirmed",
@@ -336,7 +334,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 data: {
                     notificationType: "appointment",
                 },
-                tokens,
+                token,
             };
             try {
                 const response = await admin.messaging().send(message);
@@ -389,7 +387,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                     data: {
                         notificationType: "appointment",
                     },
-                    tokens,
+                    token,
                 };
                 try {
                     const response = await admin.messaging().send(message);
@@ -411,7 +409,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 data: {
                     notificationType: "appointment",
                 },
-                tokens,
+                token,
             };
             try {
                 const response = await admin.messaging().send(message);
