@@ -336,8 +336,12 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 },
                 tokens,
             };
-            await sendNotification(message);
-
+            try {
+                const response = await admin.messaging().send(message);
+                console.info('✅ Notification sent successfully:', response);
+            } catch (error) {
+                console.error('❌ Error sending notification:', error.message);
+            }
             //console.log("Inside confirmed appointment status");
 
             // Check if User has any conflicting appointments. any Scheduled or confirmed appointments within ± 7 days from confirmed booking date
@@ -385,8 +389,12 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                     },
                     tokens,
                 };
-                await sendNotification(message);
-
+                try {
+                    const response = await admin.messaging().send(message);
+                    console.info('✅ Notification sent successfully:', response);
+                } catch (error) {
+                    console.error('❌ Error sending notification:', error.message);
+                }
             }
         }
         else if (payload.appointment_status === 'cancelled') {
@@ -403,8 +411,12 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 },
                 tokens,
             };
-            await sendNotification(message);
-
+            try {
+                const response = await admin.messaging().send(message);
+                console.info('✅ Notification sent successfully:', response);
+            } catch (error) {
+                console.error('❌ Error sending notification:', error.message);
+            }
         }
 
         res.status(201).json({
