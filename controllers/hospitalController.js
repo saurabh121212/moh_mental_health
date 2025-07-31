@@ -6,6 +6,8 @@ const crypto = require('crypto');
 const sendEmail = require('../mailer/mailerFile');
 const { Op } = require('sequelize');
 const e = require('express');
+const sendNotification = require('../firebase/sendNotification');
+const admin = require('firebase-admin');
 
 
 module.exports.add = async (req, res, next) => {
@@ -321,8 +323,20 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         if (payload.appointment_status === 'confirmed') {
             // Send a appointment confirmation Email to the user
             sendEmail(appointmentDetails, 4, emailId);
+            // Send a appointment confirmation Notification to the user
+            const message = {
+                notification: {
+                    title: "Appointment Confirmed",
+                    body: `Your appointment with ${data.dataValues.hospital_name} on ${data.dataValues.appointment_date} at ${data.dataValues.appointment_time} has been confirmed by the hospital.`,
+                },
+                data: {
+                    notificationType: "appointment",
+                },
+                tokens,
+            };
+            await sendNotification(message);
 
-            console.log("Inside confirmed appointment status");
+            //console.log("Inside confirmed appointment status");
 
             // Check if User has any conflicting appointments. any Scheduled or confirmed appointments within ± 7 days from confirmed booking date
             let minDate = new Date(data.dataValues.appointment_date);
@@ -333,7 +347,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             maxDate.setDate(maxDate.getDate() + 9);
             const convertedMaxDate = maxDate.toISOString().split('T')[0];
 
-            console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
+            //console.log("minDate:", convertedMinDate, "maxDate:", convertedMaxDate);
 
             let conflictAppointment = await BaseRepo.baseGetConflictingAppointmentsScheduled(AppointmentModel, convertedMinDate, convertedMaxDate, data.dataValues.user_id);
             if (conflictAppointment) {
@@ -358,11 +372,37 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 };
 
                 sendEmail(appointmentDetails2, 5, emailId);
+                // Send Notification to the user 
+                const message = {
+                    notification: {
+                        title: "Conflicting Appointment Cancelled",
+                        body: "One of your appointments has already been confirmed within the last 7 days. Therefore, another appointment has been cancelled.",
+                    },
+                    data: {
+                        notificationType: "appointment",
+                    },
+                    tokens,
+                };
+                await sendNotification(message);
+
             }
         }
         else if (payload.appointment_status === 'cancelled') {
             // Send a appointment cancellation Email to the user
             sendEmail(appointmentDetails, 5, emailId);
+            // Send a appointment cancellation Notification to the user
+            const message = {
+                notification: {
+                    title: "Appointment Cancelled",
+                    body: `Your appointment with ${data.dataValues.hospital_name} on ${data.dataValues.appointment_date} at ${data.dataValues.appointment_time} has been cancelled by the hospital.`,
+                },
+                data: {
+                    notificationType: "appointment",
+                },
+                tokens,
+            };
+            await sendNotification(message);
+
         }
 
         res.status(201).json({
