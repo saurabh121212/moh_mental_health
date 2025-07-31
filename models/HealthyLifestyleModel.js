@@ -9,13 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: {
             type: DataTypes.STRING(100),
-            allowNull: false, // or false if required
-            validate: {
-                len: {
-                    args: [3, 100], // min 3 chars, max 500 (optional)
-                    msg: 'Name must be at least 3 characters long and at most 100 characters long'
-                }
-            }
+            allowNull: true, // or false if required
         },
         description: {
             type: DataTypes.TEXT('long'),

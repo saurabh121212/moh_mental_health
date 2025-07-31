@@ -9,29 +9,19 @@ const authMiddleware = require('../middleware/auth.middleware');
 // This is user to add Problem Focused Strategies to the database
 // It validates the input data and then calls the controller to add the data
 router.post('/add',[
-    body('name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Name must be between 3 and 100 characters long'),
-
+    body('name'),
     body('description'),
-
     body('isOnlyImage')
     .isBoolean('isOnlyImage must be a boolean value'),
-
     body('url')    
 ],authMiddleware.authAdmin, EducationResourcesController.add);
 
 // This is used to update Problem Focused Strategies in the database
 router.put('/update/:id',[
-    body('name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Name must be between 3 and 100 characters long'),
-
+    body('name'),
     body('description'),
-
     body('isOnlyImage')
     .isBoolean('isOnlyImage must be a boolean value'),
-
     body('url')   
 ] ,authMiddleware.authAdmin, EducationResourcesController.update);
 

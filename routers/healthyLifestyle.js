@@ -7,9 +7,7 @@ const authMiddleware = require('../middleware/auth.middleware');
 // This is user to add Healthy Lifestyle Strategies to the database
 // It validates the input data and then calls the controller to add the data
 router.post('/add',[
-    body('name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Name must be between 3 and 100 characters long'),
+    body('name'),
 
     body('description').notEmpty().withMessage('Description is required'),
 
@@ -21,10 +19,8 @@ router.post('/add',[
 
 // This is used to update Healthy Lifestyle Strategies in the database
 router.put('/update/:id',[
-    body('name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Name must be between 3 and 100 characters long'),
-
+    body('name'),
+    
     body('description').notEmpty().withMessage('Description is required'),
 
     body('isOnlyImage')
