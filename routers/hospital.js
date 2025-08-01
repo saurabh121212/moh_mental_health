@@ -116,6 +116,14 @@ router.put('/accept-reject-appointment/:id',
     authMiddleware.authHospital, HospitalController.acceptRejectAppointment);
 
 
+// This is used to Complete an appointment
+router.put('/completed-appointment-hospital/:id',
+    body('appointment_status')
+        .isIn(['completed'])
+        .withMessage('Appointment status must be completed only'),
+    authMiddleware.authHospital, HospitalController.acceptRejectAppointment);    
+    
+
 // This is used when a hospital reject an appointment and add comments
 router.put('/reject-appointment-comments/:id',
     body('hospital_comments').optional().isLength({ max: 300 }).withMessage('Hospital comments must be at most 300 characters long'),
@@ -140,5 +148,7 @@ router.get('/get-assessment-test-single-detail/:id', authMiddleware.authHospital
 
 // This is same as the above one but this is used in Admin panel
 router.get('/get-assessment-test-single-detail-v2/:id', authMiddleware.authAdmin, HospitalController.getAssessmentTestDetailsSingle);
+
+
 
 module.exports = router;
