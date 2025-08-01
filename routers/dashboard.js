@@ -31,4 +31,7 @@ router.get('/total-users-appointment-status-wise/',authMiddleware.authAdmin,Dash
 // Route to get Feedback graph data for the dashboard
 router.get('/feedback-graph-data/',authMiddleware.authAdmin,DashboardController.getFeedbackGraphData);
 
+// send notification to All the users 
+router.get('/send-notification-all-users/',authMiddleware.authAdmin,DashboardController.sendNotificationAllUsers);
+
 module.exports = router;

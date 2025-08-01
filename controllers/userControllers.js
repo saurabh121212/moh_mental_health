@@ -3,8 +3,7 @@ const { UserModel } = require('../models');
 const { validationResult } = require('express-validator');
 const { encrypt, decrypt, encryptEmailForLogin } = require('../utils/crypto');
 const sendEmail = require('../mailer/mailerFile');
-const sendNotification = require('../firebase/sendNotification');
-const admin = require('firebase-admin');
+
 
 
 module.exports.registerUser = async (req, res, next) => {
@@ -317,9 +316,6 @@ module.exports.get = async (req, res, next) => {
             };
         });
 
-        // Send notification to all users
-        sendNotificationToAllUsers("Emoji Testing", "This is emoji testing notification image is coming soon");
-
         res.status(200).json({
             message: 'Users fetched successfully',
             data: decryptedUsers,
@@ -396,46 +392,3 @@ function generateRandomUsername(name) {
 }
 
 
-async function sendNotificationToAllUsers(name, description) {
-    try {
-        const users = await BaseRepo.baseFindAllToken_User(UserModel);
-        const allTokens = users.map(user => user.device_token).filter(Boolean);
-        console.info(`📦 Found ${allTokens.length} valid FCM tokens`);
-        const tokenChunks = chunkArray(allTokens, 500); // Firebase limit
-
-        for (let i = 0; i < tokenChunks.length; i++) {
-            const tokens = tokenChunks[i];
-            const message = {
-                notification: {
-                    title: name,
-                    body: description,
-                    image: 'http://13.50.85.148:3002/healthy-lifestyle/1753807074786-mood2.png',
-                },
-                data: {
-                    notificationType: "mood",
-                },
-                tokens,
-            };
-
-            try {
-                console.info(`🚀 Sending batch ${i + 1}/${tokenChunks.length}`);
-                await sendNotification(message);
-            } catch (batchError) {
-                console.error(`❌ Error in batch ${i + 1}:`, batchError.message);
-            }
-        }
-
-        console.info('✅ All notifications sent');
-    } catch (err) {
-        console.error('❌ Failed to send notifications:', err.message);
-    }
-}
-
-// Split an array into chunks
-function chunkArray(array, size) {
-    const result = [];
-    for (let i = 0; i < array.length; i += size) {
-        result.push(array.slice(i, i + size));
-    }
-    return result;
-}

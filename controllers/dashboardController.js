@@ -1,7 +1,8 @@
 const BaseRepo = require('../services/BaseRepository');
 const { UserModel, SelfAssessmentTestModel,AppointmentModel,FeedbackModel } = require('../models');
 const { validationResult } = require('express-validator');
-
+const sendNotification = require('../firebase/sendNotification');
+const admin = require('firebase-admin');
 
 
 module.exports.getDashboardTotalData = async (req, res, next) => {
@@ -201,4 +202,66 @@ module.exports.getFeedbackGraphData = async (req, res, next) => {
     console.error(error);
     return res.status(500).json({ error: 'Internal server error' });
   }
+}
+
+
+module.exports.sendNotificationAllUsers = async (req, res, next) => {
+
+  try {
+    await sendNotificationToAllUsers("Emoji Testing", "This is emoji testing notification image is coming soon");
+
+    res.status(201).json({
+      message: 'Notification sent successfully to all users',
+    });
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+async function sendNotificationToAllUsers(name, description) {
+    try {
+        const users = await BaseRepo.baseFindAllToken_User(UserModel);
+        const allTokens = users.map(user => user.device_token).filter(Boolean);
+        console.info(`📦 Found ${allTokens.length} valid FCM tokens`);
+        const tokenChunks = chunkArray(allTokens, 500); // Firebase limit
+
+        for (let i = 0; i < tokenChunks.length; i++) {
+            const tokens = tokenChunks[i];
+            const message = {
+                notification: {
+                    title: name,
+                    body: description,
+                    image: 'http://13.50.85.148:3002/healthy-lifestyle/1753807074786-mood2.png',
+                },
+                data: {
+                    notificationType: "mood",
+                },
+                tokens,
+            };
+
+            try {
+                console.info(`🚀 Sending batch ${i + 1}/${tokenChunks.length}`);
+                await sendNotification(message);
+            } catch (batchError) {
+                console.error(`❌ Error in batch ${i + 1}:`, batchError.message);
+            }
+        }
+
+        console.info('✅ All notifications sent');
+    } catch (err) {
+        console.error('❌ Failed to send notifications:', err.message);
+    }
+}
+
+
+// Split an array into chunks
+function chunkArray(array, size) {
+    const result = [];
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+    }
+    return result;
 }
