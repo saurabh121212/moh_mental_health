@@ -208,7 +208,7 @@ module.exports.getFeedbackGraphData = async (req, res, next) => {
 module.exports.sendNotificationAllUsers = async (req, res, next) => {
 
   try {
-    await sendNotificationToAllUsers("Emoji Testing", "This is emoji testing notification image is coming soon");
+    await sendNotificationToAllUsers("", "");
 
     res.status(201).json({
       message: 'Notification sent successfully to all users',
