@@ -74,8 +74,6 @@ module.exports.getTotalMaleFemaleUsersRegionWise = async (req, res, next) => {
 
 
 
-
-
 module.exports.getDashboardTotalMaleFemaleData = async (req, res, next) => {
 
   try {
@@ -180,7 +178,6 @@ module.exports.getTotalUsersAppointmentStatusWise = async (req, res, next) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
-
 
 
 module.exports.getFeedbackGraphData = async (req, res, next) => {

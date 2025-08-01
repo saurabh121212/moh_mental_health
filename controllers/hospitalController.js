@@ -314,12 +314,10 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
 
         // Collect appointment details in a variable.
         const appointmentDetails = {
-            appointment_date: data.dataValues.appointment_date,
+            appointment_date: data.dataValues.appointment_date.split('T')[0],
             appointment_time: data.dataValues.appointment_time,
             hospital_name: data.dataValues.hospital_name,
         };
-
-
 
         // check if appointment_status is confirmed or cancelled and then apply the condition
         if (payload.appointment_status === 'confirmed') {
@@ -329,7 +327,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             const message = {
                 notification: {
                     title: "Appointment Confirmed",
-                    body: `Your appointment with ${data.dataValues.hospital_name} on ${data.dataValues.appointment_date} at ${data.dataValues.appointment_time} has been confirmed by the hospital.`,
+                    body: `Your appointment with ${data.dataValues.hospital_name} on ${data.dataValues.appointment_date.split('T')[0]} at ${data.dataValues.appointment_time} has been confirmed by the hospital.`,
                 },
                 data: {
                     notificationType: "appointment",
@@ -372,7 +370,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 console.log("One of your appointment is already confirmed. Appointment cancelled due to conflicting appointment. Email sent to the user.");
 
                 const appointmentDetails2 = {
-                    appointment_date: conflictAppointment.appointment_date,
+                    appointment_date: conflictAppointment.appointment_date.split('T')[0],
                     appointment_time: conflictAppointment.appointment_time,
                     hospital_name: conflictAppointment.hospital_name,
                 };
@@ -404,7 +402,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             const message = {
                 notification: {
                     title: "Appointment Cancelled",
-                    body: `Your appointment with ${data.dataValues.hospital_name} on ${data.dataValues.appointment_date} at ${data.dataValues.appointment_time} has been cancelled by the hospital.`,
+                    body: `Your appointment with ${data.dataValues.hospital_name} on ${data.dataValues.appointment_date.split('T')[0]} at ${data.dataValues.appointment_time} has been cancelled by the hospital.`,
                 },
                 data: {
                     notificationType: "appointment",
