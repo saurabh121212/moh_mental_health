@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 100], // min 3 chars, max 500 (optional)
+                    args: [3, 50], // min 3 chars, max 500 (optional)
                     msg: 'Name must be at least 3 characters long and at most 50 characters long'
                 }
             }
@@ -41,12 +41,12 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         phone_number: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(40),
             allowNull: true, // or false if required
             validate: {
                 len: {
-                    args: [0, 20], // min 3 chars, max 500 (optional)
-                    msg: 'Phone number must be at most 20 characters long'
+                    args: [0, 40], // min 3 chars, max 500 (optional)
+                    msg: 'Phone number must be at most 40 characters long'
                 }
             }
         },

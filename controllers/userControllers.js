@@ -113,14 +113,14 @@ module.exports.loginUser = async (req, res, next) => {
 
     const user = await UserModel.findOne({ where: { email_login_key: loginKey } });
     if (!user) {
-        return res.status(400).json({ error: 'Invalid email or password 1' });
+        return res.status(400).json({ error: 'Please check your email and password and try again.' });
     }
 
     // console.log("user 1", user);
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-        return res.status(400).json({ error: 'Invalid email or password 2' });
+        return res.status(400).json({ error: 'Please check your email and password and try again.' });
     }
 
     // console.log("user id ", user.dataValues.id);

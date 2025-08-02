@@ -8,8 +8,8 @@ const authMiddleware = require('../middleware/auth.middleware');
 // It validates the input data and then calls the controller to add the data
 router.post('/add', [
     body('name')
-        .isLength({ min: 3, max: 100 })
-        .withMessage('Name must be between 3 and 100 characters long'),
+        .isLength({ min: 3, max: 50 })
+        .withMessage('Name must be between 3 and 50 characters long'),
 
     body('services')
         .isLength({ min: 0, max: 100 })
@@ -47,8 +47,8 @@ router.post('/add', [
 // This is used to update Hospital in the database
 router.put('/update/:id', [
     body('name')
-        .isLength({ min: 3, max: 100 })
-        .withMessage('Name must be between 3 and 100 characters long'),
+        .isLength({ min: 3, max: 50 })
+        .withMessage('Name must be between 3 and 50 characters long'),
 
     body('services')
         .isLength({ min: 0, max: 100 })
@@ -149,6 +149,15 @@ router.get('/get-assessment-test-single-detail/:id', authMiddleware.authHospital
 // This is same as the above one but this is used in Admin panel
 router.get('/get-assessment-test-single-detail-v2/:id', authMiddleware.authAdmin, HospitalController.getAssessmentTestDetailsSingle);
 
+
+// This API is used to send an OTP to the user's email address for password reset
+router.put('/forget-password-send-otp/:email',[], HospitalController.forgetPasswordSendEmail);
+
+// This API is used to verify the OTP sent to the user's email address for password reset
+router.put('/forget-password-otp-verify/:email/:otp',[], HospitalController.forgetPasswordVerifyOTP);
+
+// This API is used to reset the user's password after verifying the OTP
+router.put('/forget-password/:email/:password',[], HospitalController.forgetPassword);
 
 
 module.exports = router;

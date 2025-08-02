@@ -623,3 +623,109 @@ module.exports.getAssessmentTestDetailsSingle = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+module.exports.forgetPasswordSendEmail = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+
+    let payload;
+    const email = req.params.email;
+
+    const isEmailExist = await HospitalModel.findOne({ where: { email: email } });
+    if (!isEmailExist) {
+        return res.status(400).json({ error: 'Invalid email address' });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp_expiry = new Date(Date.now() + 10 * 60000); // 10 minutes from now
+
+    payload = { otp: otp, otp_expiry: otp_expiry };
+
+    try {
+        const Hospital = await BaseRepo.baseUpdate(HospitalModel, { email }, payload);
+        if (!Hospital) {
+            return res.status(400).json({ error: 'Error updating Your Password' });
+        }
+
+        // Send email to the user
+        sendEmail(payload, 1, email);
+
+        res.status(201).json({
+            message: 'OTP sent successfully',
+            data: Hospital
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+module.exports.forgetPasswordVerifyOTP = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+
+    let payload;
+    const email = req.params.email;
+    const otp = req.params.otp;
+
+    try {
+        const record = await HospitalModel.findOne({ where: { email: email, otp: otp } });
+        if (!record || record.otp_expiry < new Date()) {
+            return res.status(400).json({ message: "Invalid or expired OTP" });
+        }
+        res.status(201).json({
+            message: 'OTP verified successfully',
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+module.exports.forgetPassword = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+
+    let payload;
+    const email = req.params.email;
+    const password = req.params.password;
+
+
+    const isEmailExist = await HospitalModel.findOne({ where: { email: email } });
+    if (!isEmailExist) {
+        return res.status(400).json({ error: 'Invalid email address' });
+    }
+    
+    const hashedPassword = await HospitalModel.hashPassword(password.toString());
+    payload = { password: hashedPassword, otp: null, otp_expiry: null };
+
+    try {
+        const Hospital = await BaseRepo.baseUpdate(HospitalModel, { email }, payload);
+        if (!Hospital) {
+            return res.status(400).json({ error: 'Error Updating Your Password' });
+        }
+
+        res.status(201).json({
+            message: 'Reset password successfully',
+            data: Hospital
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 100], // min 3 chars, max 500 (optional)
+                    args: [3, 50], // min 3 chars, max 500 (optional)
                     msg: 'Name must be at least 3 characters long and at most 50 characters long'
                 }
             }
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
                 len: {
                     args: [0, 80], // min 3 chars, max 500 (optional)
                     msg: 'City must be at most 80 characters long'
-                }       
+                }
             }
         },
 
@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
-         operating_days: {
+        operating_days: {
             type: DataTypes.STRING(150),
             allowNull: true, // or false if required
             validate: {
@@ -97,7 +97,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
-        operating_hours : {
+        operating_hours: {
             type: DataTypes.STRING(150),
             allowNull: true, // or false if required
             validate: {
@@ -123,24 +123,31 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(300),
             allowNull: false, // or false if required
         },
-        
+        otp: {
+            type: DataTypes.STRING(20),
+            allowNull: true, // or false if required
+        },
+        otp_expiry: {
+            type: DataTypes.DATE,
+            allowNull: true, // or false if required
+        },
     }, {
         paranoid: true,
         timestamps: true,
         tableName: 'hospitals', // Optional: useful for clarity and pluralization control
-        });
+    });
 
-         Model.prototype.generateAuthToken = function () {
-            return jwt.sign({ id: this.id }, process.env.JWT_SECRET_HOSPITAL, { expiresIn: '24h' });
-        };
-    
-        Model.prototype.comparePassword = async function (password) {
-            return  bcrypt.compare(password, this.password);
-        };
-    
-        Model.hashPassword = async function (password) {
-            return await bcrypt.hash(password, 10);
-        };
+    Model.prototype.generateAuthToken = function () {
+        return jwt.sign({ id: this.id }, process.env.JWT_SECRET_HOSPITAL, { expiresIn: '24h' });
+    };
+
+    Model.prototype.comparePassword = async function (password) {
+        return bcrypt.compare(password, this.password);
+    };
+
+    Model.hashPassword = async function (password) {
+        return await bcrypt.hash(password, 10);
+    };
 
     return Model;
 };

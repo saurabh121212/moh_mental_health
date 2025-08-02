@@ -10,32 +10,8 @@ const authMiddleware = require('../middleware/auth.middleware');
 // It validates the input data and then calls the controller to add the data
 router.post('/add',[
     body('name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Name must be between 3 and 100 characters long'),
-
-   body('services')
-    .isLength({ min: 0, max: 100 })
-    .withMessage('services max 100 characters long'),
-
-   body('address')
-    .isLength({ min: 0, max: 50 })
-    .withMessage('services max 50 characters long'),
-    
-
-    body('phone_number')
-    .isLength({ min: 0, max: 20 })
-    .withMessage('Phone number max 20 characters long'),
-
-    body('category_id'),
-    body('category_name'),  
-    body('category_url')
-], authMiddleware.authAdmin, EmergencyResourcesController.add);
-
-// This is used to update Emergency Resources in the database
-router.put('/update/:id',[
-    body('name')
-    .isLength({ min: 3, max: 100 })
-    .withMessage('Name must be between 3 and 100 characters long'),
+    .isLength({ min: 3, max: 50 })
+    .withMessage('Name must be between 3 and 50 characters long'),
 
    body('services')
     .isLength({ min: 0, max: 100 })
@@ -47,8 +23,32 @@ router.put('/update/:id',[
     
 
     body('phone_number')
-    .isLength({ min: 0, max: 20 })
-    .withMessage('Phone number max 20 characters long'),
+    .isLength({ min: 0, max: 40 })
+    .withMessage('Phone number max 40 characters long'),
+
+    body('category_id'),
+    body('category_name'),  
+    body('category_url')
+], authMiddleware.authAdmin, EmergencyResourcesController.add);
+
+// This is used to update Emergency Resources in the database
+router.put('/update/:id',[
+    body('name')
+    .isLength({ min: 3, max: 50 })
+    .withMessage('Name must be between 3 and 50 characters long'),
+
+   body('services')
+    .isLength({ min: 0, max: 100 })
+    .withMessage('services max 100 characters long'),
+
+   body('address')
+    .isLength({ min: 0, max: 80 })
+    .withMessage('services max 80 characters long'),
+    
+
+    body('phone_number')
+    .isLength({ min: 0, max: 40 })
+    .withMessage('Phone number max 40 characters long'),
 
     body('category_id'),
     body('category_name'),  
