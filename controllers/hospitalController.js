@@ -652,7 +652,7 @@ module.exports.forgetPasswordSendEmail = async (req, res, next) => {
         }
 
         // Send email to the user
-        sendEmail(payload, 1, email);
+        sendEmail(payload.otp, 1, email);
 
         res.status(201).json({
             message: 'OTP sent successfully',
