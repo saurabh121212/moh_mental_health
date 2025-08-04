@@ -1,5 +1,4 @@
 
-
 // Password Reset Email
 const passwordResetOTPSend = (payload, email) =>
     `<html>
@@ -16,11 +15,10 @@ const passwordResetOTPSend = (payload, email) =>
     <p>This OTP is valid for 10 minutes. Please do not share this code with anyone.</p>
     <p>If you did not request this, please ignore this email.</p>
 
-    <br><br>
+    <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Mental Health Admin
+    Eswatini Nursing Council Admin
     <br><br>
-    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
     Email: To be added later<br>
     Tel: To be added later<br>
     Fax: To be added later<br>
@@ -33,14 +31,14 @@ const passwordResetOTPSend = (payload, email) =>
 
 // Hospital Registration Email Template
 // This is use to send email to the hospital at the time of registration by MOH Admin
-   const hospitalRegisteredTemplate = (payload,password) =>
-   `<html>
+const hospitalRegisteredTemplate = (payload, password) =>
+    `<html>
     <head>
         <title></title>
     </head>
     <body>
         <b>Dear ${payload.name || 'User'},</b> <br>
-        <p>We are pleased to inform you that the system administrator has registered your hospital on the MOH Platform.</p> 
+        <p>We are pleased to inform you that the system administrator has registered your hospital on the Eswatini Nursing Council Platform.</p> 
         <p>Please use the following credentials to log in and verify your hospital details:</p>
         <ul>
             <li><b>Username:</b> ${payload.email}</li>
@@ -50,11 +48,10 @@ const passwordResetOTPSend = (payload, email) =>
         <p>If you have any questions or require further assistance, please feel free to reach out.</p>
         <p>Welcome aboard!</p>
         
-         <br><br>
+    <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Mental Health Admin
+    Eswatini Nursing Council Admin
     <br><br>
-    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
     Email: To be added later<br>
     Tel: To be added later<br>
     Fax: To be added later<br>
@@ -65,9 +62,9 @@ const passwordResetOTPSend = (payload, email) =>
     </html>
     `
 
-    
-const appointmentBookingTemplate = (payload) => 
-  `<html>
+
+const appointmentBookingTemplate = (payload) =>
+    `<html>
     <head>
         <title>Appointment Request Confirmation</title>
     </head>
@@ -87,13 +84,12 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>If you have any questions or require further assistance, please feel free to reach out.</p>
         
-        <p>Thank you for using the MOH Platform.</p>
+        <p>Thank you for using the Eswatini Nursing Council Platform.</p>
         
-        <br><br>
+    <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Mental Health Admin
+    Eswatini Nursing Council Admin
     <br><br>
-    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
     Email: To be added later<br>
     Tel: To be added later<br>
     Fax: To be added later<br>
@@ -104,8 +100,8 @@ const appointmentBookingTemplate = (payload) =>
   </html>`;
 
 
-  const appointmentConfirmationTemplate = (payload) => 
-  `<html>
+const appointmentConfirmationTemplate = (payload) =>
+    `<html>
     <head>
         <title>Appointment Confirmation</title>
     </head>
@@ -125,13 +121,12 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>If you have any questions or need to reschedule, please contact the hospital directly.</p>
         
-        <p>Thank you for using the MOH Platform.</p>
+        <p>Thank you for using the Eswatini Nursing Council Platform.</p>
         
-         <br><br>
+         <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Mental Health Admin
+    Eswatini Nursing Council Admin
     <br><br>
-    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
     Email: To be added later<br>
     Tel: To be added later<br>
     Fax: To be added later<br>
@@ -142,8 +137,8 @@ const appointmentBookingTemplate = (payload) =>
   </html>`;
 
 
-  const appointmentCancellationTemplate = (payload) => 
-  `<html>
+const appointmentCancellationTemplate = (payload) =>
+    `<html>
     <head>
         <title>Appointment Cancellation Notice</title>
     </head>
@@ -159,17 +154,16 @@ const appointmentBookingTemplate = (payload) =>
             <li><b>Hospital:</b> ${payload.hospital_name}</li>
         </ul>
 
-        <p>If this cancellation was unexpected or you wish to reschedule, please contact the hospital or submit a new appointment request through the MOH Platform.</p>
+        <p>If this cancellation was unexpected or you wish to reschedule, please contact the hospital or submit a new appointment request through the Eswatini Nursing Council Platform.</p>
         
         <p>We apologize for any inconvenience caused.</p>
         
-        <p>Thank you for using the MOH Platform.</p>
+        <p>Thank you for using the Eswatini Nursing Council Platform.</p>
         
-    <br><br>
+   <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Mental Health Admin
+    Eswatini Nursing Council Admin
     <br><br>
-    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
     Email: To be added later<br>
     Tel: To be added later<br>
     Fax: To be added later<br>
@@ -181,10 +175,10 @@ const appointmentBookingTemplate = (payload) =>
 
 
 const registrationOTPSend = (otp, email) =>
-  `<html>
+    `<html>
 
     <b>Dear User,</b><br>
-    <p>Thank you for registering on the <b>Eswatini Nursing Mental Health Platform</b>.</p>
+    <p>Thank you for registering on the <b>Eswatini Nursing Council Platform</b>.</p>
     <p>To complete your registration, please verify your email address using the One-Time Password (OTP) below:</p>
     
     <h2>${otp}</h2>
@@ -192,11 +186,10 @@ const registrationOTPSend = (otp, email) =>
     <p>Please do not share this code with anyone.</p>
     <p>If you did not initiate this registration, please ignore this email.</p>
 
-    <br><br>
+     <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Mental Health Admin
+    Eswatini Nursing Council Admin
     <br><br>
-    <b>Eswatini Nursing Mental Health Platform Admin</b><br>
     Email: To be added later<br>
     Tel: To be added later<br>
     Fax: To be added later<br>
