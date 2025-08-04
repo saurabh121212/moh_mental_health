@@ -334,87 +334,60 @@ module.exports.get = async (req, res, next) => {
 }
 
 
+module.exports.update = async (req, res) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(400).json({ error: error.array() });
+  }
 
-module.exports.update = async (req, res, next) => {
+  const payload = req.body;
+  const id = req.params.id;
 
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-        return res.status(400).json({ error: error.array() });
-    }
-
-    const payload = req.body;
-    const id = req.params.id;
-
-    // Check if the user already exists
-    const loginKey1 = encryptEmailForLogin(payload.email, process.env.ENCRYPTION_KEY);
-    // const existingUser = await UserModel.findOne({ where: { email_login_key: loginKey1 } });
-    // if (existingUser) {
-    //     return res.status(400).json({ error: 'User already exists With this Email ID' });
-    // }
-
-
-    // Encrypt sensitive data
+  try {
     const encFirstName = encrypt(payload.first_name);
-    const encFirstNameiv = encFirstName.iv;
-    const encFirstNameauthTag = encFirstName.authTag;
-
     const encLastName = encrypt(payload.last_name);
-    const encLastNameiv = encLastName.iv;
-    const encLastNameauthTag = encLastName.authTag;
-
     const encPhone = encrypt(payload.phone);
-    const encPhoneiv = encPhone.iv;
-    const encPhoneauthTag = encPhone.authTag;
-
     const encEmail = encrypt(payload.email);
-    const encEmailiv = encEmail.iv;
-    const encEmailauthTag = encEmail.authTag;
-
-
-    // Store the login key in the database
     const loginKey = encryptEmailForLogin(payload.email, process.env.ENCRYPTION_KEY);
 
-
     const UpdateValues = {
-        first_name: encFirstName.encryptedData,
-        first_name_iv: encFirstNameiv,
-        first_name_auth_tag: encFirstNameauthTag,
-        last_name: encLastName.encryptedData,
-        last_name_iv: encLastNameiv,
-        last_name_auth_tag: encLastNameauthTag,
-        phone: encPhone.encryptedData,
-        phone_iv: encPhoneiv,
-        phone_auth_tag: encPhoneauthTag,
-        email: encEmail.encryptedData,
-        email_iv: encEmailiv,
-        email_auth_tag: encEmailauthTag,
-        email_login_key: loginKey,
-        gender: payload.gender,
-        region: payload.region,
-        address: payload.address,
-        clinic: payload.clinic,
-        cadre: payload.cadre
+      first_name: encFirstName.encryptedData,
+      first_name_iv: encFirstName.iv,
+      first_name_auth_tag: encFirstName.authTag,
+      last_name: encLastName.encryptedData,
+      last_name_iv: encLastName.iv,
+      last_name_auth_tag: encLastName.authTag,
+      phone: encPhone.encryptedData,
+      phone_iv: encPhone.iv,
+      phone_auth_tag: encPhone.authTag,
+      email: encEmail.encryptedData,
+      email_iv: encEmail.iv,
+      email_auth_tag: encEmail.authTag,
+      email_login_key: loginKey,
+      gender: payload.gender,
+      region: payload.region,
+      address: payload.address,
+      clinic: payload.clinic,
+      cadre: payload.cadre
+    };
+
+    const [updatedCount] = await UserModel.update(UpdateValues, { where: { id } });
+
+    if (updatedCount === 0) {
+      return res.status(400).json({ error: 'User not found or no changes made' });
     }
 
-    try {
-        const user = await UserModel.update(UpdateValues, { where: { id } });
-        if (!user) {
-            return res.status(400).json({ error: 'User Not Updated' });
-        }
+    const userValues = await UserModel.findByPk(id);
 
-        const userValues = await UserModel.findByPk(id);
-
-        res.status(201).json({
-            message: 'User Values updated successfully',
-            data: userValues,
-        });
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
+    res.status(200).json({
+      message: 'User updated successfully',
+      data: userValues
+    });
+  } catch (err) {
+    console.error('❌ Update Error:', err.message);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 module.exports.delete = async (req, res, next) => {
 

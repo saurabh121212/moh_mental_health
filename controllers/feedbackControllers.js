@@ -13,7 +13,7 @@ module.exports.add = async (req, res, next) => {
     try {
         const data = await BaseRepo.baseCreate(FeedbackModel, payload);
         if (!data) {
-            return res.status(400).json({ error: 'Error creating Feedback' });
+            return res.status(400).json({ error: 'All fields are mandatory' });
         }
         res.status(201).json(data);
     }
