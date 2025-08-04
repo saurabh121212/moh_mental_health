@@ -61,7 +61,7 @@ router.put('/update/:id',[
     body('address').isLength({ min: 3, max: 150 }).withMessage('Address must be between 3 and 150 characters long'),
     body('clinic').isLength({ min: 3, max: 100 }).withMessage('Clinic must be between 3 and 100 characters long'),
     body('cadre').isLength({ min: 3, max: 100 }).withMessage('Cadre must be between 3 and 100 characters long'),
-] , userController.update);
+] ,authMiddleware.authUser, userController.update);
 
 
 // This is used in Admin panel to get the list of Users

@@ -401,9 +401,12 @@ module.exports.update = async (req, res, next) => {
         if (!user) {
             return res.status(400).json({ error: 'User Not Updated' });
         }
+
+        const userValues = await UserModel.findByPk(id);
+
         res.status(201).json({
             message: 'User Values updated successfully',
-            data: user,
+            data: userValues,
         });
     }
     catch (error) {
