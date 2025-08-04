@@ -56,19 +56,11 @@ router.put('/update/:id',[
     body('last_name').isLength({ min: 3, max: 15 }).withMessage('Last Name must be between 3 and 15 characters long'),
     body('phone').isLength({ min: 3, max: 15 }).withMessage('Phone Number must be between 3 and 15 characters long'),
     body('email').isLength({ min: 3, max: 100 }).withMessage('Email Id must be between 3 and 100 characters long'),
-    body('national_id').isLength({ min: 3, max: 20 }).withMessage('National Id must be between 3 and 20 characters long'),
-    body('ENC_number').isLength({ min: 3, max: 10 }).withMessage('ENC Number must be between 3 and 10 characters long'),
-    body('alias_name').isLength({ min: 3, max: 20 }).withMessage('Alias Name must be between 3 and 20 characters long'),
     body('gender').isLength({ min: 3, max: 20 }).withMessage('Gender must be between 3 and 20 characters long'),
     body('region').isLength({ min: 3, max: 50 }).withMessage('Region must be between 3 and 50 characters long'),
     body('address').isLength({ min: 3, max: 150 }).withMessage('Address must be between 3 and 150 characters long'),
     body('clinic').isLength({ min: 3, max: 100 }).withMessage('Clinic must be between 3 and 100 characters long'),
     body('cadre').isLength({ min: 3, max: 100 }).withMessage('Cadre must be between 3 and 100 characters long'),
-    body('password').isLength({ min: 3, max: 100 }).withMessage('Password must be between 6 and 100 characters long'),
-    body('jwt_token').isLength({ min: 3, max: 300 }).withMessage('JWT Token must be between 3 and 300 characters long'),
-    body('device_id').isLength({ min: 3, max: 100 }).withMessage('Device Id must be between 3 and 100 characters long'),
-    body('device_type').isLength({ min: 3, max: 50 }).withMessage('Device Type must be between 3 and 50 characters long'),
-    body('device_token').isLength({ min: 3, max: 400 }).withMessage('Device Token must be between 3 and 400 characters long'),
 ] , userController.update);
 
 
