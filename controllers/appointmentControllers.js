@@ -55,7 +55,7 @@ module.exports.add = async (req, res, next) => {
             return res.status(400).json({ error: 'Error fetching User Details' });
         }
 
-        const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+        const emailId = user.dataValues.email;
 
         // Send a Email to the user
         sendEmail(payload, 3, emailId);
@@ -308,7 +308,7 @@ module.exports.lastAppointmentCount = async (req, res, next) => {
         else if (data >= 2) {
             return res.status(201).json(
                 {
-                    message: 'You have two active counselling requests—the system’s maximum limit. Please delete one or wait for processing by a counsellor.',
+                    message: 'User has already booked 2 appointments. Cannot book more appointments.',
                     count: data,
                     bookAppointment: false
                 });

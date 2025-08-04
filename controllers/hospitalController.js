@@ -220,10 +220,10 @@ module.exports.getUserDetails = async (req, res, next) => {
             return res.status(400).json({ error: 'Error fetching User Details' });
         }
 
-        const first_name = decrypt(user.dataValues.first_name, user.dataValues.first_name_iv, user.dataValues.first_name_auth_tag);
-        const last_name = decrypt(user.dataValues.last_name, user.dataValues.last_name_iv, user.dataValues.last_name_auth_tag);
-        const phone = decrypt(user.dataValues.phone, user.dataValues.phone_iv, user.dataValues.phone_auth_tag);
-        const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+        const first_name =user.dataValues.first_name;
+        const last_name = user.dataValues.last_name;
+        const phone =user.dataValues.phone;
+        const emailId = user.dataValues.email;
         const national_id = user.dataValues.national_id;
         const ENC_number = user.dataValues.ENC_number;
 
@@ -309,7 +309,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
         if (!user) {
             return res.status(400).json({ error: 'Error fetching User Details' });
         }
-        const emailId = decrypt(user.dataValues.email, user.dataValues.email_iv, user.dataValues.email_auth_tag);
+        const emailId = user.dataValues.email;
         const token = user.dataValues.device_token;
 
         // Collect appointment details in a variable.
