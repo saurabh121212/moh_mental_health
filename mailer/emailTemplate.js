@@ -152,6 +152,7 @@ const appointmentCancellationTemplate = (payload) =>
             <li><b>Date:</b> ${payload.appointment_date}</li>
             <li><b>Time:</b> ${payload.appointment_time}</li>
             <li><b>Hospital:</b> ${payload.hospital_name}</li>
+            <li><b>Cancelling comment by hospital:</b> ${payload.hospital_comments}</li>
         </ul>
 
         <p>If this cancellation was unexpected or you wish to reschedule, please contact the hospital or submit a new appointment request through the Eswatini Nursing Council Platform.</p>

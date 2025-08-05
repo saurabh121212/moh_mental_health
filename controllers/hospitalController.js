@@ -317,7 +317,9 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
             appointment_date: data.dataValues.appointment_date.toISOString().split('T')[0],
             appointment_time: data.dataValues.appointment_time,
             hospital_name: data.dataValues.hospital_name,
+            hospital_comments: data.dataValues.hospital_comments
         };
+
 
         // check if appointment_status is confirmed or cancelled and then apply the condition
         if (payload.appointment_status === 'confirmed') {
