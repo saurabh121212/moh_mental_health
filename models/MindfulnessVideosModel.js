@@ -20,12 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.TEXT('long'),
             allowNull: true, // or false if required
-            validate: {
-                len: {
-                    args: [0, 500], 
-                    msg: 'Description must be at least 3 characters long and at most 500 characters long'
-                }
-            }
+            
         },
         uploaded_date: {
             type: DataTypes.DATE,
