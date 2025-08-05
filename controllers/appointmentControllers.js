@@ -308,7 +308,7 @@ module.exports.lastAppointmentCount = async (req, res, next) => {
         else if (data >= 2) {
             return res.status(201).json(
                 {
-                    message: 'User has already booked 2 appointments. Cannot book more appointments.',
+                    message: 'You have two active counselling requests—the system’s maximum limit. Please delete one or wait for processing by a counsellor."',
                     count: data,
                     bookAppointment: false
                 });
