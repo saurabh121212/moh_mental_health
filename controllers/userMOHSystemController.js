@@ -28,14 +28,14 @@ module.exports.verifyUser = async (req, res, next) => {
         const nursingCouncilResponse = await validateRegistration(payload.ENC_number);
         console.log('Nursing Council Response:', nursingCouncilResponse);
         if (!nursingCouncilResponse || nursingCouncilResponse.error) {
-            return res.status(400).json({ error: 'Invalid ENC Number or user not found in Nursing Council records' });
+            return res.status(400).json({ error: 'Invalid ENC number or user not found under ENC records. Please check and try again.' });
         }
 
         // Clean the data received from Nursing Council API
         const cleanedData = cleanNurseData(nursingCouncilResponse);
         console.log('Cleaned Data:', cleanedData);
         if (payload.national_id !== cleanedData.IdNum.toString()) {
-            return res.status(400).json({ error: 'National Id and ENC Number does not match with the Nursing Council records please check your details' });
+            return res.status(400).json({ error: 'Your National ID and Eswatini Nursing Council (ENC) number did not match with ENC records.  Please check and try again.' });
         }
 
         res.status(201).json({
