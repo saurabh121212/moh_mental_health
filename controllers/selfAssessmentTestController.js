@@ -126,6 +126,7 @@ module.exports.getUserLastSelfAssessmentTest = async (req, res, next) => {
             nextAppointmentDate.setDate(nextAppointmentDate.getDate() + 14);
 
 
+                console.log("diffInDaysRounded check", diffInDaysRounded);
             // if (diffInDaysRounded >= 13) {
             if (diffInDaysRounded >= 0){
                return res.status(201).json({
