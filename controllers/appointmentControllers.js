@@ -213,7 +213,6 @@ module.exports.cancelAppointment = async (req, res, next) => {
 }
 
 
-
 module.exports.upcomingAppointments = async (req, res, next) => {
 
     const userId = req.body.id;
@@ -227,7 +226,7 @@ module.exports.upcomingAppointments = async (req, res, next) => {
     }
 
     try {
-        const data = await BaseRepo.baseGetUpcomingAppointmentsFromUserDateTime(AppointmentModel, userId, date, time);
+        const data = await BaseRepo.baseGetUpcomingAppointmentsFromUserDateTime(AppointmentModel, userId, date, time,HospitalModel);
         if (!data) {
             return res.status(400).json({ error: 'Error fetching Appointment data' });
         }

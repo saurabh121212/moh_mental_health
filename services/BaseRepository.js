@@ -403,11 +403,12 @@ async function getMoodCountsByUser(Model, userId) {
 };
 
 
-async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr) {
+async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr,HospitalModel) {
   // Convert user input to usable formats
   const userDate = moment(userDateStr, 'DD-MM-YYYY');
   const userTime = moment(userTimeStr, 'HH:mm'); // 24-hour format like 16:00
 
+  // include the hospital model 
   const appointments = await Model.findAll({
     where: {
       user_id: userId,
@@ -418,7 +419,13 @@ async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateSt
         [Op.in]: ['confirmed',] // Include all relevant statuses
       }
     },
-    order: [['appointment_date', 'ASC'], ['createdAt', 'ASC']]
+    order: [['appointment_date', 'ASC'], ['createdAt', 'ASC']],
+    include: [
+      {
+        model: HospitalModel,
+        attributes: ['id', 'name','region','phone_number','email','address','city']
+      }
+    ]
   });
 
   // Filter logic

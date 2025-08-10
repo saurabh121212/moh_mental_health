@@ -20,9 +20,8 @@ module.exports.add = async (req, res, next) => {
     // Check if the email already exists
     const existingHospital = await HospitalModel.findOne({ where: { email: req.body.email } });
     if (existingHospital) {
-        return res.status(400).json({ error: 'Email already exists' });
+        return res.status(400).json({ error: 'Email already exists in the system please use a different email' });
     }
-
 
     // Create hash password
     const password = generatePassword(12);
