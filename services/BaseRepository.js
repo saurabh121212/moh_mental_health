@@ -32,6 +32,7 @@ module.exports = {
   baseGetConflictingAppointments: getConflictingAppointments,
   baseGetConflictingAppointmentsScheduled: getConflictingAppointmentsScheduled,
   baseFindAllToken_User: findAllToken_User,
+  baseAppointmentAfterTwoHors:appointmentAfterTwoHors,
 };
 
 function create(modal, data) {
@@ -491,7 +492,7 @@ async function getAppointmentsCountByUserId(AppointmentModel, userId) {
 }
 
 
-async function getConflictingAppointments(AppointmentModel,minDate, maxDate, userId) {
+async function getConflictingAppointments(AppointmentModel, minDate, maxDate, userId) {
   const conflictCount = await AppointmentModel.count({
     where: {
       user_id: userId,
@@ -506,7 +507,7 @@ async function getConflictingAppointments(AppointmentModel,minDate, maxDate, use
 
 
 
-async function getConflictingAppointmentsScheduled(AppointmentModel,minDate, maxDate, userId) {
+async function getConflictingAppointmentsScheduled(AppointmentModel, minDate, maxDate, userId) {
   const conflictCount = await AppointmentModel.findOne({
     where: {
       user_id: userId,
@@ -530,4 +531,19 @@ function findAllToken_User(modal) {
       },
     },
   });
+}
+
+
+async function appointmentAfterTwoHors(AppointmentModel , startOfDay,endOfDay) {
+   const appointments = await AppointmentModel.findAll({
+    where: {
+      appointment_date: {
+        [Op.between]: [startOfDay, endOfDay],
+      },
+      appointment_status: {
+        [Op.in]: ['confirmed'],
+      },
+    },
+  });
+  return appointments;
 }

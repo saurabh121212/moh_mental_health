@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         
-       nurse_name: {
+        nurse_id: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+        },
+        nurse_name: {
             type: DataTypes.STRING(50),
             allowNull: false, // or false if required
             validate: {
@@ -19,12 +23,23 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        new_features_suggestions: {
+            type: DataTypes.STRING(400),
+            allowNull: false, // or false if required
+            validate: {
+                len: {
+                    args: [2, 400],
+                    msg: 'New Features Suggestions must be at least 2 characters long and at most 400 characters long'
+                }
+            }
+        },
+
         usability_stars: {
             type: DataTypes.STRING(10),
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [1, 5], 
+                    args: [1, 5],
                     msg: 'Usability stars must be between 1 and 5 characters long'
                 }
             }
@@ -35,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 400], 
+                    args: [3, 400],
                     msg: 'Usability feedback must be at least 3 characters long and at most 400 characters long'
                 }
             }
@@ -46,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [1, 5], 
+                    args: [1, 5],
                     msg: 'Performance stars must be between 1 and 5 characters long'
                 }
             }
@@ -56,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 400], 
+                    args: [3, 400],
                     msg: 'Performance feedback must be at least 3 characters long and at most 400 characters long'
                 }
             }
@@ -67,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [1, 5], 
+                    args: [1, 5],
                     msg: 'Personalization stars must be between 1 and 5 characters long'
                 }
             }
@@ -78,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 400], 
+                    args: [3, 400],
                     msg: 'Personalization feedback must be at least 3 characters long and at most 400 characters long'
                 }
             }
@@ -89,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [1, 5], 
+                    args: [1, 5],
                     msg: 'Security stars must be between 1 and 5 characters long'
                 }
             }
@@ -99,7 +114,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 400], 
+                    args: [3, 400],
                     msg: 'Security feedback must be at least 3 characters long and at most 400 characters long'
                 }
             }
@@ -111,7 +126,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [1, 5], 
+                    args: [1, 5],
                     msg: 'Overall Satisfaction stars must be between 1 and 5 characters long'
                 }
             }
@@ -121,7 +136,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
             validate: {
                 len: {
-                    args: [3, 400], 
+                    args: [3, 400],
                     msg: 'Overall Satisfaction feedback must be at least 3 characters long and at most 400 characters long'
                 }
             }

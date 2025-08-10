@@ -67,6 +67,11 @@ router.put('/update/:id',[
 // This is used in Admin panel to get the list of Users
 router.get('/list', userController.get);
 
+
+// Get User by Id
+router.get('/get-user-by-id/:id', userController.getUserById);
+
+
 // This is used to delete Users from the database
 router.put('/delete/:id', userController.delete);
 

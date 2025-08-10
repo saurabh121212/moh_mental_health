@@ -337,6 +337,26 @@ module.exports.get = async (req, res, next) => {
 }
 
 
+
+module.exports.getUserById = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+        const result = await BaseRepo.baseFindById(UserModel, id, "id");
+
+        if (!result) {
+            return res.status(400).json({ error: 'No users found' });
+        }
+        res.status(200).json({
+            message: 'Users fetched successfully',
+            data: result,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 module.exports.update = async (req, res) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
