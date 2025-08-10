@@ -15,4 +15,11 @@ router.post('/verify-user',[
 ],  UserMOHSystemController.verifyUser);
 
 
+router.post('/verify-user-2',[
+
+    body('ENC_number').isLength({ min: 4, max: 6 }).
+    withMessage('ENC Number must be either 4 or 6 digits long'),
+
+],  UserMOHSystemController.verifyUser2);
+
 module.exports = router;

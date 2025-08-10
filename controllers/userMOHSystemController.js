@@ -96,3 +96,47 @@ function cleanNurseData(data) {
         email: data.Email.trim(),
     };
 }
+
+
+
+module.exports.verifyUser2 = async (req, res, next) => {
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() });
+    }
+    const payload = req.body;
+
+    try {
+
+        // call nursing council API to verify user.
+        const nursingCouncilResponse = await validateRegistration(payload.ENC_number);
+        console.log('Nursing Council Response:', nursingCouncilResponse);
+        if (!nursingCouncilResponse || nursingCouncilResponse.error) {
+            return res.status(400).json({ error: 'Invalid ENC number or user not found under ENC records. Please check and try again.' });
+        }
+        const cleanedData = cleanNurseData(nursingCouncilResponse);
+
+
+        res.status(201).json({
+            message: 'User verified successfully',
+            data: {
+                first_name: cleanedData.NurseName,
+                last_name: cleanedData.NurseSurname,
+                cadre_title: cleanedData.CadreTitle,
+                ENC_number: payload.ENC_number,
+                national_id: cleanedData.IdNum.toString(),
+                phone: cleanedData.phone || null, // Optional, can be null
+                email: cleanedData.email || null, // Optional, can be null
+                address: cleanedData.address || null, // Optional, can be null
+                region: cleanedData.region || null, // Optional, can be null
+                gender: cleanedData.gender || null, // Optional, can be null
+                clinic: cleanedData.clinic || null // Optional, can be null         
+            }
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
