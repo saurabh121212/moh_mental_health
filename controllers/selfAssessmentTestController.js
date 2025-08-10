@@ -128,7 +128,7 @@ module.exports.getUserLastSelfAssessmentTest = async (req, res, next) => {
 
                 console.log("diffInDaysRounded check", diffInDaysRounded);
             // if (diffInDaysRounded >= 13) {
-            if (diffInDaysRounded >= 0){
+            if (diffInDaysRounded >= -1){
                return res.status(201).json({
                     message: 'Last self-assessment test is older than 14 days.',
                     lastAppointment: lastAppointment,
