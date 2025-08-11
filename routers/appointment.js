@@ -34,7 +34,7 @@ router.put('/cancel-appointment/:id',
     body('appointment_status')
         .isIn(['cancelled'])
         .withMessage('Appointment status must be completed only'),
-    body('cancel_reason').optional().isLength({ max: 300 }).withMessage('Cancel reason must be at most 300 characters long'),
+    body('nurse_appointment_cancel_comments').optional().isLength({ max: 300 }).withMessage('Cancel reason must be at most 300 characters long'),
 authMiddleware.authUser, AppointmentController.cancelAppointment);
 
 

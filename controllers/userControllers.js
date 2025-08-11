@@ -442,4 +442,25 @@ function generateRandomUsername(name) {
     return `${prefix}${randomDigits}`;
 }
 
-
+module.exports.refreshToken = async (req, res) => {
+      const error = validationResult(req);
+      if (!error.isEmpty()) {
+          return res.status(400).json({ error: error.array() });
+      }
+      const payload = req.body;
+      const id = req.params.id;
+      try {
+          const data = await BaseRepo.baseUpdate(UserModel, { id }, payload);
+          if (!data) {
+              return res.status(400).json({ error: 'Error updating Token' });
+          }
+          res.status(201).json({
+              message: 'Token Refresh successfully',
+              data: data
+          });
+      }
+      catch (error) {
+          console.error(error);
+          return res.status(500).json({ error: 'Internal server error' });
+      }
+};

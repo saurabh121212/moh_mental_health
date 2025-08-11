@@ -64,6 +64,11 @@ router.put('/update/:id',[
 ] ,authMiddleware.authUser, userController.update);
 
 
+router.put('/refresh-token/:id',[
+    body('device_token').notEmpty().withMessage('device token is required'),
+    ] ,authMiddleware.authUser, userController.refreshToken);
+
+
 // This is used in Admin panel to get the list of Users
 router.get('/list', userController.get);
 

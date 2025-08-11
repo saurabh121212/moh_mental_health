@@ -33,6 +33,17 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        nurse_appointment_cancel_comments: {
+            type: DataTypes.STRING(300),
+            allowNull: true, // or false if required
+            validate: {
+                len: {
+                    args: [0, 300],
+                    msg: 'Nurse comments must be at most 300 characters long'
+                }
+            }
+        },
+
         hospital_id: {
             type: DataTypes.BIGINT,
             allowNull: false, // or false if required
