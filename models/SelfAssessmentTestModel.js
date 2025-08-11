@@ -364,6 +364,7 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE'
         },
 
+        
          system_generated_name: {
             type: DataTypes.STRING(100),
             allowNull: true, // or false if required
