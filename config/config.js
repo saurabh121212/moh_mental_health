@@ -9,12 +9,12 @@ CONFIG.node_env = process.env.NODE_ENV;
 CONFIG.EMAIL_SECRET = process.env.EMAIL_SECRET;
 
 CONFIG.mail = {
-    service: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
+    service: "smtp.office365.com",//process.env.MAIL_HOST,
+    port: "587",//process.env.MAIL_PORT,
     secure: "false",
     auth: {
-        user: process.env.MAIL_AUTH_USER,
-        pass: process.env.MAIL_AUTH_PW
+        user: "Saurabh@edgeconsulting.co.sz",//process.env.MAIL_AUTH_USER,
+        pass: "V*491571015058al",//process.env.MAIL_AUTH_PW
     },
      tls: {
         ciphers: 'SSLv3',
