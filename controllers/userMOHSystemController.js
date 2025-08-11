@@ -34,9 +34,9 @@ module.exports.verifyUser = async (req, res, next) => {
         // Clean the data received from Nursing Council API
         const cleanedData = cleanNurseData(nursingCouncilResponse);
         console.log('Cleaned Data:', cleanedData);
-        if (payload.national_id !== cleanedData.IdNum.toString()) {
-            return res.status(400).json({ error: 'Your National ID and Eswatini Nursing Council (ENC) number did not match with ENC records.  Please check and try again.' });
-        }
+        // if (payload.national_id !== cleanedData.IdNum.toString()) {
+        //     return res.status(400).json({ error: 'Your National ID and Eswatini Nursing Council (ENC) number did not match with ENC records.  Please check and try again.' });
+        // }
 
         res.status(201).json({
             message: 'User verified successfully',
@@ -117,7 +117,8 @@ module.exports.verifyUser2 = async (req, res, next) => {
         }
         const cleanedData = cleanNurseData(nursingCouncilResponse);
 
-
+        //console.log('Cleaned Data:', nursingCouncilResponse.IdNum);
+       
         res.status(201).json({
             message: 'User verified successfully',
             data: {
@@ -125,7 +126,7 @@ module.exports.verifyUser2 = async (req, res, next) => {
                 last_name: cleanedData.NurseSurname,
                 cadre_title: cleanedData.CadreTitle,
                 ENC_number: payload.ENC_number,
-                national_id: cleanedData.IdNum.toString(),
+                national_id: cleanedData.IdNum,
                 phone: cleanedData.phone || null, // Optional, can be null
                 email: cleanedData.email || null, // Optional, can be null
                 address: cleanedData.address || null, // Optional, can be null
@@ -140,3 +141,4 @@ module.exports.verifyUser2 = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
