@@ -45,6 +45,8 @@ async function sendEmail(payload,status,email,password) {
          output = emailTemplate.registrationOTPSend(payload);
     }
     
+    
+    console.log("CONFIG.mail ",CONFIG.mail);
     let transporter = nodemailer.createTransport(CONFIG.mail)   
     message = {
         from: CONFIG.mail_from,
