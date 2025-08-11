@@ -9,22 +9,16 @@ CONFIG.node_env = process.env.NODE_ENV;
 CONFIG.EMAIL_SECRET = process.env.EMAIL_SECRET;
 
 CONFIG.mail = {
-    host: process.env.MAIL_HOST,
+    service: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT,
-    secure: false,
-    requireTLS: true,
+    //secure: process.env.MAIL_SECURE === 'true',
     auth: {
         user: process.env.MAIL_AUTH_USER,
         pass: process.env.MAIL_AUTH_PW
-    },
-    tls: {
-    ciphers: "SSLv3",
-    rejectUnauthorized: false
-  }
+    }
 };
 
-
-//CONFIG.mail_from = process.env.MAIL_FROM_STRING;
+CONFIG.mail_from = process.env.MAIL_FROM_STRING;
 
 CONFIG.development = {
     dialect: process.env.DB_DIALECT,    // 'mysql';
