@@ -11,7 +11,7 @@ CONFIG.EMAIL_SECRET = process.env.EMAIL_SECRET;
 CONFIG.mail = {
     host: 'smtp.office365.com',//process.env.MAIL_HOST,
     port: "587",//process.env.MAIL_PORT,
-    secure: "false",
+    secure: false,
     auth: {
         user: "Saurabh@edgeconsulting.co.sz",//process.env.MAIL_AUTH_USER,
         pass: "V*491571015058al",//process.env.MAIL_AUTH_PW
