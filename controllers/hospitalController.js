@@ -362,13 +362,13 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                 const appointmentId = conflictAppointment.id;
 
                 payload.appointment_status = 'cancelled';
-                payload.hospital_comments = `Appointment cancelled due to conflicting appointment. one of your appointment is already confirmed. `;
+                payload.hospital_comments = `An appointment was automatically canceled as it was within 7 days of another confirmed booking.`;
 
                 const appointmentData = await BaseRepo.baseUpdate(AppointmentModel, { id: appointmentId }, payload);
                 if (!appointmentData) {
                     console.error('Error updating Appointment with conflict ');
                 }
-                console.log("One of your appointment is already confirmed. Appointment cancelled due to conflicting appointment. Email sent to the user.");
+                //console.log("One of your appointment is already confirmed. Appointment cancelled due to conflicting appointment. Email sent to the user.");
 
                 const appointmentDetails2 = {
                     appointment_date: conflictAppointment.appointment_date.toISOString().split('T')[0],
