@@ -24,7 +24,7 @@ CONFIG.mail = {
 };
 
 
-CONFIG.mail_from = process.env.MAIL_FROM_STRING;
+//CONFIG.mail_from = process.env.MAIL_FROM_STRING;
 
 CONFIG.development = {
     dialect: process.env.DB_DIALECT,    // 'mysql';
