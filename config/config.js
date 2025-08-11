@@ -17,6 +17,10 @@ CONFIG.mail = {
         user: process.env.MAIL_AUTH_USER,
         pass: process.env.MAIL_AUTH_PW
     },
+    tls: {
+    ciphers: "SSLv3",
+    rejectUnauthorized: false
+  }
 };
 
 
