@@ -374,6 +374,7 @@ module.exports.acceptRejectAppointment = async (req, res, next) => {
                     appointment_date: conflictAppointment.appointment_date.toISOString().split('T')[0],
                     appointment_time: conflictAppointment.appointment_time,
                     hospital_name: conflictAppointment.hospital_name,
+                    hospital_comments: conflictAppointment.hospital_comments
                 };
 
                 sendEmail(appointmentDetails2, 5, emailId);
