@@ -56,4 +56,8 @@ router.get('/list', authMiddleware.authAdmin, SelfAssessmentTestController.get);
 router.get('/last-self-assessment-test/:id', authMiddleware.authUser, SelfAssessmentTestController.getUserLastSelfAssessmentTest);
 
 
+// This is used to search the value in the table for all columns
+router.get('/search/:value', authMiddleware.authAdmin, SelfAssessmentTestController.search);
+
+
 module.exports = router;

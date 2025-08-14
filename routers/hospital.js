@@ -12,8 +12,8 @@ router.post('/add', [
         .withMessage('Name must be between 3 and 50 characters long'),
 
     body('services')
-        .isLength({ min: 0, max: 100 })
-        .withMessage('services max 100 characters long'),
+        .isLength({ min: 0, max: 200 })
+        .withMessage('services max 200 characters long'),
 
     body('address')
         .isLength({ min: 0, max: 80 })
@@ -26,8 +26,8 @@ router.post('/add', [
         .withMessage('Region max 80 characters long'),
 
     body('phone_number')
-        .isLength({ min: 0, max: 8 })
-        .withMessage('Phone number max 8 characters long'),
+        .isLength({ min: 0, max: 20 })
+        .withMessage('Phone number max 20 characters long'),
 
     body('email')
         .isEmail()
@@ -51,7 +51,7 @@ router.put('/update/:id', [
         .withMessage('Name must be between 3 and 50 characters long'),
 
     body('services')
-        .isLength({ min: 0, max: 100 })
+        .isLength({ min: 0, max: 200 })
         .withMessage('services max 100 characters long'),
 
     body('address')
@@ -66,8 +66,8 @@ router.put('/update/:id', [
         .withMessage('Region max 80 characters long'),
 
     body('phone_number')
-        .isLength({ min: 0, max: 8 })
-        .withMessage('Phone number max 8 characters long'),
+        .isLength({ min: 0, max: 20 })
+        .withMessage('Phone number max 20 characters long'),
 
     body('email')
         .isEmail()

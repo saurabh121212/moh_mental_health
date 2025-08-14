@@ -48,5 +48,7 @@ router.get('/list-mobile', authMiddleware.authUser, FeedbackController.getMobile
 // This is used in Admin panel to get the list of FAQs
 router.get('/list', authMiddleware.authAdmin, FeedbackController.get);
 
+// This is used to search the value in the table for all columns
+router.get('/search/:value', authMiddleware.authAdmin, FeedbackController.search);
 
 module.exports = router;

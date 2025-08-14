@@ -79,5 +79,7 @@ router.get('/list', authMiddleware.authAdmin, SupportResourcesController.get);
 // This is used to delete Emergency Resources from the database
 router.put('/delete/:id', authMiddleware.authAdmin, SupportResourcesController.delete);
 
+// This is used to search the value in the table for all columns
+router.get('/search/:value', authMiddleware.authAdmin, SupportResourcesController.search);
 
 module.exports = router;

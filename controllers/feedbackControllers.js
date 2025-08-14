@@ -80,3 +80,17 @@ module.exports.getMobile = async (req, res, next) => {
 }
 
 
+module.exports.search = async (req, res, next) => {
+    const searchValues = req.params.value;
+    try {
+        const data = await BaseRepo.baseSearch(FeedbackModel, searchValues);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Values'});
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}

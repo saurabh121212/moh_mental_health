@@ -18,6 +18,7 @@ module.exports = {
   baseFindById2Keys: findById2Keys,
   baseFindAllById: findAllById,
   baseGalleryList: GalleryList,
+  baseSearch: search,
   baseGetDashboardTotalUserRegionWise: getDashboardTotalUserRegionWise,
   baseGetDashboardMaleFemaleUserRegionWise: getDashboardMaleFemaleUserRegionWise,
   baseGetDashboardTotalUserSelfAssessmentTestWise: getDashboardTotalUserSelfAssessmentTestWise,
@@ -32,7 +33,7 @@ module.exports = {
   baseGetConflictingAppointments: getConflictingAppointments,
   baseGetConflictingAppointmentsScheduled: getConflictingAppointmentsScheduled,
   baseFindAllToken_User: findAllToken_User,
-  baseAppointmentAfterTwoHors:appointmentAfterTwoHors,
+  baseAppointmentAfterTwoHors: appointmentAfterTwoHors,
 };
 
 function create(modal, data) {
@@ -184,9 +185,6 @@ async function list(modal, params) {
 }
 
 
-
-
-
 function update(modal, params, data) {
   let queryParams = {};
   if (params.hasOwnProperty('searchParams')) {
@@ -205,7 +203,6 @@ function update(modal, params, data) {
 }
 
 
-
 function deleteEntry(modal, searchParams) {
   return modal.destroy({ where: searchParams });
 }
@@ -214,6 +211,23 @@ function baseRestore(modal, searchParams) {
   return modal.restore({ where: searchParams });
 }
 
+
+async function search(modal, searchValue) {
+
+  const attributes = Object.keys(modal.rawAttributes); 
+
+  const orConditions = attributes.map(attr => ({
+    [attr]: { [Op.like]: `%${searchValue}%` }
+  }));
+
+  const results = await modal.findAll({
+    where: {
+      [Op.or]: orConditions
+    }
+  });
+
+  return results;
+}
 
 
 async function getDashboardTotalUserRegionWise(modal) {
@@ -234,6 +248,9 @@ async function getDashboardTotalUserRegionWise(modal) {
     throw error;
   }
 }
+
+
+
 
 
 
@@ -355,11 +372,11 @@ async function getDashboardAverageFeedbackRatings(modal) {
   try {
     const averageRatings = await modal.findAll({
       attributes: [
-        [fn('AVG', col('usability_stars')), 'avg_usability'],
-        [fn('AVG', col('performance_stars')), 'avg_performance'],
-        [fn('AVG', col('personalization_stars')), 'avg_personalization'],
-        [fn('AVG', col('security_stars')), 'avg_security'],
-        [fn('AVG', col('overall_satisfaction_stars')), 'avg_overall_satisfaction'],
+        [fn('ROUND', fn('AVG', col('usability_stars')), 1), 'avg_usability'],
+        [fn('ROUND', fn('AVG', col('performance_stars')), 1), 'avg_performance'],
+        [fn('ROUND', fn('AVG', col('personalization_stars')), 1), 'avg_personalization'],
+        [fn('ROUND', fn('AVG', col('security_stars')), 1), 'avg_security'],
+        [fn('ROUND', fn('AVG', col('overall_satisfaction_stars')), 1), 'avg_overall_satisfaction'],
       ],
       raw: true
     });
@@ -403,7 +420,7 @@ async function getMoodCountsByUser(Model, userId) {
 };
 
 
-async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr,HospitalModel) {
+async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateStr, userTimeStr, HospitalModel) {
   // Convert user input to usable formats
   const userDate = moment(userDateStr, 'DD-MM-YYYY');
   const userTime = moment(userTimeStr, 'HH:mm'); // 24-hour format like 16:00
@@ -423,7 +440,7 @@ async function getUpcomingAppointmentsFromUserDateTime(Model, userId, userDateSt
     include: [
       {
         model: HospitalModel,
-        attributes: ['id', 'name','region','phone_number','email','address','city']
+        attributes: ['id', 'name', 'region', 'phone_number', 'email', 'address', 'city']
       }
     ]
   });
@@ -541,8 +558,8 @@ function findAllToken_User(modal) {
 }
 
 
-async function appointmentAfterTwoHors(AppointmentModel , startOfDay,endOfDay) {
-   const appointments = await AppointmentModel.findAll({
+async function appointmentAfterTwoHors(AppointmentModel, startOfDay, endOfDay) {
+  const appointments = await AppointmentModel.findAll({
     where: {
       appointment_date: {
         [Op.between]: [startOfDay, endOfDay],

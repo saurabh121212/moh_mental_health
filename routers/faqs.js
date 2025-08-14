@@ -34,4 +34,7 @@ router.get('/list', authMiddleware.authAdmin, FAQsController.get);
 // This is used to delete FAQs from the database
 router.put('/delete/:id',authMiddleware.authAdmin, FAQsController.delete);
 
+// This is used to search the value in the table for all columns
+router.get('/search/:value', authMiddleware.authAdmin, FAQsController.search);
+
 module.exports = router;

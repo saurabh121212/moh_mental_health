@@ -78,4 +78,7 @@ router.get('/get-user-by-id/:id', userController.getUserById);
 router.put('/delete/:id', userController.delete);
 
 
+// This is used to search the value in the table for all columns
+router.get('/search/:value', authMiddleware.authAdmin, userController.search);
+
 module.exports = router;
