@@ -160,4 +160,7 @@ router.put('/forget-password-otp-verify/:email/:otp',[], HospitalController.forg
 router.put('/forget-password/:email/:password',[], HospitalController.forgetPassword);
 
 
+// This API is used for the hospital graphs data
+router.get('/hospital-graph-data/:id', authMiddleware.authHospital, HospitalController.hospitalGraphsData);
+
 module.exports = router;

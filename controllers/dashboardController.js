@@ -203,7 +203,7 @@ module.exports.getFeedbackGraphData = async (req, res, next) => {
 
 
 module.exports.sendNotificationAllUsers = async (req, res, next) => {
-
+  
   try {
     await sendNotificationToAllUsers("Provide Your Feedback", "Thank you for using Eswatini Mindcheck. Help us improve your experience by sharing your feedback.");
 

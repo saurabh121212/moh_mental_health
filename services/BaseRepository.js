@@ -34,6 +34,7 @@ module.exports = {
   baseGetConflictingAppointmentsScheduled: getConflictingAppointmentsScheduled,
   baseFindAllToken_User: findAllToken_User,
   baseAppointmentAfterTwoHors: appointmentAfterTwoHors,
+  baseGetHospitalTotalAppointmentData: getHospitalTotalAppointmentData
 };
 
 function create(modal, data) {
@@ -570,4 +571,22 @@ async function appointmentAfterTwoHors(AppointmentModel, startOfDay, endOfDay) {
     },
   });
   return appointments;
+}
+
+
+
+
+function getHospitalTotalAppointmentData(modal,hospital_id) {
+  return modal.findAll({
+    where: {
+      hospital_id: hospital_id
+    },
+    attributes: [
+      [fn('COUNT', col('id')), 'total_appointments'],
+      [fn('SUM', literal(`CASE WHEN appointment_status = 'scheduled' THEN 1 ELSE 0 END`)), 'scheduled_count'],
+      [fn('SUM', literal(`CASE WHEN appointment_status = 'confirmed' THEN 1 ELSE 0 END`)), 'confirmed_count'],
+      [fn('SUM', literal(`CASE WHEN appointment_status = 'completed' THEN 1 ELSE 0 END`)), 'completed_count'],
+      [fn('SUM', literal(`CASE WHEN appointment_status = 'cancelled' THEN 1 ELSE 0 END`)), 'cancelled_count']
+    ],
+  });
 }

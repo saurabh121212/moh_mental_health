@@ -731,3 +731,22 @@ module.exports.forgetPassword = async (req, res, next) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+
+module.exports.hospitalGraphsData = async (req, res, next) => {
+
+    const hospital_id = req.params.id;
+
+    try {
+        const data = await BaseRepo.baseGetHospitalTotalAppointmentData(AppointmentModel,hospital_id);
+        if (!data) {
+            return res.status(400).json({ error: 'Error fetching Hospital Appointments Details' });
+        }
+        res.status(201).json(data);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
