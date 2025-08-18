@@ -159,7 +159,6 @@ router.put('/forget-password-otp-verify/:email/:otp',[], HospitalController.forg
 // This API is used to reset the user's password after verifying the OTP
 router.put('/forget-password/:email/:password',[], HospitalController.forgetPassword);
 
-
 // This API is used for the hospital graphs data
 router.get('/hospital-graph-data/:id', authMiddleware.authHospital, HospitalController.hospitalGraphsData);
 

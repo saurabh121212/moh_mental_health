@@ -205,8 +205,8 @@ module.exports.getFeedbackGraphData = async (req, res, next) => {
 module.exports.sendNotificationAllUsers = async (req, res, next) => {
   
   try {
-   // await sendNotificationToAllUsers("Provide Your Feedback", "Thank you for using Eswatini Mindcheck. Help us improve your experience by sharing your feedback.");
-    await sendNotificationToAllUsers("", "");
+    await sendNotificationToAllUsers("Provide Your Feedback", "Thank you for using Eswatini Mindcheck. Help us improve your experience by sharing your feedback.");
+    //await sendNotificationToAllUsers("", "");
 
     res.status(201).json({
       message: 'Notification sent successfully to all users',
@@ -232,11 +232,11 @@ async function sendNotificationToAllUsers(name, description) {
                 notification: {
                     title: name,
                     body: description,
-                    image: 'http://13.50.85.148:3002/healthy-lifestyle/1753807074786-mood2.png',
+                    //image: 'http://13.50.85.148:3002/healthy-lifestyle/1753807074786-mood2.png',
                 },
                 data: {
-                    notificationType: "mood",
-                    //notificationType: "feedback",
+                    //notificationType: "mood",
+                    notificationType: "feedback",
                 },
                 tokens,
             };
