@@ -559,14 +559,14 @@ function findAllToken_User(modal) {
 }
 
 
-async function appointmentAfterTwoHors(AppointmentModel, startOfDay, endOfDay) {
+async function appointmentAfterTwoHors(AppointmentModel, startDateTime, endDateTime) {
   const appointments = await AppointmentModel.findAll({
     where: {
       appointment_date: {
-        [Op.between]: [startOfDay, endOfDay],
+        [Op.between]: [startDateTime, endDateTime], // flexible range
       },
       appointment_status: {
-        [Op.in]: ['confirmed'],
+        [Op.in]: ['confirmed'], // only confirmed appointments
       },
     },
   });

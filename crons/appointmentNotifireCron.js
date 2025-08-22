@@ -1,75 +1,100 @@
 const cron = require('node-cron');
 const { DateTime } = require('luxon');
-const { AppointmentModel } = require('../models');
+const { AppointmentModel, UserModel } = require('../models');
 const BaseRepo = require('../services/BaseRepository');
-
+const sendNotification = require('../firebase/sendNotification');
+const admin = require('firebase-admin');
 
 // Schedule the job to run every 10 minutes
 const notifyUpcomingAppointments = () => {
-  cron.schedule('*/1 * * * *', async () => {
-    console.log(`[${new Date().toISOString()}] Running job: notifyUpcomingAppointments`);
-
-    // Call cron after 1 hours 
-    // Get Appointment data from DB 
-    // Check if there is an appointment in 2 hours
-    // Find the user id 
-    // Get user details from the user table 
-    // Send Notification to the Users. 
-
+  cron.schedule('0 * * * *', async () => {
+    console.log(`[${new Date().toISOString()}] Running job: notifyAppointments`);
 
     const nowSA = DateTime.now().setZone('Africa/Johannesburg');
-    const twoHoursLaterSA = nowSA.plus({ hours: 2 });
+    const twoHoursLater = nowSA.plus({ hours: 2 });
+    const fortyEightHoursLater = nowSA.plus({ hours: 48 });
 
-    // 1. Get today's date range in SA timezone
-    const startOfDay = nowSA.startOf('day').toISO();     // 2025-08-06T00:00:00+02:00
-    const endOfDay = nowSA.endOf('day').toISO();         // 2025-08-06T23:59:59+02:00
+    // 1. Get appointments for the next 48 hours
+    const appointments = await BaseRepo.baseAppointmentAfterTwoHors(
+      AppointmentModel,
+      nowSA.toISO(),
+      fortyEightHoursLater.toISO()
+    );
 
-    const appointments = await BaseRepo.baseAppointmentAfterTwoHors(AppointmentModel, startOfDay, endOfDay);
+    console.log("Appointments to notify:", appointments[0].dataValues);
 
-    console.log('Appointments:', appointments);
+    for (const appt of appointments) {
+      const [startRaw] = appt.appointment_time.split(' to ');
+      if (!startRaw) continue;
 
-    // 2. Filter by appointments starting or ongoing within 2 hours
-    const upcomingAppointments = appointments.filter(appt => {
-      // Split the time string (e.g., "12:00 PM to 01:00 PM")
-      const [startRaw, endRaw] = appt.appointment_time.split(' to ');
+      const startTime = DateTime.fromFormat(startRaw.trim(), 'hh:mm a', { zone: 'Africa/Johannesburg' });
 
-      if (!startRaw || !endRaw) return false; // skip invalid entries
+      const appointmentDate = DateTime.fromJSDate(appt.appointment_date, { zone: 'Africa/Johannesburg' });
+      const startDateTime = appointmentDate.set({ hour: startTime.hour, minute: startTime.minute });
 
-      // Parse times
-      const startTime = DateTime.fromFormat(startRaw.trim(), 'hh:mm a', {
-        zone: 'Africa/Johannesburg',
-      });
-      const endTime = DateTime.fromFormat(endRaw.trim(), 'hh:mm a', {
-        zone: 'Africa/Johannesburg',
-      });
+      // --- 48h Reminder ---
+      if (
+        startDateTime > fortyEightHoursLater.minus({ minutes: 59 }) && // within the last hour window
+        startDateTime <= fortyEightHoursLater &&
+        !appt.notified48h
+      ) 
+      {
+        const user = await UserModel.findByPk(appt.user_id)
+        //console.log("User found:", user.dataValues);
+        const token = user.dataValues.device_token;
 
-      // Combine with the appointment date
-      const appointmentDate = DateTime.fromJSDate(appt.appointment_date, {
-        zone: 'Africa/Johannesburg',
-      });
+        // Send a appointment confirmation Notification to the user
+        const message = {
+          notification: {
+            title: "Upcoming Appointment",
+            body: `Hi! Just a reminder that you have an appointment in 2 days at ${appt.hospital_name}. Please arrive on time.`,
+          },
+          data: {
+            notificationType: "appointment",
+          },
+          token
+        };
+        try {
+          const response = await admin.messaging().send(message);
+          console.info('✅ Notification sent successfully:', response);
+        } catch (error) {
+          console.error('❌ Error sending notification:', error.message);
+        }
+        await appt.update({ notified48h: true });
+        console.log(`Sent 48h reminder for appointment ${appt.id}`);
+      }
 
-      const startDateTime = appointmentDate.set({
-        hour: startTime.hour,
-        minute: startTime.minute,
-      });
+      // --- 2h Reminder ---
+      if (
+        startDateTime > twoHoursLater.minus({ minutes: 59 }) &&
+        startDateTime <= twoHoursLater &&
+        !appt.notified2h
+      ) {
+        const user = await UserModel.findByPk(appt.user_id)
+        //console.log("User found:", user.dataValues);
+        const token = user.dataValues.device_token;
 
-      const endDateTime = appointmentDate.set({
-        hour: endTime.hour,
-        minute: endTime.minute,
-      });
-
-      // Debug logs
-      console.log(`Start: ${startDateTime.toISO()}, End: ${endDateTime.toISO()}, Now: ${nowSA.toISO()}, +2hrs: ${twoHoursLaterSA.toISO()}`);
-
-      // Check if current time is between start and end (ongoing)
-      // OR if the appointment is starting within the next 2 hours
-      return (
-        (nowSA >= startDateTime && nowSA <= endDateTime) || // ongoing
-        (startDateTime > nowSA && startDateTime <= twoHoursLaterSA) // upcoming
-      );
-    });
-
-    console.log('Appointments in next 2 hours:', upcomingAppointments);
+        // Send a appointment confirmation Notification to the user
+        const message = {
+          notification: {
+            title: "Upcoming Appointment",
+            body: `Hi! This is a reminder that your appointment at ${appt.hospital_name} is in 2 hours. Please be on time.`,
+          },
+          data: {
+            notificationType: "appointment",
+          },
+          token
+        };
+        try {
+          const response = await admin.messaging().send(message);
+          console.info('✅ Notification sent successfully:', response);
+        } catch (error) {
+          console.error('❌ Error sending notification:', error.message);
+        }
+        await appt.update({ notified2h: true });
+        console.log(`Sent 2h reminder for appointment ${appt.id}`);
+      }
+    }
   });
 };
 

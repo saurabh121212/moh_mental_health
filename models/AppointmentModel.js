@@ -103,6 +103,37 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, // or false if required
         },
 
+         cancelation_date: {
+            type: DataTypes.DATE,
+            allowNull: false, // or false if required
+            validate: {
+                isDate: {
+                    msg: 'Appointment date must be a valid date'
+                }
+            }
+        },
+
+        cancelation_by: {
+            type: DataTypes.STRING(100),
+            allowNull: true, // or false if required
+            validate: {
+                len: {
+                    args: [0, 100],
+                    msg: 'Cancelation by must be at most 100 characters long'
+                }
+            }
+        },
+
+        notified48h: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false, // or false if required
+        },
+
+        notified2h: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false, // or false if required
+        },
+        
     }, {
         paranoid: true,
         timestamps: true,
