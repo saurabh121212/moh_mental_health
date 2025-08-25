@@ -105,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
 
          cancelation_date: {
             type: DataTypes.DATE,
-            allowNull: false, // or false if required
+            allowNull: true, // or false if required
             validate: {
                 isDate: {
                     msg: 'Appointment date must be a valid date'
