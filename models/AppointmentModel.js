@@ -126,12 +126,12 @@ module.exports = (sequelize, DataTypes) => {
 
         notified48h: {
             type: DataTypes.BOOLEAN,
-            allowNull: false, // or false if required
+            allowNull: true, // or false if required
         },
 
         notified2h: {
             type: DataTypes.BOOLEAN,
-            allowNull: false, // or false if required
+            allowNull: true, // or false if required
         },
         
     }, {
