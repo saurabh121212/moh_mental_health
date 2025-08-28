@@ -21,7 +21,7 @@ const notifyUpcomingAppointments = () => {
       fortyEightHoursLater.toISO()
     );
 
-    console.log("Appointments to notify:", appointments[0].dataValues);
+    //console.log("Appointments to notify:", appointments[0].dataValues);
 
     for (const appt of appointments) {
       const [startRaw] = appt.appointment_time.split(' to ');
