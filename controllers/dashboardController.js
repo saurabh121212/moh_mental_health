@@ -205,7 +205,7 @@ module.exports.getFeedbackGraphData = async (req, res, next) => {
 module.exports.sendNotificationAllUsers = async (req, res, next) => {
   
   try {
-    await sendNotificationToAllUsers("Provide Your Feedback", "Dear User, Today marks the final day of the pilot run. Please provide your feedback and valuable suggestions to further enhance the application.");
+    await sendNotificationToAllUsers("Thank you for testing the Eswatini MindCheck app.", "The pilot phase has now ended, and this version will stop working. Soon, you’ll be able to download Eswatini MindCheck from the Google Play Store and Apple App Store.");
     //await sendNotificationToAllUsers("", "");
 
     res.status(201).json({
