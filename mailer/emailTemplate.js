@@ -17,7 +17,7 @@ const passwordResetOTPSend = (payload, email) =>
 
     <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Council Admin
+    Eswatini Wellness 
     <br><br>
     Email: To be added later<br>
     Tel: To be added later<br>
@@ -38,7 +38,7 @@ const hospitalRegisteredTemplate = (payload, password) =>
     </head>
     <body>
         <b>Dear ${payload.name || 'User'},</b> <br>
-        <p>We are pleased to inform you that the system administrator has registered your hospital on the Eswatini Mindcheck Platform.</p> 
+        <p>We are pleased to inform you that the system administrator has registered your hospital on the Eswatini MindCheck App.</p> 
         <p>Please use the following credentials to log in and verify your hospital details:</p>
         <ul>
             <li><b>Username:</b> ${payload.email}</li>
@@ -50,7 +50,7 @@ const hospitalRegisteredTemplate = (payload, password) =>
         
     <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Council Admin
+    Eswatini Wellness 
     <br><br>
     Email: To be added later<br>
     Tel: To be added later<br>
@@ -84,11 +84,11 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>If you have any questions or require further assistance, please feel free to reach out.</p>
         
-        <p>Thank you for using the Eswatini Mindcheck Platform.</p>
+        <p>Thank you for using the Eswatini MindCheck App.</p>
         
     <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Council Admin
+    Eswatini Wellness 
     <br><br>
     Email: To be added later<br>
     Tel: To be added later<br>
@@ -121,11 +121,11 @@ const appointmentConfirmationTemplate = (payload) =>
         
         <p>If you have any questions or need to reschedule, please contact the hospital directly.</p>
         
-        <p>Thank you for using the Eswatini Mindcheck Platform.</p>
+        <p>Thank you for using the Eswatini MindCheck App.</p>
         
          <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Council Admin
+    Eswatini Wellness 
     <br><br>
     Email: To be added later<br>
     Tel: To be added later<br>
@@ -145,7 +145,7 @@ const appointmentCancellationTemplate = (payload) =>
     <body>
         <b>Dear ${payload.name || 'User'},</b><br>
         
-        <p>We regret to inform you that your appointment has been <b>cancelled</b>.</p>
+        <p>Thank you for booking an appointment through the MindCheck App. Unfortunately, we are unable to confirm your requested appointment currently due to conflicting availability.</b>.</p>
         
         <p><b>Appointment Details:</b></p>
         <ul>
@@ -155,15 +155,12 @@ const appointmentCancellationTemplate = (payload) =>
             <li><b>Cancelling comment by hospital:</b> ${payload.hospital_comments}</li>
         </ul>
 
-        <p>If this cancellation was unexpected or you wish to reschedule, please contact the hospital or submit a new appointment request through the Eswatini Mindcheck Platform.</p>
+        <p>We sincerely apologize for the inconvenience. You are welcome to reschedule at your convenience using the MindCheck App or reach out to our support team for assistance.</p>
         
-        <p>We apologize for any inconvenience caused.</p>
-        
-        <p>Thank you for using the Eswatini Mindcheck Platform.</p>
-        
+        <p>Your wellbeing is important to us and we appreciate your understanding.</p>        
    <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Council Admin
+    Eswatini Wellness 
     <br><br>
     Email: To be added later<br>
     Tel: To be added later<br>
@@ -179,7 +176,7 @@ const registrationOTPSend = (otp, email) =>
     `<html>
 
     <b>Dear User,</b><br>
-    <p>Thank you for registering on the <b>Eswatini Mindcheck Platform</b>.</p>
+    <p>Thank you for registering on the <b>Eswatini MindCheck App</b>.</p>
     <p>To complete your registration, please verify your email address using the One-Time Password (OTP) below:</p>
     
     <h2>${otp}</h2>
@@ -189,7 +186,7 @@ const registrationOTPSend = (otp, email) =>
 
      <br>
     <b>Regards,</b><br>
-    Eswatini Nursing Council Admin
+    Eswatini Wellness 
     <br><br>
     Email: To be added later<br>
     Tel: To be added later<br>

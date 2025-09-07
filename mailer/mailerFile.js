@@ -20,7 +20,7 @@ async function sendEmail(payload,status,email,password) {
    
     if(status==2)
     {
-         subject = `Hospital Registration by Eswatini Mindcheck Administrator check your details`
+         subject = `Hospital Registration by Eswatini MindCheck Administrator check your details`
          output = emailTemplate.hospitalRegisteredTemplate(payload,password);
     }
 
