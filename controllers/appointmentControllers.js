@@ -297,10 +297,9 @@ module.exports.hospitalAllAppointmentsListV2 = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
     const hospitalId = req.params.id;
-    const appointment_status = req.query.appointment_status;
-
-    console.log("Hospital ID:", hospitalId);
-    console.log("Appointment Status:", appointment_status);
+    // const appointment_status = req.query.appointment_status;
+    // console.log("Hospital ID:", hospitalId);
+    // console.log("Appointment Status:", appointment_status);
 
     const params = {
         searchParams: { "hospital_id": hospitalId},
