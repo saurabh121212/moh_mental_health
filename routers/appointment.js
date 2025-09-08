@@ -47,6 +47,12 @@ router.get('/hospital-all-appointments-details/', authMiddleware.authAdmin, Appo
 //hospital Appointment routes
 router.get('/hospital-all-appointments/:id', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointmentsList);
 
+
+//hospital Appointment routes
+router.get('/hospital-all-appointments-by-id/:id', authMiddleware.authAdmin, AppointmentController.hospitalAllAppointmentsListV2);
+
+
+
 // This is used to check the last appointment of a user if he has more then 2 appointments or not
 router.get('/last-appointment-count/:id', authMiddleware.authUser, AppointmentController.lastAppointmentCount);
 
