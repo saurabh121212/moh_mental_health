@@ -38,7 +38,7 @@ const hospitalRegisteredTemplate = (payload, password) =>
     </head>
     <body>
         <b>Dear ${payload.name || 'User'},</b> <br>
-        <p>We are pleased to inform you that the system administrator has registered your hospital on the Eswatini MindCheck App.</p> 
+        <p>We are pleased to inform you that the system administrator has registered your hospital on the Eswatini Mindcheck App.</p> 
         <p>Please use the following credentials to log in and verify your hospital details:</p>
         <ul>
             <li><b>Username:</b> ${payload.email}</li>
@@ -84,7 +84,7 @@ const appointmentBookingTemplate = (payload) =>
         
         <p>If you have any questions or require further assistance, please feel free to reach out.</p>
         
-        <p>Thank you for using the Eswatini MindCheck App.</p>
+        <p>Thank you for using the Eswatini Mindcheck App.</p>
         
     <br>
     <b>Regards,</b><br>
@@ -121,7 +121,7 @@ const appointmentConfirmationTemplate = (payload) =>
         
         <p>If you have any questions or need to reschedule, please contact the hospital directly.</p>
         
-        <p>Thank you for using the Eswatini MindCheck App.</p>
+        <p>Thank you for using the Eswatini Mindcheck App.</p>
         
          <br>
     <b>Regards,</b><br>
@@ -145,7 +145,7 @@ const appointmentCancellationTemplate = (payload) =>
     <body>
         <b>Dear ${payload.name || 'User'},</b><br>
         
-        <p>Thank you for booking an appointment through the MindCheck App. Unfortunately, we are unable to confirm your requested appointment currently due to conflicting availability.</b>.</p>
+        <p>Thank you for booking an appointment through the Mindcheck App. Unfortunately, we are unable to confirm your requested appointment currently due to conflicting availability.</b>.</p>
         
         <p><b>Appointment Details:</b></p>
         <ul>
@@ -155,7 +155,7 @@ const appointmentCancellationTemplate = (payload) =>
             <li><b>Cancelling comment by hospital:</b> ${payload.hospital_comments}</li>
         </ul>
 
-        <p>We sincerely apologize for the inconvenience. You are welcome to reschedule at your convenience using the MindCheck App or reach out to our support team for assistance.</p>
+        <p>We sincerely apologize for the inconvenience. You are welcome to reschedule at your convenience using the Mindcheck App or reach out to our support team for assistance.</p>
         
         <p>Your wellbeing is important to us and we appreciate your understanding.</p>        
    <br>
@@ -176,7 +176,7 @@ const registrationOTPSend = (otp, email) =>
     `<html>
 
     <b>Dear User,</b><br>
-    <p>Thank you for registering on the <b>Eswatini MindCheck App</b>.</p>
+    <p>Thank you for registering on the <b>Eswatini Mindcheck App</b>.</p>
     <p>To complete your registration, please verify your email address using the One-Time Password (OTP) below:</p>
     
     <h2>${otp}</h2>
