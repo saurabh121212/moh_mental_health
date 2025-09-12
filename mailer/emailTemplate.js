@@ -19,10 +19,8 @@ const passwordResetOTPSend = (payload, email) =>
     <b>Regards,</b><br>
     Eswatini Wellness 
     <br><br>
-    Email: To be added later<br>
-    Tel: To be added later<br>
-    Fax: To be added later<br>
-    Cell: To be added later
+    Email: eswatiniwellness@outlook.com<br>
+    Cell: 76317744
     <br><br><br>
     <p style="color:red;"> *This is a system generated message, please do not reply to this email.</p>
     </body>
@@ -52,10 +50,8 @@ const hospitalRegisteredTemplate = (payload, password) =>
     <b>Regards,</b><br>
     Eswatini Wellness 
     <br><br>
-    Email: To be added later<br>
-    Tel: To be added later<br>
-    Fax: To be added later<br>
-    Cell: To be added later
+    Email: eswatiniwellness@outlook.com<br>
+    Cell: 76317744
     <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
@@ -90,10 +86,8 @@ const appointmentBookingTemplate = (payload) =>
     <b>Regards,</b><br>
     Eswatini Wellness 
     <br><br>
-    Email: To be added later<br>
-    Tel: To be added later<br>
-    Fax: To be added later<br>
-    Cell: To be added later
+    Email: eswatiniwellness@outlook.com<br>
+    Cell: 76317744
     <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
@@ -127,10 +121,8 @@ const appointmentConfirmationTemplate = (payload) =>
     <b>Regards,</b><br>
     Eswatini Wellness 
     <br><br>
-    Email: To be added later<br>
-    Tel: To be added later<br>
-    Fax: To be added later<br>
-    Cell: To be added later
+    Email: eswatiniwellness@outlook.com<br>
+    Cell: 76317744
     <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
@@ -162,10 +154,8 @@ const appointmentCancellationTemplate = (payload) =>
     <b>Regards,</b><br>
     Eswatini Wellness 
     <br><br>
-    Email: To be added later<br>
-    Tel: To be added later<br>
-    Fax: To be added later<br>
-    Cell: To be added later
+    Email: eswatiniwellness@outlook.com<br>
+    Cell: 76317744
     <br><br><br>
         <p style="color:red;">*This is a system generated message, please do not reply to this email.</p>
     </body>
@@ -188,10 +178,8 @@ const registrationOTPSend = (otp, email) =>
     <b>Regards,</b><br>
     Eswatini Wellness 
     <br><br>
-    Email: To be added later<br>
-    Tel: To be added later<br>
-    Fax: To be added later<br>
-    Cell: To be added later
+    Email: eswatiniwellness@outlook.com<br>
+    Cell: 76317744
     <br><br><br>
     <p style="color:red;">*This is a system-generated message, please do not reply to this email.</p>
 </body>
