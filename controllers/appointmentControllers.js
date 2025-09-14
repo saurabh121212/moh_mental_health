@@ -34,7 +34,7 @@ module.exports.add = async (req, res, next) => {
     if (conflictCount > 0) {
         //console.log('Booking not allowed: already a confirmed appointment within ±7 days.');
         return res.status(400).json(
-            { error: 'Booking not allowed: already a confirmed appointment within ±7 days.' }
+            { error: 'Unable to schedule appointment! You have a confirmed booking within 7 days of the requested date.' }
         );
     }
 
@@ -341,7 +341,7 @@ module.exports.lastAppointmentCount = async (req, res, next) => {
         else if (data >= 2) {
             return res.status(201).json(
                 {
-                    message: 'You have two active counselling requests—the system’s maximum limit. Please delete one or wait for processing by a counsellor."',
+                    message: 'You have two active counselling requests—the system’s maximum limit. Please delete one or wait for processing by a counsellor.',
                     count: data,
                     bookAppointment: false
                 });

@@ -102,7 +102,7 @@ const appointmentConfirmationTemplate = (payload) =>
     <body>
         <b>Dear ${payload.name || 'User'},</b><br>
         
-        <p>Your appointment has been <b>confirmed</b> by the hospital.</p>
+        <p>Your appointment has been <b>confirmed</b> by the facility.</p>
         
         <p><b>Appointment Details:</b></p>
         <ul>
@@ -111,9 +111,9 @@ const appointmentConfirmationTemplate = (payload) =>
             <li><b>Hospital:</b> ${payload.hospital_name}</li>
         </ul>
 
-        <p>Please make sure to arrive at the hospital on time and bring any necessary documents, if required.</p>
+        <p>Please make sure to arrive at the facility on time and bring any necessary documents, if required.</p>
         
-        <p>If you have any questions or need to reschedule, please contact the hospital directly.</p>
+        <p>If you have any questions or need to reschedule, please contact the facility directly.</p>
         
         <p>Thank you for using the Eswatini Mindcheck App.</p>
         
@@ -137,7 +137,7 @@ const appointmentCancellationTemplate = (payload) =>
     <body>
         <b>Dear ${payload.name || 'User'},</b><br>
         
-        <p>Thank you for booking an appointment through the Mindcheck App. Unfortunately, we are unable to confirm your requested appointment currently due to conflicting availability.</b>.</p>
+        <p>Thank you for booking an appointment through the Eswatini Mindcheck App. Unfortunately, we are unable to confirm your requested appointment currently due to conflicting availability.</b>.</p>
         
         <p><b>Appointment Details:</b></p>
         <ul>
@@ -147,7 +147,7 @@ const appointmentCancellationTemplate = (payload) =>
             <li><b>Cancelling comment by hospital:</b> ${payload.hospital_comments}</li>
         </ul>
 
-        <p>We sincerely apologize for the inconvenience. You are welcome to reschedule at your convenience using the Mindcheck App or reach out to our support team for assistance.</p>
+        <p>We sincerely apologize for the inconvenience. You are welcome to reschedule at your convenience using the Eswatini Mindcheck App or reach out to our support team for assistance.</p>
         
         <p>Your wellbeing is important to us and we appreciate your understanding.</p>        
    <br>
