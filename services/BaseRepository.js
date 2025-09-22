@@ -34,7 +34,8 @@ module.exports = {
   baseGetConflictingAppointmentsScheduled: getConflictingAppointmentsScheduled,
   baseFindAllToken_User: findAllToken_User,
   baseAppointmentAfterTwoHors: appointmentAfterTwoHors,
-  baseGetHospitalTotalAppointmentData: getHospitalTotalAppointmentData
+  baseGetHospitalTotalAppointmentData: getHospitalTotalAppointmentData,
+  baseUpdateWithConcatenate: updateWithConcatenate,
 };
 
 function create(modal, data) {
@@ -589,4 +590,16 @@ function getHospitalTotalAppointmentData(modal,hospital_id) {
       [fn('SUM', literal(`CASE WHEN appointment_status = 'cancelled' THEN 1 ELSE 0 END`)), 'cancelled_count']
     ],
   });
+}
+
+
+function updateWithConcatenate(modal, id) {
+  return modal.update(
+  {
+    email: fn('CONCAT', col('email'), '-deleted')
+  },
+  {
+    where: { id: id }
+  }
+);
 }
