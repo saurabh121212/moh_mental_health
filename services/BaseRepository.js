@@ -600,7 +600,8 @@ function updateWithConcatenate(model, id) {
       email: fn('CONCAT', fn('IFNULL', col('email'), ''), '-deleted')
     },
     {
-      where: { id }
+      where: { id },
+      logging: console.log // <-- log generated SQL
     }
   );
 }
