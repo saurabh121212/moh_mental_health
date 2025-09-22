@@ -593,13 +593,14 @@ function getHospitalTotalAppointmentData(modal,hospital_id) {
 }
 
 
-function updateWithConcatenate(modal, id) {
+function updateWithConcatenate(model, id) {
   console.log("ID in BaseRepo: ", id);
-  return modal.update(
-  {
-    email: fn('CONCAT', col('email'), '-deleted')
-  },
-  {
-    where: { id: id }
-  }
-)}
+  return model.update(
+    {
+      email: fn('CONCAT', fn('IFNULL', col('email'), ''), '-deleted')
+    },
+    {
+      where: { id }
+    }
+  );
+}
