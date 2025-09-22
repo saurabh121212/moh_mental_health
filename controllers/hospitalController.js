@@ -133,13 +133,13 @@ module.exports.update = async (req, res, next) => {
 module.exports.delete = async (req, res, next) => {
     const id = req.params.id;
     try {
+        // This is to concatenate the email with -deleted so that the unique email constraint should not fail when a new user is created with the same email
+        const value = await BaseRepo.baseUpdateWithConcatenate(HospitalModel, id);
+        console.log("Value after concatenation: ", value);
         const data = await BaseRepo.baseDelete(HospitalModel, { id });
         if (!data) {
             return res.status(400).json({ error: 'Error deleting Hospital' });
         }
-        // This is to concatenate the email with -deleted so that the unique email constraint should not fail when a new user is created with the same email
-        const value = await BaseRepo.baseUpdateWithConcatenate(HospitalModel, id);
-        console.log("Value after concatenation: ", value);
         res.status(201).json({
             message: 'Hospital deleted successfully',
             data: data
