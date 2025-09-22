@@ -20,7 +20,7 @@ module.exports.add = async (req, res, next) => {
     // Check if the email already exists
     const existingHospital = await HospitalModel.findOne({ where: { email: req.body.email } });
     if (existingHospital) {
-        return res.status(400).json({ error: 'Email already exists in the system please use a different email' });
+        return res.status(400).json({ error: 'Please use a different email address. This email is already associated with another facility.'});
     }
 
     // Create hash password
@@ -137,9 +137,9 @@ module.exports.delete = async (req, res, next) => {
         if (!data) {
             return res.status(400).json({ error: 'Error deleting Hospital' });
         }
-
         // This is to concatenate the email with -deleted so that the unique email constraint should not fail when a new user is created with the same email
-        await BaseRepo.baseUpdateWithConcatenate(HospitalModel, id);
+        const value = await BaseRepo.baseUpdateWithConcatenate(HospitalModel, id);
+        console.log("Value after concatenation: ", value);
         res.status(201).json({
             message: 'Hospital deleted successfully',
             data: data
