@@ -593,15 +593,19 @@ function getHospitalTotalAppointmentData(modal,hospital_id) {
 }
 
 
-function updateWithConcatenate(model, id) {
+async function updateWithConcatenate(model, id) {
   console.log("ID in BaseRepo: ", id);
-  return model.update(
+
+  const [affectedCount] = await model.update(
     {
       email: fn('CONCAT', fn('IFNULL', col('email'), ''), '-deleted')
     },
     {
       where: { id },
-      logging: console.log // <-- log generated SQL
+      logging: console.log // will print the raw SQL
     }
   );
+
+  console.log("Rows updated:", affectedCount);
+  return affectedCount;
 }
