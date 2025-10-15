@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
      Model.prototype.generateAuthToken = function () {
-        return jwt.sign({ id: this.id }, process.env.JWT_SECRET_ADMIN, { expiresIn: '24h' });
+        return jwt.sign({ id: this.id }, process.env.JWT_SECRET_ADMIN, { expiresIn: '3d' });
     };
 
 

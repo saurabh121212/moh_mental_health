@@ -138,7 +138,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Model.prototype.generateAuthToken = function () {
-        return jwt.sign({ id: this.id }, process.env.JWT_SECRET_HOSPITAL, { expiresIn: '24h' });
+        return jwt.sign({ id: this.id }, process.env.JWT_SECRET_HOSPITAL, { expiresIn: '7d' });
     };
 
     Model.prototype.comparePassword = async function (password) {
